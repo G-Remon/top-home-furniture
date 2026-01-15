@@ -125,16 +125,7 @@ export default function FeaturedProducts() {
                               transition-all duration-500 border border-gray-100">
                   <ProductCard product={product} index={index} />
                 </div>
-                
-                {/* مؤشر التميز */}
-                {product.isFeatured && (
-                  <div className="absolute top-4 left-4 z-20">
-                    <span className="px-3 py-1 bg-gradient-to-r from-wood-brown to-wood-brown/80 text-white text-xs 
-                                  font-semibold rounded-full shadow-lg">
-                      مميز
-                    </span>
-                  </div>
-                )}
+              
               </motion.div>
             ))}
           </motion.div>

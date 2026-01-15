@@ -17,29 +17,28 @@ export default function ProductDetailClient({ product }: ProductDetailClientProp
   const [selectedImage, setSelectedImage] = useState(0)
   const [imageErrors, setImageErrors] = useState<Record<number, boolean>>({})
 
-  // معالجة الصور بشكل آمن
+  // Handle images safely with proper type checking
   const images = useMemo(() => {
     if (!product.images || !Array.isArray(product.images) || product.images.length === 0) {
       return ['/images/geld.png']
     }
     
-    // تصفية الصور غير الصالحة
+    // Filter out any invalid image paths
     return product.images.filter((img): img is string => {
       return typeof img === 'string' && img.trim() !== ''
     })
   }, [product.images])
 
-  // معالجة الأخطاء في الصور
+  // Handle image errors
   const handleImageError = useCallback((index: number) => {
     setImageErrors(prev => ({ ...prev, [index]: true }))
   }, [])
 
-  // الحصول على الصورة الحالية مع معالجة الأخطاء
+  // Get current image with error handling
   const currentImage = useMemo(() => {
-    if (imageErrors[selectedImage]) {
-      return '/images/geld.png'
-    }
-    return images[selectedImage]
+    if (!images.length) return '/images/geld.png'
+    if (imageErrors[selectedImage]) return '/images/geld.png'
+    return images[selectedImage] || '/images/geld.png'
   }, [images, selectedImage, imageErrors])
 
   // قيمة افتراضية للميزات

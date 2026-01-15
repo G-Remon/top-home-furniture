@@ -23,6 +23,7 @@ export interface Product {
   warranty?: string
   isNew?: boolean
   isFeatured?: boolean
+  image?: string
   images: string[]
   features: string[]
   rating?: number

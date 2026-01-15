@@ -1,5 +1,12 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  reactStrictMode: true,
+  compress: true,
+  poweredByHeader: false,
+  output: 'standalone',
+  trailingSlash: false,
+
+  // Image optimization
   images: {
     remotePatterns: [
       {
@@ -10,11 +17,31 @@ const nextConfig = {
     formats: ['image/avif', 'image/webp'],
     deviceSizes: [640, 750, 828, 1080, 1200, 1920, 2048, 3840],
     imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
-    qualities: [60, 75, 80, 85, 90, 95], // هنا ضفت كل القيم اللي ظهرتلك في التحذيرات
+    minimumCacheTTL: 60 * 60 * 24 * 7, // 1 week
+    dangerouslyAllowSVG: true,
   },
-  compress: true,
-  poweredByHeader: false,
-  reactStrictMode: true,
+
+  // Security headers
+  async headers() {
+    return [
+      {
+        source: '/(.*)',
+        headers: [
+          { key: 'X-Content-Type-Options', value: 'nosniff' },
+          { key: 'X-Frame-Options', value: 'DENY' },
+          { key: 'X-XSS-Protection', value: '1; mode=block' },
+        ],
+      },
+    ]
+  },
+
+  // Enable source maps in development only
+  productionBrowserSourceMaps: process.env.NODE_ENV === 'development',
+
+  // Webpack configuration
+  webpack: (config, { isServer }) => {
+    return config
+  },
 }
 
 export default nextConfig

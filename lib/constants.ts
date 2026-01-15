@@ -9,42 +9,42 @@ export const categories: Category[] = [
     name: 'غرف المعيشة',
     count: 24,
     description: 'كنبات وطاولات وديكورات غرف المعيشة',
-    image: '/images/categories/living-room.svg'
+    image: '/images/living.png',
   },
   {
     id: 'bedroom',
     name: 'غرف النوم',
     count: 18,
     description: 'أسرّة وخزائن وطاولات جانبية',
-    image: '/images/categories/bedroom.svg'
+    image: '/images/Sleeping.png',
   },
   {
     id: 'dining',
     name: 'طاولات الطعام',
     count: 12,
     description: 'طاولات وكراسي غرف الطعام',
-    image: '/images/categories/dining.svg'
+    image: '/images/eat.png',
   },
   {
     id: 'office',
     name: 'أثاث المكاتب',
     count: 8,
     description: 'مكاتب وكراسي ووحدات تخزين',
-    image: '/images/categories/office.svg'
+    image: '/images/mkatb.png',
   },
   {
     id: 'outdoor',
     name: 'أثاث خارجي',
     count: 6,
     description: 'أثاث الحدائق والشرفات',
-    image: '/images/categories/outdoor.svg'
+    image: '/images/kharegya.png',
   },
   {
     id: 'accessories',
     name: 'اكسسوارات',
     count: 15,
     description: 'إكسسوارات وديكورات منزلية',
-    image: '/images/categories/accessories.svg'
+    image: '/images/aksesorat.png',
   },
 ]
 
@@ -65,9 +65,8 @@ export const products: Product[] = [
     isNew: true,
     isFeatured: true,
     images: [
-      '/images/products/sofa-1.svg',
-      '/images/products/sofa-2.svg',
-      '/images/products/sofa-3.svg',
+      '/images/geld.png',
+      '/images/living.png',
     ],
     features: [
       'تصميم مريح يدعم الظهر',
@@ -80,6 +79,37 @@ export const products: Product[] = [
     stock: 12,
     createdAt: '2024-01-15',
   },
+  {
+    id: '2',
+    name: 'سرير فخم من الخشب الطبيعي',
+    shortDescription: 'سرير مصمم للراحة مع لمسات عصرية',
+    fullDescription: 'سرير فاخر مصنوع من خشب طبيعي عالي الجودة، مصمم لتوفير نوم مريح وثبات عالي مع تصميم أنيق يناسب غرف النوم الحديثة. يأتي بضمان 3 سنوات.',
+    price: 24999,
+    originalPrice: 29999,
+    discount: 17,
+    category: 'bedroom',
+    material: 'خشب طبيعي - قماش مبطن',
+    dimensions: '200 × 160 × 110 سم',
+    weight: '90 كجم',
+    deliveryTime: '5-7 أيام عمل',
+    isNew: true,
+    isFeatured: true,
+    images: [
+      '/images/Sleeping.png',
+      '/images/Sleeping.png',
+    ],
+    features: [
+      'تصميم مريح يدعم الظهر',
+      'هيكل قوي وثابت',
+      'تشطيب عالي الجودة',
+      'ضمان 3 سنوات',
+    ],
+    rating: 4.8,
+    reviews: 42,
+    stock: 12,
+    createdAt: '2024-01-15',
+  }
+
   // ... المزيد من المنتجات
 ]
 

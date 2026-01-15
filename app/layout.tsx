@@ -41,7 +41,7 @@ export const metadata: Metadata = {
     siteName: 'TOP HOME',
     images: [
       {
-        url: '/Gemini_Generated_Image_3grbla3grbla3grb.jpg',
+        url: '/images/main-hero.png',
         width: 1200,
         height: 630,
         alt: 'TOP HOME - أثاث فاخر',
@@ -52,7 +52,7 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     title: 'TOP HOME',
     description: 'أثاث فاخر لبيت الأحلام',
-    images: ['/Gemini_Generated_Image_3grbla3grbla3grb.jpg'],
+    images: ['/images/main-hero.png'],
   },
   icons: {
     icon: '/favicon.ico',
@@ -72,7 +72,7 @@ export default function RootLayout({
           <div className="absolute inset-0 bg-gradient-to-br from-background via-background/95 to-background/90" />
           <div className="absolute top-0 left-0 right-0 h-96 opacity-20">
             <Image
-              src="/Gemini_Generated_Image_3grbla3grbla3grb.jpg"
+              src="/images/main-hero.png"
               alt="خلفية TOP HOME للأثاث الفاخر"
               fill
               className="object-cover"
@@ -85,7 +85,7 @@ export default function RootLayout({
           </div>
           <div className="absolute bottom-0 left-0 right-0 h-64 opacity-10 rotate-180">
             <Image
-              src="/Gemini_Generated_Image_3grbla3grbla3grb.jpg"
+              src="/images/main-hero.png"
               alt=""
               fill
               className="object-cover"
@@ -109,7 +109,7 @@ export default function RootLayout({
         <div className="fixed bottom-4 left-4 z-50 hidden md:block">
           <div className="relative w-20 h-20 rounded-full overflow-hidden border-2 border-primary/20 shadow-lg">
             <Image
-              src="/Gemini_Generated_Image_3grbla3grbla3grb.jpg"
+              src="/images/geld.png"
               alt="شعار TOP HOME"
               fill
               className="object-cover rounded-full"

@@ -50,8 +50,8 @@ export default function Header() {
 
     // Enhanced color system
     const logoColor = isTransparent ? "text-white drop-shadow-lg" : "text-wood-brown"
-    const navColor = isTransparent 
-        ? "text-white/90 hover:text-white" 
+    const navColor = isTransparent
+        ? "text-white/90 hover:text-white"
         : "text-charcoal/80 hover:text-wood-brown"
     const iconColor = isTransparent ? "text-white" : "text-wood-brown"
     const menuButtonColor = isTransparent ? "text-white" : "text-charcoal"
@@ -68,32 +68,76 @@ export default function Header() {
             >
                 <nav className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl">
                     <div className="flex items-center justify-between h-12 lg:h-14">
-                        {/* Logo - Enhanced */}
+                        {/* Logo - Enhanced with Image */}
                         <Link href="/" className="flex items-center group relative z-50">
                             <motion.div
-                                whileHover={{ scale: 1.05 }}
-                                whileTap={{ scale: 0.98 }}
+                                whileHover={{ scale: 1.05, rotate: [0, -2, 2, 0] }}
+                                whileTap={{ scale: 0.95 }}
                                 transition={{ type: "spring", stiffness: 400, damping: 17 }}
-                                className="relative"
+                                className="relative flex items-center gap-2 sm:gap-3"
                             >
-                                <div className={cn(
-                                    "text-xl sm:text-2xl lg:text-3xl font-bold tracking-tight transition-all duration-300",
-                                    logoColor,
-                                    "font-[system-ui] leading-none"
-                                )}>
-                                    TOP HOME
+                                <div className="relative">
+                                    <motion.div
+                                        className={cn(
+                                            "absolute inset-0 rounded-full blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500",
+                                            isTransparent ? "bg-white/30" : "bg-wood-brown/30"
+                                        )}
+                                        animate={{ scale: [1, 1.2, 1] }}
+                                        transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
+                                    />
+
+                                    <motion.div
+                                        className="relative"
+                                        whileHover={{ rotate: [0, 5, -5, 0] }}
+                                        transition={{ duration: 0.5 }}
+                                    >
+                                        <img
+                                            src="/images/logo.png"
+                                            alt="TOP HOME Logo"
+                                            className={cn(
+                                                "h-10 sm:h-12 lg:h-14 w-auto object-contain transition-all duration-300",
+                                                isTransparent
+                                                    ? "drop-shadow-[0_4px_12px_rgba(255,255,255,0.3)] group-hover:drop-shadow-[0_6px_20px_rgba(255,255,255,0.5)]"
+                                                    : "drop-shadow-[0_4px_12px_rgba(0,0,0,0.1)] group-hover:drop-shadow-[0_6px_20px_rgba(0,0,0,0.15)]"
+                                            )}
+                                        />
+                                    </motion.div>
+
+                                    <motion.div
+                                        className={cn(
+                                            "absolute inset-0 rounded-full border-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300",
+                                            isTransparent ? "border-white/50" : "border-wood-brown/50"
+                                        )}
+                                        animate={{ rotate: 360, scale: [1, 1.1, 1] }}
+                                        transition={{
+                                            rotate: { duration: 8, repeat: Infinity, ease: "linear" },
+                                            scale: { duration: 2, repeat: Infinity, ease: "easeInOut" },
+                                        }}
+                                    />
                                 </div>
-                                {/* Decorative underline */}
-                                <motion.div
-                                    className={cn(
-                                        "h-0.5 rounded-full transition-all duration-300",
-                                        isTransparent ? "bg-white" : "bg-wood-brown"
-                                    )}
-                                    initial={{ width: 0 }}
-                                    whileHover={{ width: "100%" }}
-                                />
+
+                                <div className="relative">
+                                    <div
+                                        className={cn(
+                                            "text-xl sm:text-2xl lg:text-3xl font-bold tracking-tight transition-all duration-300",
+                                            logoColor,
+                                            "font-[system-ui] leading-none"
+                                        )}
+                                    >
+                                        TOP HOME
+                                    </div>
+                                    <motion.div
+                                        className={cn(
+                                            "h-0.5 rounded-full transition-all duration-300 mt-1",
+                                            isTransparent ? "bg-white" : "bg-wood-brown"
+                                        )}
+                                        initial={{ width: 0 }}
+                                        whileHover={{ width: "100%" }}
+                                    />
+                                </div>
                             </motion.div>
                         </Link>
+
 
                         {/* Desktop Navigation - Enhanced */}
                         <div className="hidden lg:flex items-center gap-1 xl:gap-2">
@@ -148,8 +192,8 @@ export default function Header() {
                                 whileTap={{ scale: 0.95 }}
                                 className={cn(
                                     "flex items-center gap-2 px-3 xl:px-4 py-2 rounded-full transition-all duration-300 group",
-                                    isTransparent 
-                                        ? "bg-white/10 hover:bg-white/20 backdrop-blur-sm border border-white/20" 
+                                    isTransparent
+                                        ? "bg-white/10 hover:bg-white/20 backdrop-blur-sm border border-white/20"
                                         : "bg-gray-50 hover:bg-gray-100 border border-gray-200",
                                     iconColor
                                 )}
@@ -287,8 +331,8 @@ export default function Header() {
                                                     href={item.href}
                                                     className={cn(
                                                         "flex items-center justify-between p-4 rounded-xl transition-all duration-300 group",
-                                                        isActive 
-                                                            ? "bg-wood-brown text-white shadow-lg" 
+                                                        isActive
+                                                            ? "bg-wood-brown text-white shadow-lg"
                                                             : "hover:bg-gray-50 text-charcoal hover:text-wood-brown"
                                                     )}
                                                     onClick={() => setMobileMenuOpen(false)}

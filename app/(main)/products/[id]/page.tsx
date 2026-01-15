@@ -43,7 +43,7 @@ export async function generateMetadata({ params }: ProductDetailPageProps): Prom
       description: product.shortDescription || `اكتشف ${product.name} من توب هوم`,
       images: Array.isArray(product.images) && product.images.length > 0 
         ? product.images 
-        : [{ url: '/images/placeholder.jpg' }],
+        : [{ url: '/images/geld.png' }],
       type: 'website',
       locale: 'ar_SA',
       siteName: 'TOP HOME',

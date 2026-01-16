@@ -190,8 +190,8 @@ export default function Footer() {
                             © {new Date().getFullYear()} TOP HOME. جميع الحقوق محفوظة
                         </p>
                         
-                        <div className="flex items-center gap-4 text-sm text-gray-400">
-                            <span>صنع في مصر</span>
+                        <div className="flex items-center gap-4 text-lg text-gray-400">
+                            <span> 💥G.Remon </span>
                         </div>
                     </div>
                 </motion.div>

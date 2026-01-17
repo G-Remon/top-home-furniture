@@ -1,8 +1,8 @@
 import type { Config } from "tailwindcss";
-import { fontFamily } from "tailwindcss/defaultTheme";
+import defaultTheme from "tailwindcss/defaultTheme";
 
 const config: Config = {
-  darkMode: ["class"],
+  darkMode: "class",
   content: [
     "./app/**/*.{ts,tsx}",
     "./pages/**/*.{ts,tsx}",
@@ -36,7 +36,7 @@ const config: Config = {
         "muted-foreground": "#6b7280",
       },
       borderRadius: { lg: "0.5rem", md: "0.375rem", sm: "0.25rem" },
-      fontFamily: { sans: ["var(--font-inter)", ...fontFamily.sans] },
+      fontFamily: { sans: ["var(--font-inter)", ...defaultTheme.fontFamily.sans] },
       keyframes: {
         "fade-in": { "0%": { opacity: "0" }, "100%": { opacity: "1" } },
         "zoom-in": { "0%": { opacity: "0", transform: "scale(0.95)" }, "100%": { opacity: "1", transform: "scale(1)" } },

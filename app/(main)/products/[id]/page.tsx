@@ -11,6 +11,7 @@ export const revalidate = 3600 // 1 hour in seconds
 
 interface ProductDetailPageProps {
   params: { id: string }
+  searchParams?: { [key: string]: string | string[] | undefined }
 }
 
 // Generate static params at build time
@@ -22,8 +23,10 @@ export async function generateStaticParams() {
 }
 
 // Generate metadata for the page
-export async function generateMetadata({ params }: ProductDetailPageProps): Promise<Metadata> {
-  const { id } = params
+export async function generateMetadata({ params }: { params: { id: string } }): Promise<Metadata> {
+  // Ensure params is resolved before destructuring
+  const resolvedParams = await Promise.resolve(params);
+  const { id } = resolvedParams;
   
   // In a real app, you might want to fetch the product from an API
   const product = products.find(p => p.id === id)
@@ -65,8 +68,10 @@ async function getProduct(id: string) {
   return product
 }
 
-export default async function ProductDetailPage({ params }: ProductDetailPageProps) {
-  const { id } = params
+export default async function ProductDetailPage({ params }: { params: { id: string } }) {
+  // Ensure params is resolved before destructuring
+  const resolvedParams = await Promise.resolve(params);
+  const { id } = resolvedParams;
   const product = await getProduct(id)
 
   if (!product) {

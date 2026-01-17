@@ -3,6 +3,7 @@
 
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
+import Image from 'next/image'
 import { usePathname } from 'next/navigation'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Menu, X, ShoppingCart, Phone, ChevronDown } from 'lucide-react'
@@ -87,19 +88,22 @@ export default function Header() {
                                     />
 
                                     <motion.div
-                                        className="relative"
+                                        className="relative h-10 sm:h-12 lg:h-14 w-auto"
                                         whileHover={{ rotate: [0, 5, -5, 0] }}
                                         transition={{ duration: 0.5 }}
                                     >
-                                        <img
+                                        <Image
                                             src="/images/logo.png"
                                             alt="TOP HOME Logo"
+                                            fill
                                             className={cn(
-                                                "h-10 sm:h-12 lg:h-14 w-auto object-contain transition-all duration-300",
+                                                "object-contain transition-all duration-300",
                                                 isTransparent
                                                     ? "drop-shadow-[0_4px_12px_rgba(255,255,255,0.3)] group-hover:drop-shadow-[0_6px_20px_rgba(255,255,255,0.5)]"
                                                     : "drop-shadow-[0_4px_12px_rgba(0,0,0,0.1)] group-hover:drop-shadow-[0_6px_20px_rgba(0,0,0,0.15)]"
                                             )}
+                                            sizes="(max-width: 640px) 40px, (max-width: 1024px) 48px, 56px"
+                                            priority
                                         />
                                     </motion.div>
 

@@ -4,7 +4,8 @@
 import { motion } from 'framer-motion'
 import Image from 'next/image'
 import Link from 'next/link'
-import { Heart, Eye, ShoppingBag, Star, Shield, Zap } from 'lucide-react'
+import { Heart, Eye, ShoppingBag } from 'lucide-react'
+
 import { Product } from '@/types/product'
 import WhatsAppButton from '@/components/shared/WhatsAppButton'
 import { useState } from 'react'

@@ -4,6 +4,7 @@
 import { motion, AnimatePresence } from 'framer-motion'
 import { MessageCircle, X } from 'lucide-react'
 import { useState } from 'react'
+import Image from 'next/image'
 import { Product } from '@/types/product'
 
 interface FloatingWhatsAppProps {
@@ -49,11 +50,13 @@ export default function FloatingWhatsApp({ phoneNumber, product }: FloatingWhats
             
             <div className="space-y-3">
               <div className="flex gap-3">
-                <div className="w-16 h-16 bg-gray-200 rounded-lg overflow-hidden">
-                  <img 
-                    src={product.images[0]} 
+                <div className="relative w-16 h-16 bg-gray-200 rounded-lg overflow-hidden">
+                  <Image
+                    src={Array.isArray(product.images) && product.images.length > 0 ? product.images[0] : '/images/geld.png'}
                     alt={product.name}
-                    className="w-full h-full object-cover"
+                    fill
+                    className="object-cover"
+                    sizes="64px"
                   />
                 </div>
                 <div>

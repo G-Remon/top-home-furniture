@@ -1,6 +1,5 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
+@config "../tailwind.config.ts";
 
 :root {
   --radius: 0.5rem;
@@ -11,24 +10,62 @@ html[dir="rtl"] {
 }
 
 body {
-  @apply bg-off-white text-charcoal min-h-screen;
-  font-feature-settings: "rlig" 1, "calt" 1;
+	background-color: #faf9f6;
+	color: #1a1a1a;
+	min-height: 100vh;
+	font-feature-settings: "rlig" 1, "calt" 1;
 }
 
 ::-webkit-scrollbar {
   width: 8px;
 }
 ::-webkit-scrollbar-track {
-  @apply bg-off-white;
+	background-color: #faf9f6;
 }
 ::-webkit-scrollbar-thumb {
-  @apply bg-wood-brown/50 rounded-full hover:bg-wood-brown cursor-pointer;
+	background-color: rgba(139, 115, 85, 0.5);
+	border-radius: 9999px;
+	cursor: pointer;
+}
+
+::-webkit-scrollbar-thumb:hover {
+	background-color: #8b7355;
 }
 
 .container-custom {
-  @apply container mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl;
+	margin-left: auto;
+	margin-right: auto;
+	padding-left: 1rem; /* px-4 */
+	padding-right: 1rem;
+	max-width: 80rem; /* 7xl */
+}
+
+@media (min-width: 640px) {
+	.container-custom {
+		padding-left: 1.5rem; /* sm:px-6 */
+		padding-right: 1.5rem;
+	}
+}
+
+@media (min-width: 1024px) {
+	.container-custom {
+		padding-left: 2rem; /* lg:px-8 */
+		padding-right: 2rem;
+	}
 }
 
 .whatsapp-button {
-  @apply bg-[#25D366] hover:bg-[#128C7E] text-white font-semibold flex items-center justify-center gap-2 transition-all duration-300;
+	background-color: #25D366;
+	color: #ffffff;
+	font-weight: 600;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	gap: 0.5rem;
+	transition-property: all;
+	transition-duration: 300ms;
+}
+
+.whatsapp-button:hover {
+	background-color: #128C7E;
 }

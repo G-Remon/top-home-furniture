@@ -3,7 +3,6 @@ const nextConfig = {
   reactStrictMode: true,
   compress: true,
   poweredByHeader: false,
-  output: 'standalone',
   trailingSlash: false,
 
   // Image optimization
@@ -37,11 +36,9 @@ const nextConfig = {
 
   // Enable source maps in development only
   productionBrowserSourceMaps: process.env.NODE_ENV === 'development',
-
-  // Webpack configuration
-  webpack: (config, { isServer }) => {
-    return config
-  },
+  
+  // Explicit Turbopack configuration (empty for now, using defaults)
+  turbopack: {},
 }
 
 export default nextConfig

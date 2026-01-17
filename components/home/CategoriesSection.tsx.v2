@@ -1,0 +1,156 @@
+﻿// components/home/CategoriesSection.tsx
+'use client'
+
+import { categories } from '@/lib/constants'
+import Image from 'next/image'
+import Link from 'next/link'
+import { motion } from 'framer-motion'
+import { ArrowLeft, Sparkles } from 'lucide-react'
+
+export default function CategoriesSection() {
+  return (
+    <section id="categories" className="py-16 md:py-20 lg:py-24 bg-gradient-to-b from-white to-gray-50/50">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl">
+        {/* Header */}
+        <div className="mb-12 md:mb-16 text-center max-w-3xl mx-auto">
+          <motion.div
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.4 }}
+            className="inline-flex items-center gap-2 px-4 py-2 bg-wood-brown/10 text-wood-brown rounded-full text-sm font-medium mb-4"
+          >
+            <Sparkles className="w-4 h-4" />
+            <span>╪¬╪╡┘ü╪¡ ┘ü╪ª╪º╪¬┘å╪º</span>
+          </motion.div>
+
+          <motion.h2
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5 }}
+            className="mb-4 text-3xl md:text-4xl lg:text-5xl font-bold text-charcoal leading-tight"
+          >
+            ╪¬╪│┘ê┘é ╪¡╪│╪¿ ╪º┘ä┘ü╪ª╪⌐
+          </motion.h2>
+          
+          <motion.p
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5, delay: 0.1 }}
+            className="text-gray-600 text-base md:text-lg leading-relaxed"
+          >
+            ╪º╪«╪¬╪▒ ╪º┘ä┘ü╪ª╪⌐ ╪º┘ä╪¬┘è ╪¬┘å╪º╪│╪¿ ╪º╪¡╪¬┘è╪º╪¼╪º╪¬ ┘à┘å╪▓┘ä┘â ┘à┘å ┘à╪¼┘à┘ê╪╣╪¬┘å╪º ╪º┘ä┘à╪¬┘å┘ê╪╣╪⌐ ┘ê╪º┘ä┘à╪╡┘à┘à╪⌐ ╪¿╪╣┘å╪º┘è╪⌐
+          </motion.p>
+        </div>
+
+        {/* Categories Grid */}
+        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+          {categories.slice(0, 6).map((category, index) => (
+            <CategoryCard
+              key={category.id}
+              category={category}
+              index={index}
+            />
+          ))}
+        </div>
+
+        {/* View All Button */}
+        <motion.div
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          viewport={{ once: true }}
+          transition={{ delay: 0.4, duration: 0.5 }}
+          className="mt-12 md:mt-16 text-center"
+        >
+          <Link
+            href="/products"
+            className="inline-flex items-center gap-3 px-8 py-4 bg-wood-brown text-white rounded-lg font-semibold text-base hover:bg-wood-brown/90 transition-colors duration-300 group"
+          >
+            <span>╪╣╪▒╪╢ ╪¼┘à┘è╪╣ ╪º┘ä┘à┘å╪¬╪¼╪º╪¬</span>
+            <ArrowLeft className="w-5 h-5 transition-transform duration-300 group-hover:-translate-x-1" />
+          </Link>
+        </motion.div>
+      </div>
+    </section>
+  )
+}
+
+interface CategoryCardProps {
+  category: {
+    id: string
+    name: string
+    description?: string
+    image?: string
+  }
+  index: number
+}
+
+function CategoryCard({ category, index }: CategoryCardProps) {
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, margin: "-50px" }}
+      transition={{
+        delay: index * 0.05,
+        duration: 0.4,
+        ease: "easeOut"
+      }}
+      className="group relative"
+    >
+      <Link
+        href={`/products?category=${category.id}`}
+        className="block relative overflow-hidden rounded-xl md:rounded-xl shadow-md hover:shadow-xl transition-all duration-300 aspect-[4/3]"
+      >
+        {/* Image Container */}
+        <div className="absolute inset-0">
+          {/* Placeholder Background */}
+          <div className="absolute inset-0 bg-gradient-to-br from-gray-100 to-gray-200" />
+          
+          {/* Image */}
+          {category.image && (
+            <Image
+              src={category.image}
+              alt={category.name}
+              fill
+              className="object-cover transition-transform duration-700 group-hover:scale-105"
+              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+              priority={index < 2}
+            />
+          )}
+
+          {/* Gradient Overlay */}
+          <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent" />
+        </div>
+
+        {/* Content */}
+        <div className="absolute inset-0 flex flex-col justify-end p-6 md:p-8">
+          <div className="transform transition-transform duration-300 group-hover:-translate-y-1">
+            {/* Category Name */}
+            <h3 className="text-xl md:text-2xl font-bold text-white mb-2">
+              {category.name}
+            </h3>
+
+            {/* Description */}
+            <p className="text-white/80 text-sm md:text-base mb-4 line-clamp-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+              {category.description || '╪º┘â╪¬╪┤┘ü ┘à╪¼┘à┘ê╪╣╪⌐ ┘ê╪º╪│╪╣╪⌐ ┘à┘å ╪º┘ä┘à┘å╪¬╪¼╪º╪¬ ╪╣╪º┘ä┘è╪⌐ ╪º┘ä╪¼┘ê╪»╪⌐'}
+            </p>
+
+            {/* CTA Button */}
+            <div className="inline-flex items-center gap-2 text-sm font-medium px-4 py-2 rounded-full bg-white/10 backdrop-blur-sm transition-all duration-300 group-hover:bg-white group-hover:text-gray-900">
+              <span>╪¬╪╡┘ü╪¡ ╪º┘ä┘à┘å╪¬╪¼╪º╪¬</span>
+              <ArrowLeft className="w-4 h-4 transition-transform duration-300 group-hover:-translate-x-1" />
+            </div>
+          </div>
+        </div>
+
+        {/* Badge */}
+        <div className="absolute top-4 left-4 px-3 py-1 bg-wood-brown text-white text-xs font-semibold rounded-full">
+          ╪¼╪»┘è╪»
+        </div>
+      </Link>
+    </motion.div>
+  )
+}

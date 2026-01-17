@@ -36,9 +36,11 @@ const nextConfig = {
 
   // Enable source maps in development only
   productionBrowserSourceMaps: process.env.NODE_ENV === 'development',
-  
-  // Explicit Turbopack configuration (empty for now, using defaults)
-  turbopack: {},
+
+  // Explicit Turbopack configuration
+  turbopack: {
+    root: './',
+  },
 }
 
 export default nextConfig

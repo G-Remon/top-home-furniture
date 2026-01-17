@@ -13,157 +13,137 @@ export default function HeroSection() {
   }
 
   return (
-    <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-neutral-950">
-      {/* الصورة الخلفية مع تحسينات الأداء */}
+    <section className="relative min-h-[100dvh] flex items-center justify-center overflow-hidden bg-neutral-950">
+      {/* Background Image with Parallax-like effect */}
       <div className="absolute inset-0 z-0">
-        <Image
-          src="/images/main-hero.png"
-          alt="أثاث فاخر من TOP HOME - تصميم داخلي فاخر بأثاث عالي الجودة"
-          fill
-          priority
-          className="object-cover"
-          quality={85}
-          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 100vw, 100vw"
-          style={{ 
-            objectPosition: 'center 35%',
-            filter: 'brightness(0.85)'
-          }}
-        />
-        
-        {/* تدرج لوني محسن للقراءة */}
-        <div className="absolute inset-0 bg-gradient-to-b from-black/70 via-black/30 to-black/60" />
-        <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent" />
-        
-        {/* تأثير Vignette محسن */}
-        <div className="absolute inset-0" style={{
-          background: 'radial-gradient(ellipse at 50% 40%, transparent 30%, rgba(0,0,0,0.4) 70%, rgba(0,0,0,0.7) 100%)'
-        }} />
+        <motion.div
+          className="absolute inset-0 w-full h-full"
+          initial={{ scale: 1.1 }}
+          animate={{ scale: 1 }}
+          transition={{ duration: 10, ease: "easeOut" }}
+        >
+          <Image
+            src="/images/main-hero.png"
+            alt="أثاث فاخر من TOP HOME"
+            fill
+            priority
+            className="object-cover"
+            quality={100}
+            sizes="100vw"
+            style={{
+              objectPosition: 'center 40%',
+            }}
+          />
+        </motion.div>
+
+        {/* Multilayered Premium Gradient */}
+        <div className="absolute inset-0 bg-gradient-to-b from-black/80 via-black/40 to-black/80" />
+        <div className="absolute inset-0 bg-black/20 backdrop-blur-[1px]" />
       </div>
 
-      {/* المحتوى الرئيسي مع تحسينات التباين */}
-      <div className="relative z-10 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-20">
+      {/* Main Content */}
+      <div className="relative z-10 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24 sm:py-32">
         <div className="text-center text-white">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+            transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
           >
-            {/* العنوان الرئيسي بمقاسات متجاوبة أفضل */}
-            <div className="mb-6 sm:mb-8">
+            {/* Tagline */}
+            <motion.div
+              initial={{ opacity: 0, letterSpacing: '0.1em' }}
+              animate={{ opacity: 1, letterSpacing: '0.3em' }}
+              transition={{ delay: 0.2, duration: 1 }}
+              className="text-wood-brown font-medium text-xs sm:text-sm uppercase mb-6"
+            >
+              Excellence in Craftsmanship
+            </motion.div>
+
+            {/* Main Title */}
+            <div className="mb-8 relative inline-block">
               <motion.h1
-                className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-bold tracking-tight"
-                initial={{ opacity: 0, scale: 0.95 }}
+                className="text-6xl sm:text-7xl md:text-8xl lg:text-9xl font-extrabold tracking-tighter"
+                initial={{ opacity: 0, scale: 0.9 }}
                 animate={{ opacity: 1, scale: 1 }}
-                transition={{ delay: 0.2, duration: 0.8 }}
+                transition={{ delay: 0.3, duration: 1 }}
                 style={{
-                  textShadow: '0 2px 8px rgba(0,0,0,0.6)',
-                  fontWeight: 700,
-                  lineHeight: 1.1
+                  lineHeight: 0.9,
+                  filter: 'drop-shadow(0 10px 20px rgba(0,0,0,0.5))'
                 }}
               >
-                TOP HOME
+                TOP <span className="text-wood-brown">HOME</span>
               </motion.h1>
-              
-              {/* خط تحت العنوان */}
+
               <motion.div
                 initial={{ scaleX: 0 }}
                 animate={{ scaleX: 1 }}
-                transition={{ delay: 0.4, duration: 0.8 }}
-                className="w-24 h-0.5 bg-white/30 mx-auto mt-6"
+                transition={{ delay: 0.8, duration: 1, ease: "circOut" }}
+                className="absolute -bottom-4 left-0 right-0 h-1 bg-gradient-to-r from-transparent via-wood-brown to-transparent"
               />
             </div>
 
-            {/* الوصف مع تحسين التباين */}
+            {/* Subtitle / Description */}
             <motion.p
-              className="text-lg sm:text-xl md:text-2xl text-white/95 mb-10 sm:mb-12 font-normal leading-relaxed max-w-2xl mx-auto px-4"
+              className="text-lg sm:text-xl md:text-2xl text-white/90 mb-12 font-light leading-relaxed max-w-2xl mx-auto px-4"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.3, duration: 0.8 }}
-              style={{
-                textShadow: '0 1px 4px rgba(0,0,0,0.5)',
-                fontWeight: 400,
-                letterSpacing: '0.02em'
-              }}
+              transition={{ delay: 0.5, duration: 1 }}
             >
-              فن صناعة الأثاث الفاخر<br className="sm:hidden" /> حيث تلتقي الأناقة بالراحة
+              فن صناعة الأثاث الفاخر<br className="hidden sm:block" />
+              حيث يلتقي التصميم العصري بأعلى معايير الجودة
             </motion.p>
 
-            {/* الأزرار مع مسافات محسنة */}
+            {/* Actions */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.5, duration: 0.8 }}
-              className="flex flex-col sm:flex-row gap-4 sm:gap-6 justify-center items-center mt-8 sm:mt-10"
+              transition={{ delay: 0.7, duration: 0.8 }}
+              className="flex flex-col sm:flex-row gap-5 justify-center items-center"
             >
               <WhatsAppButton
                 phoneNumber="+201234567890"
                 message="مرحباً، أريد الاستفسار عن أثاث TOP HOME"
                 size="lg"
-                className="min-w-[200px] sm:min-w-[220px] text-base px-6 sm:px-8 py-3.5 sm:py-4 bg-primary hover:bg-primary/90 transition-all duration-300 shadow-lg hover:shadow-xl active:scale-95"
-                aria-label="تواصل معنا عبر واتساب للاستفسار عن الأثاث"
+                className="w-full sm:w-auto min-w-[200px] bg-wood-brown hover:bg-wood-brown/90 text-white shadow-2xl shadow-wood-brown/20 py-4 px-10 rounded-full"
               />
 
               <motion.button
                 onClick={scrollToSection}
-                className="group inline-flex items-center gap-2.5 text-white hover:text-white transition-all duration-300 min-w-[200px] sm:min-w-[220px] justify-center px-6 sm:px-8 py-3.5 sm:py-4 border border-white/30 hover:border-white/60 rounded-md backdrop-blur-sm bg-white/5 hover:bg-white/10"
+                className="w-full sm:w-auto group inline-flex items-center gap-3 text-white border border-white/30 hover:border-white/60 px-10 py-4 rounded-full backdrop-blur-md bg-white/5 hover:bg-white/10 transition-all duration-500"
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
-                aria-label="استعرض مجموعات الأثاث المميزة"
               >
-                <span className="text-base font-medium">استعرض المجموعة</span>
-                <ChevronDown className="w-4 h-4 sm:w-5 sm:h-5 group-hover:translate-y-0.5 transition-transform duration-300" />
+                <span className="text-base font-semibold">استعرض المجموعة</span>
+                <ChevronDown className="w-5 h-5 group-hover:translate-y-1 transition-transform duration-300" />
               </motion.button>
             </motion.div>
 
-            {/* نص مساعد صغير */}
-            <motion.p
+            {/* Trust Indicator */}
+            <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
-              transition={{ delay: 0.7, duration: 0.8 }}
-              className="text-sm text-white/60 mt-8 sm:mt-10 font-light"
+              transition={{ delay: 1.2, duration: 1 }}
+              className="mt-16 flex items-center justify-center gap-6 opacity-60"
             >
-              اكتشف مجموعتنا الحصرية من الأثاث المصمم بعناية
-            </motion.p>
+              <div className="h-px w-8 bg-white/30" />
+              <span className="text-xs uppercase tracking-widest font-light">Quality Guaranteed</span>
+              <div className="h-px w-8 bg-white/30" />
+            </motion.div>
           </motion.div>
         </div>
       </div>
 
-      {/* مؤشر التمرير محسن */}
+      {/* Modern Scroll Indicator */}
       <motion.button
         onClick={scrollToSection}
-        className="absolute bottom-6 sm:bottom-10 left-1/2 -translate-x-1/2 z-10 cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-white/30 rounded-full p-2"
-        initial={{ opacity: 0 }}
-        animate={{ 
-          opacity: 1,
-        }}
-        transition={{ 
-          opacity: { delay: 1, duration: 0.5 },
-        }}
-        aria-label="التمرير لأسفل لعرض المنتجات"
+        className="absolute bottom-8 left-1/2 -translate-x-1/2 z-10"
+        initial={{ opacity: 0, y: -20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 1.5, duration: 1 }}
       >
-        <div className="flex flex-col items-center gap-2">
-          <motion.div 
-            className="text-white/60 text-xs font-light"
-            animate={{ opacity: [0.6, 1, 0.6] }}
-            transition={{ repeat: Infinity, duration: 2 }}
-          >
-            اكتشف المزيد
-          </motion.div>
-          
-          <div className="w-6 h-10 border border-white/40 rounded-full flex justify-center items-start pt-2 hover:border-white/60 transition-colors duration-300">
-            <motion.div 
-              className="w-1 h-2 bg-white/80 rounded-full"
-              animate={{ 
-                y: [0, 12, 0],
-                opacity: [0.6, 1, 0.6]
-              }}
-              transition={{ 
-                repeat: Infinity, 
-                duration: 1.8,
-                ease: "easeInOut"
-              }}
-            />
-          </div>
+        <div className="flex flex-col items-center gap-3">
+          <div className="w-px h-12 bg-gradient-to-b from-white to-transparent" />
+          <span className="text-[10px] uppercase tracking-[0.3em] font-medium text-white/50">Scroll</span>
         </div>
       </motion.button>
     </section>

@@ -61,227 +61,93 @@ export default function Header() {
         <>
             <header
                 className={cn(
-                    "fixed top-0 left-0 right-0 z-50 transition-all duration-500 ease-in-out",
+                    "fixed top-0 left-0 right-0 z-50 transition-all duration-500",
                     isTransparent
-                        ? "bg-transparent py-2 lg:py-3"
-                        : "bg-white/98 backdrop-blur-xl shadow-lg py-2 border-b border-gray-100"
+                        ? "bg-transparent py-4 lg:py-6"
+                        : "bg-white/90 backdrop-blur-md shadow-sm py-2 lg:py-3 border-b border-gray-100"
                 )}
             >
                 <nav className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl">
-                    <div className="flex items-center justify-between h-12 lg:h-14">
-                        {/* Logo - Enhanced with Image */}
-                        <Link href="/" className="flex items-center group relative z-50">
-                            <motion.div
-                                whileHover={{ scale: 1.05, rotate: [0, -2, 2, 0] }}
-                                whileTap={{ scale: 0.95 }}
-                                transition={{ type: "spring", stiffness: 400, damping: 17 }}
-                                className="relative flex items-center gap-2 sm:gap-3"
-                            >
-                                <div className="relative">
-                                    <motion.div
-                                        className={cn(
-                                            "absolute inset-0 rounded-full blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500",
-                                            isTransparent ? "bg-white/30" : "bg-wood-brown/30"
-                                        )}
-                                        animate={{ scale: [1, 1.2, 1] }}
-                                        transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
-                                    />
-
-                                    <motion.div
-                                        className="relative h-10 sm:h-12 lg:h-14 w-auto"
-                                        whileHover={{ rotate: [0, 5, -5, 0] }}
-                                        transition={{ duration: 0.5 }}
-                                    >
-                                        <Image
-                                            src="/images/logo.png"
-                                            alt="TOP HOME Logo"
-                                            fill
-                                            className={cn(
-                                                "object-contain transition-all duration-300",
-                                                isTransparent
-                                                    ? "drop-shadow-[0_4px_12px_rgba(255,255,255,0.3)] group-hover:drop-shadow-[0_6px_20px_rgba(255,255,255,0.5)]"
-                                                    : "drop-shadow-[0_4px_12px_rgba(0,0,0,0.1)] group-hover:drop-shadow-[0_6px_20px_rgba(0,0,0,0.15)]"
-                                            )}
-                                            sizes="(max-width: 640px) 40px, (max-width: 1024px) 48px, 56px"
-                                            priority
-                                        />
-                                    </motion.div>
-
-                                    <motion.div
-                                        className={cn(
-                                            "absolute inset-0 rounded-full border-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300",
-                                            isTransparent ? "border-white/50" : "border-wood-brown/50"
-                                        )}
-                                        animate={{ rotate: 360, scale: [1, 1.1, 1] }}
-                                        transition={{
-                                            rotate: { duration: 8, repeat: Infinity, ease: "linear" },
-                                            scale: { duration: 2, repeat: Infinity, ease: "easeInOut" },
-                                        }}
-                                    />
-                                </div>
-
-                                <div className="relative">
-                                    <div
-                                        className={cn(
-                                            "text-xl sm:text-2xl lg:text-3xl font-bold tracking-tight transition-all duration-300",
-                                            logoColor,
-                                            "font-[system-ui] leading-none"
-                                        )}
-                                    >
-                                        TOP HOME
-                                    </div>
-                                    <motion.div
-                                        className={cn(
-                                            "h-0.5 rounded-full transition-all duration-300 mt-1",
-                                            isTransparent ? "bg-white" : "bg-wood-brown"
-                                        )}
-                                        initial={{ width: 0 }}
-                                        whileHover={{ width: "100%" }}
-                                    />
-                                </div>
-                            </motion.div>
+                    <div className="flex items-center justify-between">
+                        {/* Logo - Enhanced */}
+                        <Link href="/" className="flex items-center gap-2 group relative z-50">
+                            <div className="relative h-8 sm:h-10 w-auto aspect-square">
+                                <Image
+                                    src="/images/logo.png"
+                                    alt="TOP HOME Logo"
+                                    fill
+                                    className={cn(
+                                        "object-contain transition-all duration-500",
+                                        isTransparent ? "brightness-0 invert" : ""
+                                    )}
+                                    priority
+                                />
+                            </div>
+                            <div className={cn(
+                                "text-lg sm:text-xl lg:text-2xl font-bold tracking-tight transition-colors duration-500",
+                                isTransparent ? "text-white" : "text-charcoal"
+                            )}>
+                                TOP <span className="text-wood-brown">HOME</span>
+                            </div>
                         </Link>
 
-
-                        {/* Desktop Navigation - Enhanced */}
-                        <div className="hidden lg:flex items-center gap-1 xl:gap-2">
-                            {navigation.map((item, index) => {
+                        {/* Desktop Navigation */}
+                        <div className="hidden lg:flex items-center gap-8">
+                            {navigation.map((item) => {
                                 const isActive = pathname === item.href
                                 return (
                                     <Link
                                         key={item.name}
                                         href={item.href}
-                                        className="relative group px-4 py-2"
+                                        className={cn(
+                                            "relative text-sm font-medium transition-colors duration-300",
+                                            isTransparent ? "text-white/80 hover:text-white" : "text-charcoal/70 hover:text-wood-brown",
+                                            isActive && (isTransparent ? "text-white" : "text-wood-brown")
+                                        )}
                                     >
-                                        <motion.span
-                                            initial={{ opacity: 0, y: -10 }}
-                                            animate={{ opacity: 1, y: 0 }}
-                                            transition={{ delay: index * 0.1 }}
-                                            className={cn(
-                                                "text-sm xl:text-base font-medium transition-all duration-300 relative",
-                                                navColor,
-                                                isActive && !isTransparent && "text-wood-brown font-semibold",
-                                                isActive && isTransparent && "text-white font-semibold"
-                                            )}
-                                        >
-                                            {item.name}
-                                        </motion.span>
-                                        {/* Active indicator */}
+                                        {item.name}
                                         {isActive && (
                                             <motion.div
-                                                layoutId="activeTab"
-                                                className={cn(
-                                                    "absolute bottom-0 left-0 right-0 h-0.5 rounded-full",
-                                                    isTransparent ? "bg-white" : "bg-wood-brown"
-                                                )}
-                                                transition={{ type: "spring", stiffness: 380, damping: 30 }}
+                                                layoutId="navUnderline"
+                                                className="absolute -bottom-1 left-0 right-0 h-0.5 bg-wood-brown rounded-full"
                                             />
                                         )}
-                                        {/* Hover effect */}
-                                        <span className={cn(
-                                            "absolute bottom-0 left-0 right-0 h-0.5 rounded-full scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-center",
-                                            isTransparent ? "bg-white/50" : "bg-wood-brown/50"
-                                        )} />
                                     </Link>
                                 )
                             })}
                         </div>
 
-                        {/* CTA Buttons - Enhanced */}
-                        <div className="hidden lg:flex items-center gap-3 xl:gap-4">
-                            {/* Phone Button */}
-                            <motion.a
-                                href="tel:+201234567890"
-                                whileHover={{ scale: 1.05 }}
-                                whileTap={{ scale: 0.95 }}
+                        {/* Desktop Actions */}
+                        <div className="hidden lg:flex items-center gap-4">
+                            <Link
+                                href="/auth/login"
                                 className={cn(
-                                    "flex items-center gap-2 px-3 xl:px-4 py-2 rounded-full transition-all duration-300 group",
+                                    "text-sm font-medium px-5 py-2 rounded-full border transition-all duration-300",
                                     isTransparent
-                                        ? "bg-white/10 hover:bg-white/20 backdrop-blur-sm border border-white/20"
-                                        : "bg-gray-50 hover:bg-gray-100 border border-gray-200",
-                                    iconColor
+                                        ? "text-white border-white/30 hover:bg-white/10"
+                                        : "text-charcoal border-gray-200 hover:border-wood-brown hover:text-wood-brown"
                                 )}
                             >
-                                <Phone className="w-4 h-4 transition-transform group-hover:rotate-12" />
-                                <span className="text-xs xl:text-sm font-medium">اتصل بنا</span>
-                            </motion.a>
-
-                            {/* Shop Button */}
-                            <motion.div
-                                whileHover={{ scale: 1.05 }}
-                                whileTap={{ scale: 0.95 }}
+                                دخول
+                            </Link>
+                            <Link
+                                href="/products"
+                                className="text-sm font-semibold px-6 py-2 rounded-full bg-wood-brown text-white hover:bg-wood-brown/90 transition-all shadow-lg shadow-wood-brown/20"
                             >
-                                <Link
-                                    href="/products"
-                                    className={cn(
-                                        "flex items-center gap-2 px-4 xl:px-5 py-2 rounded-full font-medium text-xs xl:text-sm transition-all duration-300 shadow-md hover:shadow-xl group relative overflow-hidden",
-                                        isTransparent
-                                            ? "bg-white text-wood-brown hover:bg-white/95"
-                                            : "bg-wood-brown text-white hover:bg-wood-brown/90"
-                                    )}
-                                >
-                                    {/* Shine effect */}
-                                    <span className="absolute inset-0 -translate-x-full group-hover:translate-x-full transition-transform duration-700 bg-gradient-to-r from-transparent via-white/20 to-transparent" />
-                                    <ShoppingCart className="w-4 h-4 relative z-10 transition-transform group-hover:scale-110" />
-                                    <span className="relative z-10">تسوق الآن</span>
-                                </Link>
-                            </motion.div>
-
-                            {/* Login Button */}
-                            <motion.div
-                                whileHover={{ scale: 1.05 }}
-                                whileTap={{ scale: 0.95 }}
-                            >
-                                <Link
-                                    href="/auth/login"
-                                    className={cn(
-                                        "px-4 xl:px-5 py-2 rounded-full font-medium text-xs xl:text-sm transition-all duration-300 border-2",
-                                        isTransparent
-                                            ? "border-white text-white hover:bg-white hover:text-wood-brown"
-                                            : "border-wood-brown text-wood-brown hover:bg-wood-brown hover:text-white"
-                                    )}
-                                >
-                                    دخول
-                                </Link>
-                            </motion.div>
+                                تسوق الآن
+                            </Link>
                         </div>
 
-                        {/* Mobile Menu Button - Enhanced */}
-                        <motion.button
-                            whileTap={{ scale: 0.9 }}
-                            className={cn(
-                                "lg:hidden p-2.5 rounded-xl transition-all duration-300 relative z-50",
-                                menuButtonColor,
-                                !isTransparent && "hover:bg-gray-100",
-                                isTransparent && "hover:bg-white/10 backdrop-blur-sm"
-                            )}
+                        {/* Mobile Menu Button */}
+                        <button
                             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-                            aria-label="Toggle menu"
+                            className={cn(
+                                "lg:hidden p-2 rounded-lg transition-colors z-50",
+                                isTransparent ? "text-white hover:bg-white/10" : "text-charcoal hover:bg-gray-100"
+                            )}
                         >
-                            <AnimatePresence mode="wait">
-                                {mobileMenuOpen ? (
-                                    <motion.div
-                                        key="close"
-                                        initial={{ rotate: -90, opacity: 0 }}
-                                        animate={{ rotate: 0, opacity: 1 }}
-                                        exit={{ rotate: 90, opacity: 0 }}
-                                        transition={{ duration: 0.2 }}
-                                    >
-                                        <X className="w-6 h-6 sm:w-7 sm:h-7" />
-                                    </motion.div>
-                                ) : (
-                                    <motion.div
-                                        key="menu"
-                                        initial={{ rotate: 90, opacity: 0 }}
-                                        animate={{ rotate: 0, opacity: 1 }}
-                                        exit={{ rotate: -90, opacity: 0 }}
-                                        transition={{ duration: 0.2 }}
-                                    >
-                                        <Menu className="w-6 h-6 sm:w-7 sm:h-7" />
-                                    </motion.div>
-                                )}
-                            </AnimatePresence>
-                        </motion.button>
+                            {mobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
+                        </button>
                     </div>
                 </nav>
             </header>

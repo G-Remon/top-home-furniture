@@ -100,14 +100,7 @@ export default function CategoriesSection() {
               disableOnInteraction: false,
               pauseOnMouseEnter: true,
             }}
-            effect="coverflow"
-            coverflowEffect={{
-              rotate: 0,
-              stretch: 0,
-              depth: 100,
-              modifier: 1,
-              slideShadows: false,
-            }}
+            effect="slide"
             keyboard={{
               enabled: true,
             }}
@@ -183,7 +176,7 @@ function CategoryCard({ category, index }: CategoryCardProps) {
               fill
               className="object-cover transition-transform duration-700 group-hover:scale-110"
               sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, (max-width: 1280px) 33vw, 25vw"
-              priority={index < 4}
+              priority={false}
             />
           )}
 

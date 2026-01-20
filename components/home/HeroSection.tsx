@@ -17,10 +17,11 @@ export default function HeroSection() {
       {/* Background Image with Parallax-like effect */}
       <div className="absolute inset-0 z-0">
         <motion.div
-          className="absolute inset-0 w-full h-full"
+          className="absolute inset-0 w-full h-full transform-gpu"
           initial={{ scale: 1.1 }}
           animate={{ scale: 1 }}
           transition={{ duration: 10, ease: "easeOut" }}
+          style={{ willChange: "transform" }}
         >
           <Image
             src="/images/main-hero.png"
@@ -28,7 +29,7 @@ export default function HeroSection() {
             fill
             priority
             className="object-cover"
-            quality={100}
+            quality={90}
             sizes="100vw"
             style={{
               objectPosition: 'center 40%',
@@ -37,8 +38,7 @@ export default function HeroSection() {
         </motion.div>
 
         {/* Multilayered Premium Gradient */}
-        <div className="absolute inset-0 bg-gradient-to-b from-black/80 via-black/40 to-black/80" />
-        <div className="absolute inset-0 bg-black/20 backdrop-blur-[1px]" />
+        <div className="absolute inset-0 bg-gradient-to-b from-black/90 via-black/40 to-black/90" />
       </div>
 
       {/* Main Content */}
@@ -68,7 +68,7 @@ export default function HeroSection() {
                 transition={{ delay: 0.3, duration: 1 }}
                 style={{
                   lineHeight: 0.9,
-                  filter: 'drop-shadow(0 10px 20px rgba(0,0,0,0.5))'
+                  textShadow: '0 10px 20px rgba(0,0,0,0.5)'
                 }}
               >
                 TOP <span className="text-wood-brown">HOME</span>

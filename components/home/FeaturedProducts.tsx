@@ -55,11 +55,11 @@ export default function FeaturedProducts() {
       {/* عناصر زخرفية خلفية */}
       <div className="absolute top-0 left-0 w-64 h-64 bg-gradient-to-br from-wood-brown/5 to-transparent rounded-full -translate-x-32 -translate-y-32" />
       <div className="absolute bottom-0 right-0 w-96 h-96 bg-gradient-to-tl from-wood-brown/3 to-transparent rounded-full translate-x-48 translate-y-48" />
-      
+
       {/* خطوط زخرفية */}
       <div className="absolute top-1/4 left-10 w-0.5 h-32 bg-gradient-to-b from-wood-brown/20 to-transparent" />
       <div className="absolute bottom-1/4 right-10 w-0.5 h-32 bg-gradient-to-t from-wood-brown/20 to-transparent" />
-      
+
       <div className="container-custom relative z-10">
         <motion.div
           ref={ref}
@@ -68,7 +68,7 @@ export default function FeaturedProducts() {
           variants={containerVariants}
         >
           {/* العنوان مع تحسينات */}
-          <motion.div 
+          <motion.div
             className="text-center mb-20 relative"
             variants={titleVariants}
           >
@@ -77,25 +77,25 @@ export default function FeaturedProducts() {
               <span className="text-wood-brown font-semibold tracking-wider uppercase text-sm">مجموعة مميزة</span>
               <Star className="w-6 h-6 text-wood-brown fill-wood-brown" />
             </div>
-            
+
             <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold text-charcoal mb-6 leading-tight">
               <span className="relative inline-block">
                 منتجاتنا المميزة
                 <span className="absolute -bottom-3 left-1/2 transform -translate-x-1/2 w-24 h-1 bg-gradient-to-r from-wood-brown/0 via-wood-brown to-wood-brown/0 rounded-full" />
               </span>
             </h2>
-            
+
             <p className="text-lg md:text-xl text-soft-gray/80 max-w-2xl mx-auto leading-relaxed">
               اكتشف مجموعة مختارة بعناية من تصاميمنا الفريدة التي تجمع بين الأناقة الدقيقة والوظائف المثالية
             </p>
-            
+
             <div className="mt-10 flex justify-center">
               <div className="w-20 h-px bg-gradient-to-r from-transparent via-wood-brown/30 to-transparent" />
             </div>
           </motion.div>
 
           {/* شبكة المنتجات مع تحسينات */}
-          <motion.div 
+          <motion.div
             className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8 lg:gap-10"
             variants={containerVariants}
           >
@@ -104,34 +104,32 @@ export default function FeaturedProducts() {
                 key={product.id}
                 variants={itemVariants}
                 className="group relative"
-                whileHover={{ 
+                whileHover={{
                   y: -12,
-                  transition: { type: "spring", stiffness: 300, damping: 25 }
+                  transition: { type: "spring", stiffness: 200, damping: 20 }
                 }}
               >
-                {/* تأثير خلفية عند hover */}
-                <div className="absolute inset-0 bg-gradient-to-br from-white via-off-white/50 to-white rounded-2xl shadow-lg 
-                              group-hover:shadow-2xl transition-all duration-500 opacity-0 group-hover:opacity-100 
-                              -inset-3 blur-xl group-hover:blur-lg" />
-                
+                {/* تأثير خلفية مبسط عند hover */}
+                <div className="absolute inset-0 bg-wood-brown/5 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 -inset-1" />
+
                 {/* حدود متحركة */}
                 <div className="absolute inset-0 rounded-xl overflow-hidden z-0">
                   <div className="absolute inset-0 border border-wood-brown/10 group-hover:border-wood-brown/30 transition-all duration-500 rounded-xl" />
                   <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/50 to-transparent 
                                 -translate-x-full group-hover:translate-x-full transition-transform duration-1000" />
                 </div>
-                
+
                 <div className="relative z-10 bg-white rounded-xl overflow-hidden shadow-md group-hover:shadow-xl 
                               transition-all duration-500 border border-gray-100">
                   <ProductCard product={product} index={index} />
                 </div>
-              
+
               </motion.div>
             ))}
           </motion.div>
 
           {/* زر عرض المزيد مع تحسينات */}
-          <motion.div 
+          <motion.div
             className="text-center mt-20"
             variants={itemVariants}
           >
@@ -146,23 +144,23 @@ export default function FeaturedProducts() {
               {/* تأثير خلفية عند hover */}
               <span className="absolute inset-0 bg-gradient-to-r from-wood-brown to-charcoal/80 opacity-0 
                              group-hover:opacity-100 transition-opacity duration-500" />
-              
+
               {/* خط متحرك */}
               <span className="absolute bottom-0 left-0 w-full h-0.5 bg-white/50 transform -translate-x-full 
                              group-hover:translate-x-0 transition-transform duration-700" />
-              
+
               <span className="relative">استكشف جميع المنتجات</span>
-              
+
               <ArrowLeft className="w-5 h-5 relative group-hover:translate-x-1 group-hover:-translate-x-1 
                                   transition-transform duration-300" />
-              
+
               {/* نقاط زخرفية */}
               <span className="absolute -top-2 -right-2 w-4 h-4 bg-white/20 rounded-full group-hover:scale-150 
                              transition-transform duration-300" />
               <span className="absolute -bottom-2 -left-2 w-3 h-3 bg-white/20 rounded-full group-hover:scale-150 
                              transition-transform duration-300 delay-150" />
             </motion.a>
-            
+
             {/* نص توضيحي */}
             <p className="mt-6 text-soft-gray/70 text-sm">
               أكثر من 100+ تصميم فاخر ينتظرك في مجموعتنا الكاملة
@@ -170,7 +168,7 @@ export default function FeaturedProducts() {
           </motion.div>
         </motion.div>
       </div>
-      
+
       {/* حدود زخرفية للقسم */}
       <div className="absolute top-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-wood-brown/10 to-transparent" />
       <div className="absolute bottom-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-wood-brown/10 to-transparent" />

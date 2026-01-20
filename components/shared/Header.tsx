@@ -120,7 +120,7 @@ export default function Header() {
                         {/* Desktop Actions */}
                         <div className="hidden lg:flex items-center gap-4">
                             <Link
-                                href="/auth/login"
+                                href="/login"
                                 className={cn(
                                     "text-sm font-medium px-5 py-2 rounded-full border transition-all duration-300",
                                     isTransparent
@@ -253,7 +253,7 @@ export default function Header() {
                                         transition={{ delay: 0.6 }}
                                     >
                                         <Link
-                                            href="/auth/login"
+                                            href="/login"
                                             className="flex items-center justify-center w-full px-6 py-4 bg-white text-charcoal border border-gray-200 rounded-2xl hover:border-wood-brown hover:text-wood-brown transition-all duration-300 font-medium text-base"
                                             onClick={() => setMobileMenuOpen(false)}
                                         >

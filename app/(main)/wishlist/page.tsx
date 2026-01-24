@@ -1,15 +1,32 @@
 // app/(main)/wishlist/page.tsx
 'use client'
 
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useWishlist } from '@/context/WishlistContext';
 import ProductCard from '@/components/products/ProductCard';
 import { Heart, ShoppingBag, ArrowRight } from 'lucide-react';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
+import { useAuthStore } from '@/store/auth.store';
+import { useRouter } from 'next/navigation';
 
 export default function WishlistPage() {
     const { wishlist } = useWishlist();
+    const { isAuthenticated } = useAuthStore();
+    const router = useRouter();
+    const [isReady, setIsReady] = useState(false);
+
+    useEffect(() => {
+        if (!isAuthenticated) {
+            router.push('/login');
+        } else {
+            setIsReady(true);
+        }
+    }, [isAuthenticated, router]);
+
+    if (!isAuthenticated || !isReady) {
+        return null; // Or loading spinner could go here
+    }
 
     return (
         <main className="min-h-screen bg-gradient-to-b from-white to-gray-50 pt-24 pb-20">

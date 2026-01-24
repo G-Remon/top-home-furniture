@@ -19,6 +19,8 @@ import {
   translateDescription,
   translateUnit
 } from '@/lib/translate';
+import { useAuthStore } from '@/store/auth.store';
+import { useRouter } from 'next/navigation';
 
 interface ProductDetailClientProps {
   product: Product;
@@ -26,6 +28,7 @@ interface ProductDetailClientProps {
 
 export default function ProductDetailClient({ product }: ProductDetailClientProps) {
   const [selectedImage, setSelectedImage] = useState(0);
+  const router = useRouter();
 
   const formatPrice = (price: number) => {
     return new Intl.NumberFormat('ar-EG', {
@@ -213,6 +216,12 @@ export default function ProductDetailClient({ product }: ProductDetailClientProp
             message={`أنا مهتم بمنتج ${translateProductName(product.name)} (كود: ${product.id}). السعر: ${formatPrice(product.currentPrice)}`}
             productName={translateProductName(product.name)}
             className="flex-1 py-4 sm:py-5 rounded-xl sm:rounded-2xl bg-wood-brown text-white font-bold text-base sm:text-lg hover:bg-wood-brown/90 shadow-xl shadow-wood-brown/20 transition-all flex items-center justify-center gap-3"
+            onClick={(e) => {
+              if (!useAuthStore.getState().isAuthenticated) {
+                e.preventDefault();
+                router.push('/login');
+              }
+            }}
           >
             <ShoppingCart size={20} className="sm:size-[24px]" /> {translateCommon('addToCart')}
           </WhatsAppButton>

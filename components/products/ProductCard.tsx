@@ -8,12 +8,15 @@ import { Star, ShoppingCart, Info, TrendingDown, Package, CheckCircle2, XCircle 
 import { Product } from '@/types/product';
 import { getFullImageUrl } from '@/lib/utils';
 import { translateCategory, translateProductName, translateCommon, translateDescription } from '@/lib/translate';
+import { useAuthStore } from '@/store/auth.store';
+import { useRouter } from 'next/navigation';
 
 interface ProductCardProps {
   product: Product;
 }
 
 export default function ProductCard({ product }: ProductCardProps) {
+  const router = useRouter();
   const formatPrice = (price: number) => {
     return new Intl.NumberFormat('ar-EG', {
       style: 'currency',
@@ -87,6 +90,15 @@ export default function ProductCard({ product }: ProductCardProps) {
             <Info size={20} />
           </Link>
           <button
+            onClick={(e) => {
+              e.preventDefault();
+              if (!useAuthStore.getState().isAuthenticated) {
+                router.push('/login');
+                return;
+              }
+              // TODO: Add to cart logic here
+              // toast({ title: "Added to cart" })
+            }}
             className="p-3 bg-white text-charcoal rounded-full hover:bg-wood-brown hover:text-white transition-colors shadow-xl"
             title={translateCommon('addToCart')}
             disabled={!product.inStock}

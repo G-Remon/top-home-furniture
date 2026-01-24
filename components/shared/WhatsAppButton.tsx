@@ -16,6 +16,7 @@ interface WhatsAppButtonProps {
     children?: ReactNode
     variant?: 'default' | 'minimal' | 'floating'
     showPulse?: boolean
+    onClick?: (e: React.MouseEvent) => void
 }
 
 export default function WhatsAppButton({
@@ -29,6 +30,7 @@ export default function WhatsAppButton({
     children,
     variant = 'default',
     showPulse = true,
+    onClick,
 }: WhatsAppButtonProps) {
     const [isHovered, setIsHovered] = useState(false)
     const [showTooltip, setShowTooltip] = useState(false)
@@ -78,6 +80,7 @@ export default function WhatsAppButton({
                     href={whatsappUrl}
                     target="_blank"
                     rel="noopener noreferrer"
+                    onClick={onClick}
                     className="relative group flex items-center justify-center w-16 h-16 bg-gradient-to-br from-[#25D366] to-[#128C7E] rounded-full shadow-2xl hover:shadow-[#25D366]/50 transition-all duration-300 overflow-hidden"
                     whileHover={{ scale: 1.1 }}
                     whileTap={{ scale: 0.95 }}
@@ -85,11 +88,11 @@ export default function WhatsAppButton({
                     onHoverEnd={() => setShowTooltip(false)}
                     initial={{ scale: 0, rotate: -180 }}
                     animate={{ scale: 1, rotate: 0 }}
-                    transition={{ 
-                        type: "spring", 
-                        stiffness: 260, 
+                    transition={{
+                        type: "spring",
+                        stiffness: 260,
                         damping: 20,
-                        delay: 0.5 
+                        delay: 0.5
                     }}
                 >
                     {/* Animated Background Gradient */}
@@ -172,6 +175,7 @@ export default function WhatsAppButton({
                 href={whatsappUrl}
                 target="_blank"
                 rel="noopener noreferrer"
+                onClick={onClick}
                 className={cn(
                     'inline-flex items-center gap-2 text-[#25D366] hover:text-[#128C7E] transition-colors duration-300 font-medium group',
                     className
@@ -203,6 +207,7 @@ export default function WhatsAppButton({
             href={whatsappUrl}
             target="_blank"
             rel="noopener noreferrer"
+            onClick={onClick}
             className={cn(
                 'relative inline-flex items-center justify-center rounded-full font-semibold transition-all duration-300 overflow-hidden group',
                 'bg-gradient-to-r from-[#25D366] to-[#128C7E] text-white',

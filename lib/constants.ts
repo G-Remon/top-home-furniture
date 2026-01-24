@@ -2,7 +2,7 @@
 import { Product, Category } from '@/types/product'
 
 export const PHONE_NUMBER = '+201234567890'
-export const API_BASE_URL = 'http://tophomedev.runasp.net'
+export const API_BASE_URL = 'https://top-home-furniture.vercel.app'
 
 export const categories: Category[] = [
   {

@@ -1,7 +1,9 @@
 import axios from 'axios';
 import { useAuthStore } from '@/store/auth.store';
 
-const API_BASE_URL = 'http://tophomedev.runasp.net/api';
+import { API_BASE_URL as BASE_URL } from '@/lib/constants';
+
+const API_BASE_URL = `${BASE_URL}/api`;
 
 const axiosInstance = axios.create({
     baseURL: API_BASE_URL,

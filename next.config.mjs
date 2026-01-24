@@ -49,6 +49,18 @@ const nextConfig = {
   turbopack: {
     root: './',
   },
+  async rewrites() {
+    return [
+      {
+        source: '/api/:path*',
+        destination: 'http://tophomedev.runasp.net/api/:path*',
+      },
+      {
+        source: '/images/:path*',
+        destination: 'http://tophomedev.runasp.net/images/:path*',
+      },
+    ]
+  },
 }
 
 export default nextConfig

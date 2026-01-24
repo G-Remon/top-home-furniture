@@ -2,7 +2,9 @@
 import { PaginatedProducts, ProductFilters, Product } from '@/types/product';
 import { translateDescription } from '@/lib/translate';
 
-const API_BASE_URL = 'http://tophomedev.runasp.net/api';
+import { API_BASE_URL as BASE_URL } from '@/lib/constants';
+
+const API_BASE_URL = `${BASE_URL}/api`;
 
 export const productService = {
     /**

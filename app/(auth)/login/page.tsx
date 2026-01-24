@@ -3,15 +3,15 @@ import LoginForm from "@/components/auth/LoginForm";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
-    title: "Login | Top Home Furniture",
-    description: "Sign in to your Top Home account to manage your orders and furniture wishlist.",
+    title: "تسجيل الدخول | توب هوم للأثاث",
+    description: "قم بتسجيل الدخول إلى حساب توب هوم الخاص بك لإدارة طلباتك وقائمة أمنيات الأثاث.",
 };
 
 export default function LoginPage() {
     return (
         <AuthContainer
-            title="Welcome Back"
-            subtitle="Sign in to continue your home transformation journey"
+            title="مرحباً بعودتك"
+            subtitle="سجل الدخول للمتابعة في رحلة تجميل منزلك"
         >
             <LoginForm />
         </AuthContainer>

@@ -3,14 +3,14 @@ import ResetPasswordForm from "@/components/auth/ResetPasswordForm";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
-    title: "Reset Password | Top Home",
+    title: "إعادة تعيين كلمة المرور | توب هوم",
 };
 
 export default function ResetPasswordPage() {
     return (
         <AuthContainer
-            title="Secure Account"
-            subtitle="Set a strong new password for your Top Home account"
+            title="تأمين الحساب"
+            subtitle="قم بتعيين كلمة مرور جديدة قوية لحساب توب هوم الخاص بك"
         >
             <ResetPasswordForm />
         </AuthContainer>

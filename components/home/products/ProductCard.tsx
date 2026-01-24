@@ -1,16 +1,18 @@
-// components/products/ProductCard.tsx
-'use client'
-
 import { motion } from 'framer-motion'
 import Image from 'next/image'
 import Link from 'next/link'
-import { Heart, Eye, ShoppingBag } from 'lucide-react'
+import { Eye, ShoppingBag } from 'lucide-react'
 
 import { Product } from '@/types/product'
 import WhatsAppButton from '@/components/shared/WhatsAppButton'
 import { useState } from 'react'
 import { PHONE_NUMBER } from '@/lib/constants'
-import { cn } from '@/lib/utils'
+import { getFullImageUrl } from '@/lib/utils'
+import {
+  translateCategory,
+  translateProductName,
+  translateDescription
+} from '@/lib/translate'
 
 interface ProductCardProps {
   product: Product
@@ -18,14 +20,17 @@ interface ProductCardProps {
 }
 
 export default function ProductCard({ product, index }: ProductCardProps) {
-  const [isFavorite, setIsFavorite] = useState(false)
   const [isHovered, setIsHovered] = useState(false)
 
   // image fix
-  const productImage =
-    Array.isArray(product.images) && product.images.length > 0
-      ? product.images[0]
-      : '/images/geld.png'
+  const productImage = (() => {
+    if (Array.isArray(product.images) && product.images.length > 0) {
+      const first = product.images[0];
+      const url = typeof first === 'string' ? first : first.url;
+      return getFullImageUrl(url);
+    }
+    return '/images/geld.png';
+  })();
 
   return (
     <motion.article
@@ -44,16 +49,6 @@ export default function ProductCard({ product, index }: ProductCardProps) {
         transition: { type: 'spring', stiffness: 300, damping: 25 },
       }}
     >
-      {/* background */}
-      <div className="absolute inset-0 z-0 rounded-2xl overflow-hidden">
-        <Image
-          src="/images/geld.png"
-          alt="background"
-          fill
-          className="object-cover opacity-5"
-        />
-      </div>
-
       <div className="relative z-10 bg-gradient-to-b from-white/95 to-white/80 rounded-2xl shadow-xl overflow-hidden h-full flex flex-col">
         {/* image */}
         <Link
@@ -79,36 +74,22 @@ export default function ProductCard({ product, index }: ProductCardProps) {
         {/* content */}
         <div className="p-5 flex flex-col flex-grow">
           <span className="text-xs text-amber-700 mb-2">
-            {product.category}
+            {translateCategory(product.category)}
           </span>
 
           <h3 className="text-xl font-bold mb-3 line-clamp-2">
-            {product.name}
+            {translateProductName(product.name)}
           </h3>
 
           <p className="text-sm text-gray-600 mb-4 line-clamp-2 flex-grow">
-            {product.shortDescription}
+            {translateDescription(product.description || product.shortDescription || '')}
           </p>
 
           <div className="mt-auto pt-4 border-t border-amber-100/50">
             <div className="flex items-center justify-between mb-4">
               <span className="text-2xl font-bold text-amber-700">
-                {product.price.toLocaleString()} ج.م
+                {(product.currentPrice || 0).toLocaleString()} ج.م
               </span>
-
-              <button
-                onClick={() => setIsFavorite(!isFavorite)}
-                className="p-2"
-              >
-                <Heart
-                  className={cn(
-                    'w-5 h-5',
-                    isFavorite
-                      ? 'fill-red-500 text-red-500'
-                      : 'text-amber-600'
-                  )}
-                />
-              </button>
             </div>
 
             <div className="flex gap-3">
@@ -122,8 +103,8 @@ export default function ProductCard({ product, index }: ProductCardProps) {
 
               <WhatsAppButton
                 phoneNumber={PHONE_NUMBER}
-                message={`استفسار عن المنتج: ${product.name}`}
-                productName={product.name}
+                message={`استفسار عن المنتج: ${translateProductName(product.name)}`}
+                productName={translateProductName(product.name)}
                 className="flex-1 py-3 bg-gradient-to-r from-amber-500 to-amber-600 text-white rounded-xl font-bold"
                 showIcon={false}
                 size="sm"

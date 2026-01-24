@@ -1,424 +1,223 @@
+// components/products/ProductDetailClient.tsx
 'use client'
 
-import { useState, useMemo, useCallback } from 'react'
-import Image from 'next/image'
-import { motion, AnimatePresence } from 'framer-motion'
-import type { Product } from '@/types/product'
-import WhatsAppButton from '@/components/shared/WhatsAppButton'
-import { PHONE_NUMBER } from '@/lib/constants'
-import { cn } from '@/lib/utils'
-import { Shield, Truck, Award, CheckCircle, Star, Package, AlertCircle } from 'lucide-react'
+import { useState } from 'react';
+import Image from 'next/image';
+import { motion, AnimatePresence } from 'framer-motion';
+import { Product } from '@/types/product';
+import { Star, Truck, ShieldCheck, Package, Palette, Ruler, Weight, CheckCircle2, ShoppingCart } from 'lucide-react';
+import WhatsAppButton from '@/components/shared/WhatsAppButton';
+import { PHONE_NUMBER } from '@/lib/constants';
+import { getFullImageUrl, cn } from '@/lib/utils';
+import {
+  translateCategory,
+  translateProductName,
+  translateCommon,
+  translateFeatures,
+  translateMaterial,
+  translateColor,
+  translateDescription,
+  translateUnit
+} from '@/lib/translate';
 
 interface ProductDetailClientProps {
-  product: Product
+  product: Product;
 }
 
 export default function ProductDetailClient({ product }: ProductDetailClientProps) {
-  const [selectedImage, setSelectedImage] = useState(0)
-  const [imageErrors, setImageErrors] = useState<Record<number, boolean>>({})
+  const [selectedImage, setSelectedImage] = useState(0);
 
-  // Handle images safely with proper type checking
-  const images = useMemo(() => {
-    if (!product.images || !Array.isArray(product.images) || product.images.length === 0) {
-      return ['/images/geld.png']
+  const formatPrice = (price: number) => {
+    return new Intl.NumberFormat('ar-EG', {
+      style: 'currency',
+      currency: 'EGP',
+      maximumFractionDigits: 0
+    }).format(price);
+  };
+
+  // Filter out empty or invalid image URLs and format them
+  const getInitialImages = () => {
+    if (Array.isArray(product.images) && product.images.length > 0) {
+      return product.images.map(img => {
+        if (typeof img === 'string') return img;
+        return (img as any).url;
+      }).filter(url => url && url.trim() !== '');
     }
-    
-    // Filter out any invalid image paths
-    return product.images.filter((img): img is string => {
-      return typeof img === 'string' && img.trim() !== ''
-    })
-  }, [product.images])
+    const singleImage = (product as any).image || (product as any).pictureUrl || (product as any).thumbnailUrl;
+    if (singleImage) return [singleImage];
+    return [];
+  };
 
-  // Handle image errors
-  const handleImageError = useCallback((index: number) => {
-    setImageErrors(prev => ({ ...prev, [index]: true }))
-  }, [])
+  const validImages = getInitialImages().map(img => getFullImageUrl(img));
+  const displayImages = validImages.length > 0 ? validImages : ['/images/geld.png'];
 
-  // Get current image with error handling
-  const currentImage = useMemo(() => {
-    if (!images.length) return '/images/geld.png'
-    if (imageErrors[selectedImage]) return '/images/geld.png'
-    return images[selectedImage] || '/images/geld.png'
-  }, [images, selectedImage, imageErrors])
+  const hasDiscount = product.discountPercentage > 0;
 
-  // قيمة افتراضية للميزات
-  const features = useMemo(() => {
-    return product.features && Array.isArray(product.features) && product.features.length > 0
-      ? product.features
-      : ['جودة عالية', 'تصميم عصري', 'سهولة التركيب', 'ضمان شامل']
-  }, [product.features])
+  const productDimensions = product.width && product.height && product.depth
+    ? `${product.width} × ${product.height} × ${product.depth} ${translateUnit(product.dimensionUnit || 'سم')}`
+    : (product as any).dimensions || translateCommon('outOfStock'); // using as generic fallback
 
-  // قيمة افتراضية للوقت التوصيل
-  const deliveryTime = useMemo(() => {
-    return product.deliveryTime || '2-5 أيام عمل'
-  }, [product.deliveryTime])
+  const specs = [
+    { label: translateCommon('material'), value: translateMaterial(product.material), icon: Package },
+    { label: translateCommon('color'), value: translateColor(product.color), icon: Palette },
+    { label: translateCommon('dimensions'), value: productDimensions, icon: Ruler },
+    { label: translateCommon('weight'), value: `${product.weight} ${translateUnit(product.weightUnit || 'كجم')}`, icon: Weight },
+  ];
 
-  // حساب التوفير
-  const savings = useMemo(() => {
-    if (product.originalPrice && product.originalPrice > product.price) {
-      return (product.originalPrice - product.price).toLocaleString()
-    }
-    return null
-  }, [product.originalPrice, product.price])
-
-  // تحسين سعر العرض
-  const formattedPrice = useMemo(() => {
-    return product.price.toLocaleString('en-US')
-  }, [product.price])
-
-  const formattedOriginalPrice = useMemo(() => {
-    return product.originalPrice?.toLocaleString('en-US')
-  }, [product.originalPrice])
+  const translatedFeatures = translateFeatures(product.features);
 
   return (
-    <>
-      <section className="grid gap-8 lg:gap-12 lg:grid-cols-2">
-        {/* معرض الصور */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5 }}
-          className="space-y-4"
-          role="region"
-          aria-label="معرض صور المنتج"
-        >
-          {/* الصورة الرئيسية */}
-          <div className="relative aspect-square w-full overflow-hidden rounded-2xl bg-gray-50 border border-gray-200">
-            <AnimatePresence mode="wait">
-              <motion.div
-                key={selectedImage}
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                transition={{ duration: 0.3 }}
-                className="relative h-full w-full"
+    <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-20">
+      {/* Gallery Section */}
+      <div className="space-y-4 sm:space-y-6">
+        <div className="relative aspect-square rounded-2xl sm:rounded-3xl overflow-hidden bg-gray-50 border border-gray-100 group">
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={selectedImage}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.3 }}
+              className="relative w-full h-full"
+            >
+              <Image
+                src={displayImages[selectedImage] || '/images/geld.png'}
+                alt={translateProductName(product.name)}
+                fill
+                className="object-cover"
+                priority
+                sizes="(max-width: 1024px) 100vw, 50vw"
+              />
+            </motion.div>
+          </AnimatePresence>
+        </div>
+
+        {/* Thumbnails */}
+        {displayImages.length > 1 && (
+          <div className="flex gap-2 sm:gap-4 overflow-x-auto pb-2 scrollbar-hide">
+            {displayImages.map((img, idx) => (
+              <button
+                key={idx}
+                onClick={() => setSelectedImage(idx)}
+                className={cn(
+                  "relative w-16 h-16 sm:w-24 sm:h-24 rounded-xl sm:rounded-2xl overflow-hidden border-2 transition-all flex-shrink-0",
+                  selectedImage === idx ? "border-wood-brown ring-2 sm:ring-4 ring-wood-brown/10" : "border-transparent hover:border-gray-200"
+                )}
               >
                 <Image
-                  src={currentImage}
-                  alt={`${product.name} - الصورة ${selectedImage + 1} من ${images.length}`}
+                  src={img}
+                  alt={`${translateProductName(product.name)} ${idx}`}
                   fill
-                  priority
-                  className="object-cover p-6"
-                  sizes="(max-width: 1024px) 100vw, 50vw"
-                  onError={() => handleImageError(selectedImage)}
-                  quality={90}
-                  unoptimized={currentImage.startsWith('http')}
-                  draggable={false}
+                  className="object-cover"
                 />
-                
-                {/* مؤشر تحميل الصورة */}
-                {imageErrors[selectedImage] && (
-                  <div className="absolute inset-0 flex items-center justify-center bg-gray-100">
-                    <div className="text-center p-4">
-                      <AlertCircle className="w-12 h-12 text-gray-400 mx-auto mb-2" />
-                      <p className="text-gray-500 text-sm">تعذر تحميل الصورة</p>
-                    </div>
-                  </div>
-                )}
-              </motion.div>
-            </AnimatePresence>
-
-            {/* Badges */}
-            <div className="absolute top-4 left-4 flex flex-col gap-2 z-10">
-              {product.isNew && (
-                <motion.div
-                  initial={{ scale: 0.8 }}
-                  animate={{ scale: 1 }}
-                  transition={{ type: "spring", stiffness: 200 }}
-                  className="flex items-center gap-1.5 bg-wood-brown text-white px-3 py-1.5 
-                            rounded-lg text-sm font-bold shadow-md"
-                  aria-label="منتج جديد"
-                >
-                  <Star className="w-3.5 h-3.5 fill-white" />
-                  جديد
-                </motion.div>
-              )}
-
-              {product.discount && (
-                <motion.div
-                  initial={{ scale: 0.8 }}
-                  animate={{ scale: 1 }}
-                  transition={{ type: "spring", stiffness: 200, delay: 0.1 }}
-                  className="bg-red-500 text-white px-3 py-1.5 rounded-lg text-sm font-bold shadow-md"
-                  aria-label={`خصم ${product.discount} بالمئة`}
-                >
-                  خصم {product.discount}%
-                </motion.div>
-              )}
-            </div>
-
-            {/* ضمان */}
-            <div className="absolute top-4 right-4 z-10">
-              <div 
-                className="flex items-center gap-1.5 bg-white/95 backdrop-blur-sm px-3 py-1.5 
-                          rounded-lg shadow-md border border-gray-200"
-                aria-label={`ضمان ${product.warranty || '3 سنوات'}`}
-              >
-                <Shield className="w-4 h-4 text-wood-brown" />
-                <span className="text-charcoal font-semibold text-sm">
-                  ضمان {product.warranty || '3 سنوات'}
-                </span>
-              </div>
-            </div>
+              </button>
+            ))}
           </div>
+        )}
+      </div>
 
-          {/* الصور المصغرة */}
-          {images.length > 1 && (
-            <div className="flex gap-3 overflow-x-auto pb-2 scrollbar-hide">
-              {images.map((image, index) => (
-                <button
-                  key={index}
-                  onClick={() => setSelectedImage(index)}
-                  onKeyDown={(e) => {
-                    if (e.key === 'Enter' || e.key === ' ') {
-                      e.preventDefault()
-                      setSelectedImage(index)
-                    }
-                  }}
-                  className={cn(
-                    "relative aspect-square w-20 flex-shrink-0 overflow-hidden rounded-lg border-2 transition-all",
-                    "focus:outline-none focus:ring-2 focus:ring-wood-brown focus:ring-offset-2",
-                    selectedImage === index 
-                      ? "border-wood-brown shadow-md" 
-                      : "border-gray-200 opacity-60 hover:opacity-100 hover:border-wood-brown/50"
-                  )}
-                  aria-label={`عرض الصورة ${index + 1}`}
-                  aria-current={selectedImage === index ? 'true' : 'false'}
-                  type="button"
-                >
-                  <div className="relative w-full h-full">
-                    {imageErrors[index] ? (
-                      <div className="absolute inset-0 bg-gray-100 flex items-center justify-center">
-                        <AlertCircle className="w-6 h-6 text-gray-400" />
-                      </div>
-                    ) : (
-                      <Image
-                        src={image}
-                        alt={`${product.name} مصغرة ${index + 1}`}
-                        fill
-                        className="object-cover"
-                        sizes="80px"
-                        onError={() => handleImageError(index)}
-                        loading="lazy"
-                        quality={50}
-                        unoptimized={image.startsWith('http')}
-                      />
-                    )}
-                  </div>
-                </button>
-              ))}
+      {/* Info Section */}
+      <div className="flex flex-col">
+        <div className="flex items-center justify-between mb-3 sm:mb-4">
+          <span className="px-3 sm:px-4 py-1 sm:py-1.5 bg-wood-brown/10 text-wood-brown rounded-full text-[10px] sm:text-sm font-bold tracking-wide">
+            {translateCategory(product.category)}
+          </span>
+          <div className="flex items-center gap-1.5 px-2 sm:px-3 py-1 bg-amber-50 rounded-lg">
+            <Star className="w-3 h-3 sm:w-4 sm:h-4 fill-amber-500 text-amber-500" />
+            <span className="text-xs sm:text-sm font-bold text-charcoal">
+              {translateCommon('rating', { count: product.rating })}
+            </span>
+          </div>
+        </div>
+
+        <h1 className="text-2xl sm:text-4xl md:text-5xl font-black text-charcoal mb-4 sm:mb-6 leading-tight text-right">
+          {translateProductName(product.name)}
+        </h1>
+
+        <p className="text-sm sm:text-lg text-soft-gray mb-6 sm:mb-8 leading-relaxed text-right">
+          {translateDescription(product.description)}
+        </p>
+
+        {/* Pricing */}
+        <div className="p-5 sm:p-8 bg-gray-50 rounded-2xl sm:rounded-[2rem] mb-6 sm:mb-8 border border-gray-100">
+          <div className="flex items-baseline gap-3 sm:gap-4 mb-3 sm:mb-4">
+            <span className="text-3xl sm:text-5xl font-black text-wood-brown leading-none">
+              {formatPrice(product.currentPrice)}
+            </span>
+            {hasDiscount && (
+              <span className="text-base sm:text-xl text-soft-gray line-through">
+                {formatPrice(product.originalPrice)}
+              </span>
+            )}
+          </div>
+          {hasDiscount && (
+            <div className="inline-flex items-center gap-2 px-2 sm:px-3 py-1 bg-red-50 text-red-600 rounded-lg text-[10px] sm:text-sm font-bold mb-4 sm:mb-6">
+              وفر {formatPrice(product.discountAmount)} (خصم {product.discountPercentage}%)
             </div>
           )}
 
-          {/* مميزات سريعة */}
-          <div className="grid grid-cols-2 gap-3">
-            <div 
-              className="bg-off-white rounded-xl p-4 text-center border border-gray-100 hover:border-wood-brown/30 transition-colors"
-              aria-label="توصيل مجاني"
-            >
-              <Truck className="w-6 h-6 text-wood-brown mx-auto mb-2" />
-              <p className="text-sm font-semibold text-charcoal">توصيل مجاني</p>
-            </div>
-            <div 
-              className="bg-off-white rounded-xl p-4 text-center border border-gray-100 hover:border-wood-brown/30 transition-colors"
-              aria-label="جودة عالية"
-            >
-              <Award className="w-6 h-6 text-wood-brown mx-auto mb-2" />
-              <p className="text-sm font-semibold text-charcoal">جودة عالية</p>
-            </div>
-          </div>
-        </motion.div>
-
-        {/* تفاصيل المنتج */}
-        <motion.div
-          className="space-y-6"
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, delay: 0.1 }}
-          role="region"
-          aria-label="تفاصيل المنتج"
-        >
-          {/* Header */}
-          <div className="flex items-center justify-between">
-            <span 
-              className="px-3 py-1.5 bg-off-white text-wood-brown text-sm font-bold 
-                         rounded-lg border border-wood-brown/20"
-              aria-label={`فئة المنتج: ${product.category}`}
-            >
-              {product.category}
-            </span>
-            
-            {product.rating && (
-              <div 
-                className="flex items-center gap-1.5 px-3 py-1.5 bg-off-white rounded-lg border border-gray-200"
-                aria-label={`تقييم المنتج: ${product.rating} من 5`}
-              >
-                <Star className="w-4 h-4 text-wood-brown fill-wood-brown" />
-                <span className="text-sm font-bold text-charcoal">{product.rating}</span>
+          <div className="grid grid-cols-2 gap-4 sm:gap-6 pt-4 sm:pt-6 border-t border-gray-200/60">
+            <div className="flex items-center gap-2 sm:gap-3">
+              <div className="w-8 h-8 sm:w-10 sm:h-10 bg-emerald-100 rounded-lg sm:rounded-xl flex items-center justify-center text-emerald-600">
+                <CheckCircle2 size={16} className="sm:size-[20px]" />
               </div>
-            )}
-          </div>
-
-          {/* العنوان */}
-          <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold text-charcoal leading-tight">
-            {product.name}
-          </h1>
-
-          {/* الوصف */}
-          <div className="bg-off-white/50 rounded-xl p-5 border border-gray-100">
-            <p className="text-base text-gray-700 leading-relaxed whitespace-pre-line">
-              {product.fullDescription || 'لا يوجد وصف مفصل لهذا المنتج.'}
-            </p>
-          </div>
-
-          {/* السعر */}
-          <div className="p-6 bg-white rounded-2xl border-2 border-wood-brown/20 space-y-4">
-            <div className="flex items-end flex-wrap gap-4">
-              <div className="flex items-baseline gap-2">
-                <span 
-                  className="text-4xl md:text-5xl font-bold text-wood-brown"
-                  aria-label={`السعر: ${formattedPrice} جنيه`}
-                >
-                  {formattedPrice}
-                </span>
-                <span className="text-xl text-charcoal font-medium">ج.م</span>
+              <div className="text-right">
+                <p className="text-[10px] sm:text-xs text-soft-gray">{translateCommon('availability')}</p>
+                <p className="text-xs sm:text-sm font-bold text-charcoal">{product.inStock ? `${translateCommon('inStock')} (${product.stockQuantity})` : translateCommon('outOfStock')}</p>
               </div>
-              
-              {product.originalPrice && product.originalPrice > product.price && savings && (
-                <>
-                  <span 
-                    className="text-xl text-gray-400 line-through mb-1"
-                    aria-label={`السعر الأصلي: ${formattedOriginalPrice} جنيه`}
-                  >
-                    {formattedOriginalPrice}
-                  </span>
-                  <span 
-                    className="px-3 py-1.5 bg-green-500 text-white rounded-lg text-sm font-bold mb-1"
-                    aria-label={`توفير: ${savings} جنيه`}
-                  >
-                    وفر {savings} ج.م
-                  </span>
-                </>
-              )}
             </div>
-
-            <div className="h-px bg-gray-200" />
-
-            <div className="grid grid-cols-2 gap-4">
-              <div className="flex items-center gap-2">
-                <Truck className="w-5 h-5 text-wood-brown flex-shrink-0" />
-                <div>
-                  <p className="text-xs text-gray-600">التوصيل خلال</p>
-                  <p className="font-semibold text-charcoal text-sm">{deliveryTime}</p>
-                </div>
+            <div className="flex items-center gap-2 sm:gap-3">
+              <div className="w-8 h-8 sm:w-10 sm:h-10 bg-blue-100 rounded-lg sm:rounded-xl flex items-center justify-center text-blue-600">
+                <Truck size={16} className="sm:size-[20px]" />
               </div>
-              <div className="flex items-center gap-2">
-                <CheckCircle className="w-5 h-5 text-green-600 flex-shrink-0" />
-                <div>
-                  <p className="text-xs text-gray-600">متوفر</p>
-                  <p className="font-semibold text-charcoal text-sm">
-                    {product.stock || 15} قطعة
-                  </p>
-                </div>
+              <div className="text-right">
+                <p className="text-[10px] sm:text-xs text-soft-gray">{translateCommon('delivery')}</p>
+                <p className="text-xs sm:text-sm font-bold text-charcoal">{product.deliveryDays} {translateUnit(product.deliveryUnit || '')}</p>
               </div>
             </div>
           </div>
+        </div>
 
-          {/* المواصفات والمميزات */}
-          <div className="grid md:grid-cols-2 gap-6">
-            {/* المواصفات */}
-            <div className="space-y-4">
-              <h3 className="text-xl font-bold text-charcoal flex items-center gap-2">
-                <Package className="w-5 h-5 text-wood-brown flex-shrink-0" />
-                المواصفات
-              </h3>
-              <div className="bg-off-white rounded-xl p-4 space-y-3 border border-gray-100">
-                <div className="flex justify-between items-center pb-2 border-b border-gray-200">
-                  <span className="text-sm text-gray-600">الخامة</span>
-                  <span className="font-semibold text-charcoal text-sm">
-                    {product.material || 'خشب عالي الجودة'}
-                  </span>
-                </div>
-                <div className="flex justify-between items-center pb-2 border-b border-gray-200">
-                  <span className="text-sm text-gray-600">الأبعاد</span>
-                  <span className="font-semibold text-charcoal text-sm">
-                    {product.dimensions || 'غير محدد'}
-                  </span>
-                </div>
-                <div className="flex justify-between items-center">
-                  <span className="text-sm text-gray-600">الوزن</span>
-                  <span className="font-semibold text-charcoal text-sm">
-                    {product.weight || 'غير محدد'}
-                  </span>
-                </div>
+        {/* Specifications Grid */}
+        <div className="grid grid-cols-2 gap-3 sm:gap-4 mb-8 sm:mb-10">
+          {specs.map((spec, i) => (
+            <div key={i} className="flex items-center gap-2 sm:gap-3 p-3 sm:p-4 bg-white border border-gray-100 rounded-xl sm:rounded-2xl shadow-sm">
+              <spec.icon className="w-4 h-4 sm:w-5 sm:h-5 text-wood-brown shrink-0" />
+              <div className="min-w-0 text-right">
+                <p className="text-[8px] sm:text-[10px] uppercase font-bold text-soft-gray tracking-wider truncate">{spec.label}</p>
+                <p className="text-xs sm:text-sm font-bold text-charcoal truncate">{spec.value}</p>
               </div>
             </div>
+          ))}
+        </div>
 
-            {/* المميزات */}
-            <div className="space-y-4">
-              <h3 className="text-xl font-bold text-charcoal flex items-center gap-2">
-                <Star className="w-5 h-5 text-wood-brown flex-shrink-0" />
-                المميزات
-              </h3>
-              <div className="bg-off-white rounded-xl p-4 space-y-2.5 border border-gray-100">
-                {features.map((feature, idx) => (
-                  <motion.div
-                    key={idx}
-                    initial={{ opacity: 0, x: -10 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    transition={{ delay: idx * 0.05 }}
-                    className="flex items-center gap-2 text-charcoal"
-                  >
-                    <div className="w-1.5 h-1.5 rounded-full bg-wood-brown flex-shrink-0" />
-                    <span className="text-sm">{feature}</span>
-                  </motion.div>
-                ))}
+        {/* Features List */}
+        <div className="mb-8 sm:mb-10">
+          <h3 className="text-base sm:text-lg font-bold text-charcoal mb-3 sm:mb-4 flex items-center gap-2 justify-end">
+            {translateCommon('features')} <ShieldCheck className="text-wood-brown size-5" />
+          </h3>
+          <div className="space-y-2 sm:space-y-3">
+            {translatedFeatures.map((feature, i) => (
+              <div key={i} className="flex items-start gap-3 text-soft-gray justify-end">
+                <span className="text-xs sm:text-sm font-medium text-right">{feature}</span>
+                <div className="w-1.5 h-1.5 bg-wood-brown rounded-full mt-1.5 shrink-0" />
               </div>
-            </div>
+            ))}
           </div>
+        </div>
 
-          {/* زر الطلب */}
-          <div className="pt-4">
-            <WhatsAppButton
-              phoneNumber={PHONE_NUMBER}
-              message={`استفسار عن: ${product.name} - السعر: ${product.price.toLocaleString()} ج.م`}
-              productName={product.name}
-              size="lg"
-              className="w-full justify-center text-lg font-bold py-4 rounded-xl 
-                       bg-wood-brown hover:bg-wood-brown/90 text-white
-                       shadow-lg hover:shadow-xl transition-all duration-300
-                       focus:outline-none focus:ring-2 focus:ring-wood-brown focus:ring-offset-2"
-              aria-label={`اطلب ${product.name} عبر واتساب`}
-            >
-              اطلب الآن عبر واتساب
-            </WhatsAppButton>
-            
-            <p className="text-center text-xs text-gray-500 mt-3 flex items-center justify-center gap-4 flex-wrap">
-              <span className="flex items-center gap-1">
-                <Shield className="w-3.5 h-3.5 flex-shrink-0" />
-                ضمان رسمي
-              </span>
-              <span className="flex items-center gap-1">
-                <Truck className="w-3.5 h-3.5 flex-shrink-0" />
-                توصيل مجاني
-              </span>
-              <span className="flex items-center gap-1">
-                <CheckCircle className="w-3.5 h-3.5 flex-shrink-0" />
-                إرجاع 14 يوم
-              </span>
-            </p>
-          </div>
-        </motion.div>
-      </section>
-
-      {/* زر واتساب عائم */}
-      <WhatsAppButton
-        phoneNumber={PHONE_NUMBER}
-        message={`استفسار عن: ${product.name}`}
-        productName={product.name}
-        variant="floating"
-        className="md:hidden"
-      />
-    </>
-  )
+        {/* CTA Actions */}
+        <div className="flex flex-col sm:flex-row gap-4 mt-auto">
+          <WhatsAppButton
+            phoneNumber={PHONE_NUMBER}
+            message={`أنا مهتم بمنتج ${translateProductName(product.name)} (كود: ${product.id}). السعر: ${formatPrice(product.currentPrice)}`}
+            productName={translateProductName(product.name)}
+            className="flex-1 py-4 sm:py-5 rounded-xl sm:rounded-2xl bg-wood-brown text-white font-bold text-base sm:text-lg hover:bg-wood-brown/90 shadow-xl shadow-wood-brown/20 transition-all flex items-center justify-center gap-3"
+          >
+            <ShoppingCart size={20} className="sm:size-[24px]" /> {translateCommon('addToCart')}
+          </WhatsAppButton>
+        </div>
+      </div>
+    </div>
+  );
 }

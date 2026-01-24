@@ -35,13 +35,13 @@ const OTPVerificationForm = () => {
                     <CheckCircle2 size={40} />
                 </div>
                 <div className="space-y-2">
-                    <h2 className="text-xl font-bold text-charcoal">Phone Verified</h2>
+                    <h2 className="text-xl font-bold text-charcoal">تم توثيق رقم الهاتف</h2>
                     <p className="text-sm text-soft-gray">
-                        Your phone number has been successfully verified.
+                        لقد تم التحقق من رقم هاتفك بنجاح.
                     </p>
                 </div>
                 <AuthButton onClick={() => window.location.href = "/"}>
-                    Continue to Home
+                    الذهاب للرئيسية
                 </AuthButton>
             </motion.div>
         );
@@ -58,13 +58,13 @@ const OTPVerificationForm = () => {
                         className="text-sm font-semibold text-wood-brown hover:text-wood-brown/80 flex items-center gap-2"
                     >
                         <RotateCcw size={14} />
-                        Resend Code (59s)
+                        إعادة إرسال الرمز (59 ثانية)
                     </button>
                 </div>
             </div>
 
             <AuthButton isLoading={isLoading}>
-                Verify OTP
+                تحقق من الرمز
             </AuthButton>
         </form>
     );

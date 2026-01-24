@@ -8,6 +8,8 @@ import { usePathname } from 'next/navigation'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Menu, X, ShoppingCart, Phone, ChevronDown } from 'lucide-react'
 import { cn } from '@/lib/utils'
+import { useAuthStore } from '@/store/auth.store'
+import LogoutButton from '@/components/auth/LogoutButton'
 
 const navigation = [
     { name: 'الرئيسية', href: '/' },
@@ -20,6 +22,7 @@ export default function Header() {
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
     const [scrolled, setScrolled] = useState(false)
     const pathname = usePathname()
+    const { isAuthenticated, userName } = useAuthStore()
     const isHomePage = pathname === '/'
 
     useEffect(() => {
@@ -126,17 +129,40 @@ export default function Header() {
 
                         {/* Desktop Actions */}
                         <div className="hidden lg:flex items-center gap-4">
-                            <Link
-                                href="/login"
-                                className={cn(
-                                    "text-sm font-medium px-5 py-2 rounded-full border transition-all duration-300",
-                                    isTransparent
-                                        ? "text-white border-white/30 hover:bg-white/10"
-                                        : "text-charcoal border-gray-200 hover:border-wood-brown hover:text-wood-brown"
-                                )}
-                            >
-                                دخول
-                            </Link>
+
+                            {!isAuthenticated ? (
+                                <Link
+                                    href="/login"
+                                    className={cn(
+                                        "text-sm font-medium px-5 py-2 rounded-full border transition-all duration-300",
+                                        isTransparent
+                                            ? "text-white border-white/30 hover:bg-white/10"
+                                            : "text-charcoal border-gray-200 hover:border-wood-brown hover:text-wood-brown"
+                                    )}
+                                >
+                                    دخول
+                                </Link>
+                            ) : (
+                                <div className="flex items-center gap-4">
+                                    <div className={cn(
+                                        "text-sm font-medium flex items-center gap-2",
+                                        isTransparent ? "text-white" : "text-charcoal"
+                                    )}>
+                                        <div className="w-8 h-8 rounded-full bg-wood-brown/10 flex items-center justify-center text-wood-brown">
+                                            {userName?.charAt(0).toUpperCase()}
+                                        </div>
+                                        <span>{userName}</span>
+                                    </div>
+                                    <LogoutButton className={cn(
+                                        "px-4 py-2 rounded-full border transition-all duration-300",
+                                        isTransparent
+                                            ? "text-white border-white/30 hover:bg-white/10"
+                                            : "text-destructive border-destructive/20 hover:bg-destructive hover:text-white"
+                                    )}>
+                                        خروج
+                                    </LogoutButton>
+                                </div>
+                            )}
                             <Link
                                 href="/products"
                                 className="text-sm font-semibold px-6 py-2 rounded-full bg-wood-brown text-white hover:bg-wood-brown/90 transition-all shadow-lg shadow-wood-brown/20"
@@ -144,6 +170,7 @@ export default function Header() {
                                 تسوق الآن
                             </Link>
                         </div>
+
 
                         {/* Mobile Menu Button */}
                         <button
@@ -254,19 +281,40 @@ export default function Header() {
                                         </Link>
                                     </motion.div>
 
-                                    <motion.div
-                                        initial={{ opacity: 0, y: 20 }}
-                                        animate={{ opacity: 1, y: 0 }}
-                                        transition={{ delay: 0.6 }}
-                                    >
-                                        <Link
-                                            href="/login"
-                                            className="flex items-center justify-center w-full px-6 py-4 bg-white text-charcoal border border-gray-200 rounded-2xl hover:border-wood-brown hover:text-wood-brown transition-all duration-300 font-medium text-base"
-                                            onClick={() => setMobileMenuOpen(false)}
+                                    {!isAuthenticated ? (
+                                        <motion.div
+                                            initial={{ opacity: 0, y: 20 }}
+                                            animate={{ opacity: 1, y: 0 }}
+                                            transition={{ delay: 0.6 }}
                                         >
-                                            تسجيل الدخول
-                                        </Link>
-                                    </motion.div>
+                                            <Link
+                                                href="/login"
+                                                className="flex items-center justify-center w-full px-6 py-4 bg-white text-charcoal border border-gray-200 rounded-2xl hover:border-wood-brown hover:text-wood-brown transition-all duration-300 font-medium text-base"
+                                                onClick={() => setMobileMenuOpen(false)}
+                                            >
+                                                تسجيل الدخول
+                                            </Link>
+                                        </motion.div>
+                                    ) : (
+                                        <motion.div
+                                            initial={{ opacity: 0, y: 20 }}
+                                            animate={{ opacity: 1, y: 0 }}
+                                            transition={{ delay: 0.6 }}
+                                            className="space-y-3"
+                                        >
+                                            <div className="flex items-center gap-3 px-6 py-4 bg-white border border-gray-200 rounded-2xl">
+                                                <div className="w-10 h-10 rounded-full bg-wood-brown/10 flex items-center justify-center text-wood-brown font-bold">
+                                                    {userName?.charAt(0).toUpperCase()}
+                                                </div>
+                                                <div className="flex flex-col">
+                                                    <span className="text-sm font-semibold text-charcoal">{userName}</span>
+                                                    <span className="text-xs text-soft-gray font-normal">تسجيل دخول ناجح</span>
+                                                </div>
+                                            </div>
+                                            <LogoutButton className="w-full flex items-center justify-center px-6 py-4 bg-destructive text-white border border-destructive rounded-2xl hover:bg-destructive/90 transition-all duration-300 font-medium text-base" />
+                                        </motion.div>
+                                    )}
+
                                 </div>
                             </div>
                         </motion.div>

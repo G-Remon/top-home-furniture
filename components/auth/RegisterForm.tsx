@@ -1,97 +1,119 @@
 "use client";
 
-import { useState } from "react";
-import { User, Mail, Phone, Lock, ArrowRight } from "lucide-react";
+import { User, Mail, Phone, Lock, ArrowRight, AlertCircle } from "lucide-react";
 import AuthInput from "./AuthInput";
 import AuthButton from "./AuthButton";
 import Link from "next/link";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { registerSchema, RegisterFormData } from "@/schemas/auth.schema";
+import { useAuth } from "@/hooks/useAuth";
+import { motion, AnimatePresence } from "framer-motion";
 
 const RegisterForm = () => {
-    const [isLoading, setIsLoading] = useState(false);
-    const [formData, setFormData] = useState({
-        name: "",
-        email: "",
-        phone: "",
-        password: "",
-        confirmPassword: "",
+    const { register: registerUser, isLoading, error: authError } = useAuth();
+
+    const {
+        register,
+        handleSubmit,
+        formState: { errors },
+    } = useForm<RegisterFormData>({
+        resolver: zodResolver(registerSchema),
+        defaultValues: {
+            fullName: "",
+            email: "",
+            phoneNumber: "",
+            password: "",
+            confirmPassword: "",
+        },
     });
 
-    const handleSubmit = (e: React.FormEvent) => {
-        e.preventDefault();
-        setIsLoading(true);
-        setTimeout(() => setIsLoading(false), 2000);
+    const onSubmit = async (data: RegisterFormData) => {
+        try {
+            await registerUser(data);
+        } catch (err) {
+            // Error is handled in useAuth
+        }
     };
 
     return (
-        <form onSubmit={handleSubmit} className="space-y-4">
+        <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+            <AnimatePresence>
+                {authError && (
+                    <motion.div
+                        initial={{ opacity: 0, y: -10 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0, y: -10 }}
+                        className="bg-destructive/10 border border-destructive/20 text-destructive rounded-xl p-3 flex items-start gap-3 text-sm"
+                    >
+                        <AlertCircle className="shrink-0 mt-0.5" size={18} />
+                        <span>{authError}</span>
+                    </motion.div>
+                )}
+            </AnimatePresence>
+
             <AuthInput
-                label="Full Name"
-                placeholder="John Doe"
+                {...register("fullName")}
+                label="الاسم بالكامل"
+                placeholder="جرجس ريمون"
                 icon={User}
-                value={formData.name}
-                onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                required
+                error={errors.fullName?.message}
             />
 
             <AuthInput
-                label="Email Address"
+                {...register("email")}
+                label="البريد الإلكتروني"
                 type="email"
                 placeholder="name@example.com"
                 icon={Mail}
-                value={formData.email}
-                onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                required
+                error={errors.email?.message}
             />
 
             <AuthInput
-                label="Phone Number"
+                {...register("phoneNumber")}
+                label="رقم الهاتف"
                 type="tel"
-                placeholder="+1 234 567 890"
+                placeholder="01001016695"
                 icon={Phone}
-                value={formData.phone}
-                onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-                required
+                error={errors.phoneNumber?.message}
             />
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <AuthInput
-                    label="Password"
-                    type="password"
-                    placeholder="••••••••"
-                    icon={Lock}
-                    value={formData.password}
-                    onChange={(e) => setFormData({ ...formData, password: e.target.value })}
-                    required
-                />
-                <AuthInput
-                    label="Confirm"
-                    type="password"
-                    placeholder="••••••••"
-                    icon={Lock}
-                    value={formData.confirmPassword}
-                    onChange={(e) => setFormData({ ...formData, confirmPassword: e.target.value })}
-                    required
-                />
+            <AuthInput
+                {...register("password")}
+                label="كلمة المرور"
+                type="password"
+                placeholder="••••••••"
+                icon={Lock}
+                error={errors.password?.message}
+            />
+
+            <AuthInput
+                {...register("confirmPassword")}
+                label="تأكيد كلمة المرور"
+                type="password"
+                placeholder="••••••••"
+                icon={Lock}
+                error={errors.confirmPassword?.message}
+            />
+
+            <div className="px-1 text-[11px] text-soft-gray leading-relaxed italic text-right">
+                بالتسجيل، أنت توافق على{" "}
+                <Link href="/terms" className="underline hover:text-wood-brown">شروط الخدمة</Link> و{" "}
+                <Link href="/privacy" className="underline hover:text-wood-brown">سياسة الخصوصية</Link> الخاصة بنا.
             </div>
 
-            <div className="px-1 text-[11px] text-soft-gray leading-relaxed italic">
-                By registering, you agree to our{" "}
-                <Link href="/terms" className="underline hover:text-wood-brown">Terms of Service</Link> and{" "}
-                <Link href="/privacy" className="underline hover:text-wood-brown">Privacy Policy</Link>.
-            </div>
-
-            <AuthButton isLoading={isLoading} className="mt-4">
-                Create Account
-                {!isLoading && <ArrowRight size={18} />}
+            <AuthButton isLoading={isLoading} type="submit" className="mt-4">
+                إنشاء حساب
+                {!isLoading && <ArrowRight size={18} className="rotate-180" />}
             </AuthButton>
 
             <p className="text-center text-sm text-soft-gray pt-2">
-                Already have an account?{" "}
+                لديك حساب بالفعل؟{" "}
                 <Link
                     href="/login"
                     className="font-bold text-charcoal hover:text-wood-brown transition-colors"
                 >
-                    Sign In
+                    تسجيل الدخول
                 </Link>
             </p>
         </form>
@@ -99,3 +121,4 @@ const RegisterForm = () => {
 };
 
 export default RegisterForm;
+

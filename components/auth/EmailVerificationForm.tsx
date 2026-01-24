@@ -26,28 +26,28 @@ const EmailVerificationForm = () => {
             </div>
 
             <div className="space-y-3">
-                <h2 className="text-xl font-bold text-charcoal tracking-tight">Verify your email</h2>
+                <h2 className="text-xl font-bold text-charcoal tracking-tight">تحقق من بريدك الإلكتروني</h2>
                 <p className="text-sm text-soft-gray leading-relaxed">
-                    We've sent a verification link to your email address. <br />
-                    Please click the link to activate your account.
+                    لقد أرسلنا رابط التحقق إلى بريدك الإلكتروني. <br />
+                    يرجى النقر على الرابط لتفعيل حسابك.
                 </p>
             </div>
 
             <div className="space-y-4">
                 <AuthButton isLoading={isLoading} onClick={handleResend}>
-                    Resend Verification Email
+                    إعادة إرسال بريد التحقق
                 </AuthButton>
                 <Link
                     href="/login"
                     className="block text-sm font-semibold text-soft-gray hover:text-charcoal transition-colors underline decoration-gray-200"
                 >
-                    Back to Login
+                    العودة لتسجيل الدخول
                 </Link>
             </div>
 
             <div className="pt-4 flex items-center justify-center gap-2 text-xs text-soft-gray">
                 <MailQuestion size={14} />
-                <span>Didn't receive anything? Check your spam folder.</span>
+                <span>لم يصلك أي شيء؟ تحقق من مجلد الرسائل غير المرغوب فيها.</span>
             </div>
         </div>
     );

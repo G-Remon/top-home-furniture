@@ -3,15 +3,15 @@ import AdminLoginForm from "@/components/auth/AdminLoginForm";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
-    title: "Admin Access | Top Home",
-    description: "Secure administrative access for Top Home staff members.",
+    title: "وصول المشرف | توب هوم",
+    description: "وصول إداري آمن لأعضاء فريق توب هوم.",
 };
 
 export default function AdminLoginPage() {
     return (
         <AuthContainer
-            title="Terminal Access"
-            subtitle="Authorized personnel only. All activities are monitored."
+            title="وصول الإدارة"
+            subtitle="للموظفين المصرح لهم فقط. جميع الأنشطة مراقبة."
         >
             <AdminLoginForm />
         </AuthContainer>

@@ -3,7 +3,7 @@ import EmailVerificationForm from "@/components/auth/EmailVerificationForm";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
-    title: "Verify Email | Top Home",
+    title: "تحقق من البريد | توب هوم",
 };
 
 export default function VerifyEmailPage() {

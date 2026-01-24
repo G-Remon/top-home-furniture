@@ -54,7 +54,7 @@ const AuthContainer = ({
                 {/* Footer Links (Optional context based) */}
                 <div className="mt-8 text-center">
                     <p className="text-xs text-soft-gray">
-                        &copy; {new Date().getFullYear()} Top Home Furniture. All rights reserved.
+                        &copy; {new Date().getFullYear()} توب هوم للأثاث. جميع الحقوق محفوظة.
                     </p>
                 </div>
             </motion.div>

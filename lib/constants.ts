@@ -2,6 +2,7 @@
 import { Product, Category } from '@/types/product'
 
 export const PHONE_NUMBER = '+201234567890'
+export const API_BASE_URL = 'http://tophomedev.runasp.net'
 
 export const categories: Category[] = [
   {
@@ -52,18 +53,25 @@ export const products: Product[] = [
   {
     id: '1',
     name: 'كنبة فاخرة من الجلد الطبيعي',
-    shortDescription: 'كنبة مصممة بأناقة مع لمسات عصرية',
-    fullDescription: 'كنبة فاخرة مصنوعة من أفضل أنواع الجلد الطبيعي، مصممة لتوفير أقصى درجات الراحة مع الحفاظ على الأناقة. تأتي بضمان 3 سنوات.',
-    price: 24999,
-    originalPrice: 29999,
-    discount: 17,
+    description: 'كنبة فاخرة مصنوعة من أفضل أنواع الجلد الطبيعي، مصممة لتوفير أقصى درجات الراحة مع الحفاظ على الأناقة. تأتي بضمان 3 سنوات.',
     category: 'living-room',
     material: 'جلد طبيعي - خشب زان',
-    dimensions: '220 × 95 × 85 سم',
-    weight: '85 كجم',
-    deliveryTime: '5-7 أيام عمل',
-    isNew: true,
-    isFeatured: true,
+    weight: 85,
+    weightUnit: 'كجم',
+    width: 220,
+    depth: 95,
+    height: 85,
+    dimensionUnit: 'سم',
+    deliveryDays: 7,
+    deliveryUnit: 'أيام عمل',
+    originalPrice: 29999,
+    currentPrice: 24999,
+    discountAmount: 5000,
+    discountPercentage: 17,
+    currency: 'ج.م',
+    stockQuantity: 12,
+    inStock: true,
+    color: 'أسود',
     images: [
       '/images/geld.png',
       '/images/living.png',
@@ -75,25 +83,29 @@ export const products: Product[] = [
       'ضمان 3 سنوات',
     ],
     rating: 4.8,
-    reviews: 42,
-    stock: 12,
-    createdAt: '2024-01-15',
   },
   {
     id: '2',
     name: 'سرير فخم من الخشب الطبيعي',
-    shortDescription: 'سرير مصمم للراحة مع لمسات عصرية',
-    fullDescription: 'سرير فاخر مصنوع من خشب طبيعي عالي الجودة، مصمم لتوفير نوم مريح وثبات عالي مع تصميم أنيق يناسب غرف النوم الحديثة. يأتي بضمان 3 سنوات.',
-    price: 24999,
-    originalPrice: 29999,
-    discount: 17,
+    description: 'سرير فاخر مصنوع من خشب طبيعي عالي الجودة، مصممة لتوفير نوم مريح وثبات عالي مع تصميم أنيق يناسب غرف النوم الحديثة.',
     category: 'bedroom',
     material: 'خشب طبيعي - قماش مبطن',
-    dimensions: '200 × 160 × 110 سم',
-    weight: '90 كجم',
-    deliveryTime: '5-7 أيام عمل',
-    isNew: true,
-    isFeatured: true,
+    weight: 90,
+    weightUnit: 'كجم',
+    width: 200,
+    depth: 160,
+    height: 110,
+    dimensionUnit: 'سم',
+    deliveryDays: 7,
+    deliveryUnit: 'أيام عمل',
+    originalPrice: 29999,
+    currentPrice: 24999,
+    discountAmount: 5000,
+    discountPercentage: 17,
+    currency: 'ج.م',
+    stockQuantity: 12,
+    inStock: true,
+    color: 'بني',
     images: [
       '/images/Sleeping.png',
       '/images/Sleeping.png',
@@ -105,12 +117,7 @@ export const products: Product[] = [
       'ضمان 3 سنوات',
     ],
     rating: 4.8,
-    reviews: 42,
-    stock: 12,
-    createdAt: '2024-01-15',
   }
-
-  // ... المزيد من المنتجات
 ]
 
 export const trustPoints = [
@@ -136,10 +143,9 @@ export const trustPoints = [
   },
 ]
 
-export const navigation = [
+export const navigationLinks = [
   { name: 'الرئيسية', href: '/' },
   { name: 'المنتجات', href: '/products' },
-  { name: 'الفئات', href: '/products#categories' },
-  { name: 'عن توب هوم', href: '/about' },
-  { name: 'اتصل بنا', href: '/contact' },
+  { name: 'من نحن', href: '/about' },
+  { name: 'تواصل معنا', href: '/contact' },
 ]

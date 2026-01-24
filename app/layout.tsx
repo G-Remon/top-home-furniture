@@ -2,7 +2,7 @@ import type { Metadata, Viewport } from 'next'
 import type { ReactNode } from 'react'
 import { Inter } from 'next/font/google'
 import './globals.css'
-import { ThemeProvider } from '@/components/providers/ThemeProvider'
+import { AppProviders } from '@/components/providers/AppProviders'
 import { Toaster } from '@/components/ui/toaster'
 import { cn } from '@/lib/utils'
 import Image from 'next/image'
@@ -95,15 +95,10 @@ export default function RootLayout({
           </div>
         </div>
 
-        <ThemeProvider
-          attribute="class"
-          defaultTheme="light"
-          enableSystem={false}
-          disableTransitionOnChange
-        >
+        <AppProviders>
           {children}
           <Toaster />
-        </ThemeProvider>
+        </AppProviders>
 
         {/* شعار عائم في الزاوية */}
         <div className="fixed bottom-4 left-4 z-50 hidden md:block">

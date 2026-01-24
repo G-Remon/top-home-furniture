@@ -56,7 +56,7 @@ export default function HeroSection() {
               transition={{ delay: 0.2, duration: 1 }}
               className="text-wood-brown font-medium text-xs sm:text-sm uppercase mb-6"
             >
-              Excellence in Craftsmanship
+              التميز في الحرفية
             </motion.div>
 
             {/* Main Title */}
@@ -126,7 +126,7 @@ export default function HeroSection() {
               className="mt-16 flex items-center justify-center gap-6 opacity-60"
             >
               <div className="h-px w-8 bg-white/30" />
-              <span className="text-xs uppercase tracking-widest font-light">Quality Guaranteed</span>
+              <span className="text-xs uppercase tracking-widest font-light">جودة مضمونة</span>
               <div className="h-px w-8 bg-white/30" />
             </motion.div>
           </motion.div>
@@ -143,7 +143,7 @@ export default function HeroSection() {
       >
         <div className="flex flex-col items-center gap-3">
           <div className="w-px h-12 bg-gradient-to-b from-white to-transparent" />
-          <span className="text-[10px] uppercase tracking-[0.3em] font-medium text-white/50">Scroll</span>
+          <span className="text-[10px] uppercase tracking-[0.3em] font-medium text-white/50">اسحب للأسفل</span>
         </div>
       </motion.button>
     </section>

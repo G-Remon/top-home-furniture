@@ -32,9 +32,9 @@ const ForgotPasswordForm = () => {
                     <Send size={40} />
                 </div>
                 <div className="space-y-2">
-                    <h2 className="text-xl font-bold text-charcoal">Check your email</h2>
+                    <h2 className="text-xl font-bold text-charcoal">تحقق من بريدك الإلكتروني</h2>
                     <p className="text-sm text-soft-gray">
-                        We've sent a password reset link to <br />
+                        لقد أرسلنا رابط إعادة تعيين كلمة المرور إلى <br />
                         <span className="font-semibold text-charcoal">{email}</span>
                     </p>
                 </div>
@@ -42,8 +42,8 @@ const ForgotPasswordForm = () => {
                     href="/login"
                     className="inline-flex items-center gap-2 text-sm font-semibold text-wood-brown hover:gap-3 transition-all"
                 >
-                    <ArrowLeft size={16} />
-                    Back to Login
+                    <ArrowLeft size={16} className="rotate-180" />
+                    العودة لتسجيل الدخول
                 </Link>
             </motion.div>
         );
@@ -52,8 +52,8 @@ const ForgotPasswordForm = () => {
     return (
         <form onSubmit={handleSubmit} className="space-y-6">
             <AuthInput
-                label="Email Address"
-                placeholder="Enter your registered email"
+                label="البريد الإلكتروني"
+                placeholder="أدخل بريدك الإلكتروني المسجل"
                 icon={Mail}
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
@@ -61,7 +61,7 @@ const ForgotPasswordForm = () => {
             />
 
             <AuthButton isLoading={isLoading}>
-                Send Reset Link
+                إرسال رابط التعيين
             </AuthButton>
 
             <div className="text-center">
@@ -69,8 +69,8 @@ const ForgotPasswordForm = () => {
                     href="/login"
                     className="inline-flex items-center gap-2 text-sm font-semibold text-soft-gray hover:text-charcoal transition-colors underline underline-offset-4 decoration-gray-200"
                 >
-                    <ArrowLeft size={16} />
-                    Remembered your password?
+                    <ArrowLeft size={16} className="rotate-180" />
+                    تذكرت كلمة المرور؟
                 </Link>
             </div>
         </form>

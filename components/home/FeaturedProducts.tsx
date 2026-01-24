@@ -1,17 +1,36 @@
-// components/home/FeaturedProducts.tsx
 'use client'
 
 import { motion, easeOut } from 'framer-motion'
 import ProductCard from '@/components/products/ProductCard'
 import { useInView } from 'react-intersection-observer'
-import { products } from '@/lib/constants'
 import { ArrowLeft, Star } from 'lucide-react'
+import { useEffect, useState } from 'react'
+import { productService } from '@/services/product.service'
+import { Product } from '@/types/product'
+import ProductSkeleton from '@/components/products/ProductSkeleton'
 
 export default function FeaturedProducts() {
+  const [products, setProducts] = useState<Product[]>([])
+  const [loading, setLoading] = useState(true)
+
   const [ref, inView] = useInView({
     triggerOnce: true,
     threshold: 0.1,
   })
+
+  useEffect(() => {
+    const fetchFeatured = async () => {
+      try {
+        const data = await productService.getProducts({ pageSize: 3 });
+        setProducts(data.items);
+      } catch (error) {
+        console.error('Error fetching featured products:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchFeatured();
+  }, []);
 
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -95,38 +114,32 @@ export default function FeaturedProducts() {
           </motion.div>
 
           {/* شبكة المنتجات مع تحسينات */}
-          <motion.div
-            className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8 lg:gap-10"
-            variants={containerVariants}
-          >
-            {products.slice(0, 8).map((product, index) => (
-              <motion.div
-                key={product.id}
-                variants={itemVariants}
-                className="group relative"
-                whileHover={{
-                  y: -12,
-                  transition: { type: "spring", stiffness: 200, damping: 20 }
-                }}
-              >
-                {/* تأثير خلفية مبسط عند hover */}
-                <div className="absolute inset-0 bg-wood-brown/5 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 -inset-1" />
-
-                {/* حدود متحركة */}
-                <div className="absolute inset-0 rounded-xl overflow-hidden z-0">
-                  <div className="absolute inset-0 border border-wood-brown/10 group-hover:border-wood-brown/30 transition-all duration-500 rounded-xl" />
-                  <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/50 to-transparent 
-                                -translate-x-full group-hover:translate-x-full transition-transform duration-1000" />
-                </div>
-
-                <div className="relative z-10 bg-white rounded-xl overflow-hidden shadow-md group-hover:shadow-xl 
-                              transition-all duration-500 border border-gray-100">
-                  <ProductCard product={product} index={index} />
-                </div>
-
-              </motion.div>
-            ))}
-          </motion.div>
+          {loading ? (
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 lg:gap-10">
+              {[...Array(3)].map((_, i) => (
+                <ProductSkeleton key={i} />
+              ))}
+            </div>
+          ) : (
+            <motion.div
+              className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 lg:gap-10"
+              variants={containerVariants}
+            >
+              {products.map((product, index) => (
+                <motion.div
+                  key={product.id}
+                  variants={itemVariants}
+                  className="group relative h-full"
+                  whileHover={{
+                    y: -12,
+                    transition: { type: "spring", stiffness: 200, damping: 20 }
+                  }}
+                >
+                  <ProductCard product={product} />
+                </motion.div>
+              ))}
+            </motion.div>
+          )}
 
           {/* زر عرض المزيد مع تحسينات */}
           <motion.div

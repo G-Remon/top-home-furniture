@@ -3,15 +3,15 @@ import RegisterForm from "@/components/auth/RegisterForm";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
-    title: "Join Us | Top Home Furniture",
-    description: "Create a Top Home account and start building your dream living space today.",
+    title: "انضم إلينا | توب هوم للأثاث",
+    description: "أنشئ حساباً في توب هوم وابدأ في بناء مساحة معيشة أحلامك اليوم.",
 };
 
 export default function RegisterPage() {
     return (
         <AuthContainer
-            title="Create Account"
-            subtitle="Join our community of home decor enthusiasts"
+            title="إنشاء حساب"
+            subtitle="انضم إلى مجتمعنا من عشاق ديكور المنزل"
         >
             <RegisterForm />
         </AuthContainer>

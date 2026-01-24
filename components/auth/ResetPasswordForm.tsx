@@ -33,10 +33,10 @@ const ResetPasswordForm = () => {
                     <CheckCircle2 size={40} />
                 </div>
                 <div className="space-y-2">
-                    <h2 className="text-xl font-bold text-charcoal">Password Reset!</h2>
+                    <h2 className="text-xl font-bold text-charcoal">تم إعادة تعيين كلمة المرور!</h2>
                     <p className="text-sm text-soft-gray">
-                        Your password has been successfully updated. <br />
-                        Redirecting you to login...
+                        تم تحديث كلمة المرور الخاصة بك بنجاح. <br />
+                        جاري توجيهك إلى تسجيل الدخول...
                     </p>
                 </div>
             </motion.div>
@@ -46,14 +46,14 @@ const ResetPasswordForm = () => {
     return (
         <form onSubmit={handleSubmit} className="space-y-5">
             <AuthInput
-                label="New Password"
+                label="كلمة المرور الجديدة"
                 type="password"
                 placeholder="••••••••"
                 icon={Lock}
                 required
             />
             <AuthInput
-                label="Confirm New Password"
+                label="تأكيد كلمة المرور الجديدة"
                 type="password"
                 placeholder="••••••••"
                 icon={Lock}
@@ -61,7 +61,7 @@ const ResetPasswordForm = () => {
             />
 
             <AuthButton isLoading={isLoading} className="mt-4">
-                Reset Password
+                إعادة تعيين كلمة المرور
             </AuthButton>
         </form>
     );

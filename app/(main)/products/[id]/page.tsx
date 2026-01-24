@@ -1,88 +1,47 @@
 // app/(main)/products/[id]/page.tsx
-import { notFound } from 'next/navigation'
-import type { Metadata } from 'next'
-import ProductDetailClient from '@/components/products/ProductDetailClient'
-import { products } from '@/lib/constants'
+import { Metadata } from 'next';
+import { notFound } from 'next/navigation';
+import { productService } from '@/services/product.service';
+import ProductDetailClient from '@/components/products/ProductDetailClient';
 
-// Revalidate the page every 1 hour
-// This ensures that the page is regenerated at most once per hour
-// but can be invalidated earlier if needed
-export const revalidate = 3600 // 1 hour in seconds
-
-interface ProductDetailPageProps {
-  params: { id: string }
-  searchParams?: { [key: string]: string | string[] | undefined }
+interface ProductPageProps {
+  params: Promise<{ id: string }>;
 }
 
-// Generate static params at build time
-export async function generateStaticParams() {
-  // Pre-render these paths at build time
-  return products.map((product) => ({
-    id: product.id,
-  }))
-}
-
-// Generate metadata for the page
-export async function generateMetadata({ params }: { params: { id: string } }): Promise<Metadata> {
-  // Ensure params is resolved before destructuring
-  const resolvedParams = await Promise.resolve(params);
-  const { id } = resolvedParams;
-  
-  // In a real app, you might want to fetch the product from an API
-  const product = products.find(p => p.id === id)
-
-  if (!product) {
+export async function generateMetadata({ params }: ProductPageProps): Promise<Metadata> {
+  const { id } = await params;
+  try {
+    const product = await productService.getProductById(id);
     return {
-      title: 'المنتج غير موجود | TOP HOME',
-      description: 'عذراً، لا يمكن العثور على المنتج المطلوب.',
-    }
-  }
-
-  return {
-    title: `${product.name} | TOP HOME`,
-    description: product.shortDescription || `اكتشف ${product.name} من توب هوم. ${product.fullDescription || ''}`.substring(0, 160),
-    openGraph: {
-      title: product.name,
-      description: product.shortDescription || `اكتشف ${product.name} من توب هوم`,
-      images: Array.isArray(product.images) && product.images.length > 0 
-        ? product.images 
-        : [{ url: '/images/geld.png' }],
-      type: 'website',
-      locale: 'ar_SA',
-      siteName: 'TOP HOME',
-    },
-    alternates: {
-      canonical: `/products/${product.id}`,
-    },
+      title: `${product.name} | Top Home`,
+      description: product.description,
+      openGraph: {
+        title: product.name,
+        description: product.description,
+        images: product.images.length > 0 ? [product.images[0]] : [],
+      }
+    };
+  } catch {
+    return {
+      title: 'Product Not Found | Top Home',
+    };
   }
 }
 
-// Add this function to handle 404s for non-existent products
-async function getProduct(id: string) {
-  const product = products.find(p => p.id === id)
-  
-  if (!product) {
-    return null
+export default async function ProductPage({ params }: ProductPageProps) {
+  const { id } = await params;
+
+  try {
+    const product = await productService.getProductById(id);
+
+    return (
+      <main className="min-h-screen bg-white pt-24 pb-20">
+        <div className="container mx-auto px-4 max-w-7xl">
+          <ProductDetailClient product={product} />
+        </div>
+      </main>
+    );
+  } catch (error) {
+    notFound();
   }
-  
-  return product
-}
-
-export default async function ProductDetailPage({ params }: { params: { id: string } }) {
-  // Ensure params is resolved before destructuring
-  const resolvedParams = await Promise.resolve(params);
-  const { id } = resolvedParams;
-  const product = await getProduct(id)
-
-  if (!product) {
-    notFound()
-  }
-
-  return (
-    <div className="min-h-screen bg-off-white pt-24 pb-32">
-      <div className="container-custom">
-        <ProductDetailClient product={product} />
-      </div>
-    </div>
-  )
 }

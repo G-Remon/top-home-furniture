@@ -22,21 +22,21 @@ const AdminLoginForm = () => {
                     <Shield size={20} className="text-wood-brown" />
                 </div>
                 <div>
-                    <h3 className="text-sm font-bold tracking-tight">Staff Access Only</h3>
-                    <p className="text-[10px] text-gray-400 uppercase tracking-widest font-semibold">Security Level 4</p>
+                    <h3 className="text-sm font-bold tracking-tight">وصول الموظفين فقط</h3>
+                    <p className="text-[10px] text-gray-400 uppercase tracking-widest font-semibold">مستوى الأمان 4</p>
                 </div>
             </div>
 
             <form onSubmit={handleSubmit} className="space-y-5">
                 <AuthInput
-                    label="Admin Username / ID"
-                    placeholder="Enter staff ID"
+                    label="اسم المستخدم / الكود"
+                    placeholder="أدخل كود الموظف"
                     icon={UserCircle}
                     required
                 />
 
                 <AuthInput
-                    label="Security Password"
+                    label="كلمة المرور الأمنية"
                     type="password"
                     placeholder="••••••••"
                     icon={Lock}
@@ -44,8 +44,8 @@ const AdminLoginForm = () => {
                 />
 
                 <AuthButton isLoading={isLoading} variant="secondary" className="mt-4">
-                    Authenticate
-                    {!isLoading && <ArrowRight size={18} />}
+                    تحقق من الهوية
+                    {!isLoading && <ArrowRight size={18} className="rotate-180" />}
                 </AuthButton>
 
                 <div className="text-center pt-2">
@@ -53,7 +53,7 @@ const AdminLoginForm = () => {
                         href="/"
                         className="text-xs font-medium text-soft-gray hover:text-charcoal transition-colors underline underline-offset-4 decoration-gray-200"
                     >
-                        Return to Store Front
+                        العودة لمتجر الواجهة
                     </Link>
                 </div>
             </form>

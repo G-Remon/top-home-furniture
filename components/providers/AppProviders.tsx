@@ -1,5 +1,6 @@
 import React, { ReactNode } from 'react';
 import { ThemeProvider } from './ThemeProvider';
+import { WishlistProvider } from '@/context/WishlistContext';
 
 export function AppProviders({ children }: { children: ReactNode }) {
     return (
@@ -9,7 +10,9 @@ export function AppProviders({ children }: { children: ReactNode }) {
             enableSystem={false}
             disableTransitionOnChange
         >
-            {children}
+            <WishlistProvider>
+                {children}
+            </WishlistProvider>
         </ThemeProvider>
     );
 }

@@ -26,7 +26,7 @@ export default function ProductGrid({ products }: ProductGridProps) {
       transition={{ duration: 0.3 }}
     >
       {products.map((product, index) => (
-        <ProductCard key={product.id} product={product} index={index} />
+        <ProductCard key={product.id} product={product} />
       ))}
     </motion.div>
   )

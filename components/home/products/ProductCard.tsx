@@ -82,7 +82,7 @@ export default function ProductCard({ product, index }: ProductCardProps) {
           </h3>
 
           <p className="text-sm text-gray-600 mb-4 line-clamp-2 flex-grow">
-            {translateDescription(product.description || product.shortDescription || '')}
+            {translateDescription(product.description || '')}
           </p>
 
           <div className="mt-auto pt-4 border-t border-amber-100/50">

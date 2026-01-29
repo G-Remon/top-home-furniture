@@ -6,7 +6,7 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { usePathname } from 'next/navigation'
 import { motion, AnimatePresence } from 'framer-motion'
-import { Menu, X, ShoppingCart, Phone, ChevronDown, Home, Grid, User, MessageCircle, Heart, Search } from 'lucide-react'
+import { Menu, X, ShoppingCart, Phone, ChevronDown, Home, Grid, User, MessageCircle, Heart, Search, Info } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 import { cn } from '@/lib/utils'
 import { useAuthStore } from '@/store/auth.store'
@@ -17,14 +17,19 @@ import { useWishlist } from '@/context/WishlistContext'
 const navigation = [
     { name: 'الرئيسية', href: '/', icon: Home },
     { name: 'المنتجات', href: '/products', icon: Grid },
-    { name: 'من نحن', href: '/about', icon: User },
+    { name: 'من نحن', href: '/about', icon: Info },
     { name: 'تواصل معنا', href: '/contact', icon: MessageCircle },
+]
+
+const popularSearches = [
+    'كنبة', 'سرير', 'طاولة طعام', 'مكاتب', 'خزانة'
 ]
 
 export default function Header() {
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
     const [scrolled, setScrolled] = useState(false)
     const [searchOpen, setSearchOpen] = useState(false)
+    const [searchQuery, setSearchQuery] = useState('')
     const pathname = usePathname()
     const router = useRouter()
     const { isAuthenticated, userName } = useAuthStore()
@@ -56,6 +61,15 @@ export default function Header() {
     }, [mobileMenuOpen])
 
     const isTransparent = isHomePage && !scrolled
+
+    const handleSearch = (e?: React.FormEvent) => {
+        if (e) e.preventDefault()
+        if (searchQuery.trim()) {
+            router.push(`/products?search=${encodeURIComponent(searchQuery.trim())}`)
+            setSearchOpen(false)
+            setSearchQuery('')
+        }
+    }
 
     return (
         <>
@@ -140,41 +154,43 @@ export default function Header() {
 
                         {/* Desktop Actions */}
                         <div className="hidden lg:flex items-center gap-3">
-                            {/* Search Button */}
+                            {/* Search Button - Styled as pill */}
                             <button
                                 onClick={() => setSearchOpen(true)}
                                 className={cn(
-                                    "p-3 rounded-xl transition-all duration-300",
+                                    "flex items-center gap-2 px-4 py-2.5 rounded-xl transition-all duration-300 group",
                                     isTransparent
-                                        ? "text-white/90 hover:bg-white/10"
-                                        : "text-gray-600 hover:bg-gray-100 hover:text-wood-brown"
+                                        ? "text-white/90 bg-white/10 hover:bg-white/20 border border-white/10"
+                                        : "text-gray-600 bg-gray-50 hover:bg-gray-100 border border-gray-100"
                                 )}
                             >
-                                <Search size={20} />
+                                <Search size={18} className="group-hover:scale-110 transition-transform" />
+                                <span className="text-sm font-semibold">بحث</span>
                             </button>
-
-                            {/* Wishlist */}
+ 
+                            {/* Wishlist - Styled as pill */}
                             <Link
                                 href="/wishlist"
                                 className={cn(
-                                    "relative p-3 rounded-xl transition-all duration-300",
+                                    "relative flex items-center gap-2 px-4 py-2.5 rounded-xl transition-all duration-300 group",
                                     isTransparent
-                                        ? "text-white/90 hover:bg-white/10"
-                                        : "text-gray-600 hover:bg-gray-100 hover:text-wood-brown"
+                                        ? "text-white/90 bg-white/10 hover:bg-white/20 border border-white/10"
+                                        : "text-gray-600 bg-gray-50 hover:bg-gray-100 border border-gray-100"
                                 )}
                             >
                                 <Heart
-                                    size={20}
+                                    size={18}
                                     className={cn(
-                                        wishlist.length > 0 && "fill-red-500 text-red-500",
-                                        "transition-transform hover:scale-110"
+                                        "transition-all group-hover:scale-110",
+                                        wishlist.length > 0 ? "fill-red-500 text-red-500" : ""
                                     )}
                                 />
+                                <span className="text-sm font-semibold">المفضلة</span>
                                 {wishlist.length > 0 && (
                                     <motion.span
                                         initial={{ scale: 0 }}
                                         animate={{ scale: 1 }}
-                                        className="absolute top-2 right-2 bg-red-500 text-white text-[10px] font-bold w-5 h-5 rounded-full flex items-center justify-center"
+                                        className="absolute -top-1 -right-1 bg-red-500 text-white text-[9px] font-bold w-4 h-4 rounded-full flex items-center justify-center border border-white"
                                     >
                                         {wishlist.length}
                                     </motion.span>
@@ -216,19 +232,23 @@ export default function Header() {
                                 </div>
                             )}
 
-                            {/* WhatsApp Button */}
+                            {/* WhatsApp Button - Enhanced Premium Design */}
                             <WhatsAppButton
                                 phoneNumber="201234567890"
                                 message="مرحباً، أود الاستفسار عن منتجات توب هوم."
                                 className={cn(
-                                    "px-5 py-2.5 rounded-xl font-medium text-sm transition-all duration-300",
+                                    "px-6 py-2.5 rounded-[14px] font-bold text-sm transition-all duration-500 flex items-center gap-2 group",
                                     isTransparent
-                                        ? "bg-emerald-600 text-white hover:bg-emerald-700 shadow-lg shadow-emerald-600/30"
-                                        : "bg-emerald-500 text-white hover:bg-emerald-600 shadow-md"
+                                        ? "bg-white text-emerald-600 hover:bg-white/90 shadow-[0_8px_20px_rgba(255,255,255,0.2)]"
+                                        : "bg-gradient-to-r from-emerald-500 to-emerald-600 text-white hover:shadow-[0_8px_20px_rgba(16,185,129,0.3)] hover:-translate-y-0.5"
                                 )}
                             >
-                                <MessageCircle size={16} className="ml-2" />
-                                تواصل
+                                <span className="relative flex h-2 w-2">
+                                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-current opacity-75"></span>
+                                    <span className="relative inline-flex rounded-full h-2 w-2 bg-current"></span>
+                                </span>
+                                {/* <MessageCircle size={18} className="transition-transform group-hover:rotate-12" /> */}
+                                <span>تواصل واتساب</span>
                             </WhatsAppButton>
                         </div>
 
@@ -269,97 +289,168 @@ export default function Header() {
                 </div>
             </header>
 
-            {/* Search Overlay */}
+            {/* Search Overlay - Ready 100% */}
             <AnimatePresence>
                 {searchOpen && (
                     <motion.div
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
                         exit={{ opacity: 0 }}
-                        className="fixed inset-0 bg-black/50 backdrop-blur-sm z-[60]"
-                        onClick={() => setSearchOpen(false)}
+                        className="fixed inset-0 bg-black/70 backdrop-blur-md z-[60] flex items-start justify-center pt-24"
                     >
                         <motion.div
-                            initial={{ y: -50, opacity: 0 }}
-                            animate={{ y: 0, opacity: 1 }}
-                            exit={{ y: -50, opacity: 0 }}
-                            className="absolute top-20 left-1/2 transform -translate-x-1/2 w-full max-w-2xl px-4"
+                            initial={{ y: -50, scale: 0.95 }}
+                            animate={{ y: 0, scale: 1 }}
+                            exit={{ y: -50, scale: 0.95 }}
+                            className="w-full max-w-3xl px-4"
                             onClick={(e) => e.stopPropagation()}
                         >
-                            <div className="bg-white rounded-2xl shadow-2xl p-2">
-                                <div className="flex items-center gap-2">
-                                    <Search className="text-gray-400 ml-3" size={20} />
-                                    <input
-                                        type="text"
-                                        placeholder="ابحث عن المنتجات..."
-                                        className="flex-1 p-4 text-lg border-0 focus:outline-none focus:ring-0"
-                                        autoFocus
-                                    />
-                                    <button
-                                        onClick={() => setSearchOpen(false)}
-                                        className="p-2 text-gray-400 hover:text-gray-600"
-                                    >
-                                        <X size={20} />
-                                    </button>
-                                </div>
+                            <div className="bg-white rounded-3xl shadow-2xl overflow-hidden">
+                                <form onSubmit={handleSearch} className="relative p-2">
+                                    <div className="flex items-center gap-3 bg-gray-50 rounded-2xl px-4">
+                                        <Search className="text-gray-400" size={24} />
+                                        <input
+                                            type="text"
+                                            value={searchQuery}
+                                            onChange={(e) => setSearchQuery(e.target.value)}
+                                            placeholder="ما الذي تبحث عنه اليوم؟"
+                                            className="flex-1 py-5 text-xl lg:text-2xl border-0 bg-transparent focus:outline-none focus:ring-0 text-right"
+                                            autoFocus
+                                            dir="rtl"
+                                        />
+                                        <button
+                                            type="button"
+                                            onClick={() => setSearchOpen(false)}
+                                            className="p-2 text-gray-400 hover:text-gray-600 transition-colors"
+                                        >
+                                            <X size={24} />
+                                        </button>
+                                    </div>
+
+                                    <div className="p-6">
+                                        <h3 className="text-sm font-bold text-gray-400 uppercase tracking-widest mb-4 text-right">عمليات بحث شائعة</h3>
+                                        <div className="flex flex-wrap gap-2 justify-end">
+                                            {popularSearches.map((term) => (
+                                                <button
+                                                    key={term}
+                                                    onClick={() => {
+                                                        setSearchQuery(term);
+                                                        router.push(`/products?search=${encodeURIComponent(term)}`);
+                                                        setSearchOpen(false);
+                                                    }}
+                                                    className="px-4 py-2 bg-gray-100 hover:bg-wood-brown hover:text-white rounded-full text-sm font-medium transition-all"
+                                                >
+                                                    {term}
+                                                </button>
+                                            ))}
+                                        </div>
+                                    </div>
+
+                                    <div className="bg-gray-50 p-4 flex justify-center">
+                                        <button
+                                            onClick={handleSearch}
+                                            disabled={!searchQuery.trim()}
+                                            className="w-full max-w-sm py-4 bg-wood-brown text-white rounded-2xl font-bold shadow-lg hover:bg-wood-brown/90 disabled:opacity-50 disabled:cursor-not-allowed transition-all"
+                                        >
+                                            ابدأ البحث
+                                        </button>
+                                    </div>
+                                </form>
                             </div>
                         </motion.div>
+
+                        {/* Tap outside to close */}
+                        <div className="absolute inset-0 -z-10" onClick={() => setSearchOpen(false)} />
                     </motion.div>
                 )}
             </AnimatePresence>
 
-            {/* Mobile Bottom Navigation - Enhanced */}
+            {/* --- Mobile Bottom Navigation (Floating Premium Dock) --- */}
             {isMounted && (
-                <motion.nav
-                    initial={{ y: 100 }}
-                    animate={{ y: 0 }}
-                    className="lg:hidden fixed bottom-0 left-0 right-0 h-20 bg-white/95 backdrop-blur-lg border-t border-gray-200/80 z-40 px-4 pb-4 pt-2"
-                >
-                    <div className="flex items-center justify-around h-full">
-                        {navigation.map((item) => {
-                            const isActive = pathname === item.href
-                            const Icon = item.icon
-                            return (
-                                <Link
-                                    key={item.name}
-                                    href={item.href}
-                                    className={cn(
-                                        "flex flex-col items-center justify-center gap-1 flex-1 transition-all duration-300",
-                                        isActive ? "text-wood-brown" : "text-gray-500"
-                                    )}
-                                >
-                                    <div className={cn(
-                                        "p-2.5 rounded-xl transition-all duration-300",
-                                        isActive
-                                            ? "bg-wood-brown/10"
-                                            : "hover:bg-gray-100"
-                                    )}>
-                                        <Icon size={22} />
-                                    </div>
-                                    <span className="text-xs font-medium">{item.name}</span>
-                                    {isActive && (
-                                        <motion.div
-                                            layoutId="mobile-nav-indicator"
-                                            className="w-6 h-1 bg-wood-brown rounded-full mt-1"
-                                        />
-                                    )}
-                                </Link>
-                            )
-                        })}
+                <div className="lg:hidden fixed bottom-6 left-4 right-4 z-50">
+                    <motion.nav 
+                        initial={{ y: 100, opacity: 0 }}
+                        animate={{ y: 0, opacity: 1 }}
+                        className="h-18 bg-white/95 backdrop-blur-xl border border-gray-100 shadow-[0_12px_40px_rgba(0,0,0,0.12)] rounded-[24px] px-2 flex items-center justify-between"
+                    >
+                        <Link
+                            href="/"
+                            className={cn(
+                                "flex flex-col items-center justify-center gap-1.5 flex-1 h-full rounded-2xl transition-all duration-300",
+                                pathname === '/' ? "text-wood-brown" : "text-gray-400"
+                            )}
+                        >
+                            <div className={cn(
+                                "p-2 rounded-xl transition-all duration-500",
+                                pathname === '/' ? "bg-wood-brown/10 scale-110" : ""
+                            )}>
+                                <Home size={20} className={pathname === '/' ? "fill-current/10" : ""} />
+                            </div>
+                            <span className="text-[9px] font-black uppercase tracking-tighter">الرئيسية</span>
+                        </Link>
+ 
+                        <Link
+                            href="/products"
+                            className={cn(
+                                "flex flex-col items-center justify-center gap-1.5 flex-1 h-full rounded-2xl transition-all duration-300",
+                                pathname === '/products' ? "text-wood-brown" : "text-gray-400"
+                            )}
+                        >
+                            <div className={cn(
+                                "p-2 rounded-xl transition-all duration-500",
+                                pathname === '/products' ? "bg-wood-brown/10 scale-110" : ""
+                            )}>
+                                <Grid size={20} />
+                            </div>
+                            <span className="text-[9px] font-black uppercase tracking-tighter">المنتجات</span>
+                        </Link>
                         
-                        {/* WhatsApp Floating Button */}
-                        <div className="relative flex-1 flex justify-center">
+                        {/* WhatsApp Hero Floating Button */}
+                        <div className="relative flex-1 flex justify-center h-full group">
                             <WhatsAppButton
                                 phoneNumber="201234567890"
                                 message="مرحباً، أود الاستفسار عن منتجات توب هوم."
-                                className="w-14 h-14 -mt-8 rounded-full shadow-xl shadow-emerald-500/30 bg-emerald-500 border-4 border-white flex items-center justify-center hover:scale-105 transition-transform"
+                                className="w-16 h-16 -mt-10 rounded-full shadow-[0_12px_28px_rgba(16,185,129,0.35)] bg-gradient-to-br from-emerald-400 to-emerald-600 border-[5px] border-white flex items-center justify-center active:scale-95 transition-all duration-500 z-50"
                                 hideText
                             >
-                                <MessageCircle size={24} className="text-white" />
+                                <MessageCircle size={28} className="text-white fill-white/10" />
                             </WhatsAppButton>
+                            {/* Animated Glow */}
+                            <div className="absolute -top-10 w-14 h-14 bg-emerald-500/30 rounded-full blur-2xl -z-10 animate-pulse group-hover:bg-emerald-500/50" />
                         </div>
-                    </div>
-                </motion.nav>
+ 
+                        <button
+                            onClick={() => setSearchOpen(true)}
+                            className="flex flex-col items-center justify-center gap-1.5 flex-1 h-full rounded-2xl text-gray-400 hover:text-wood-brown transition-all"
+                        >
+                            <div className="p-2 rounded-xl">
+                                <Search size={20} />
+                            </div>
+                            <span className="text-[9px] font-black uppercase tracking-tighter">بحث</span>
+                        </button>
+ 
+                        <Link
+                            href="/wishlist"
+                            className={cn(
+                                "flex flex-col items-center justify-center gap-1.5 flex-1 h-full rounded-2xl transition-all duration-300",
+                                pathname === '/wishlist' ? "text-wood-brown" : "text-gray-400"
+                            )}
+                        >
+                            <div className={cn(
+                                "p-2 rounded-xl transition-all relative duration-500",
+                                pathname === '/wishlist' ? "bg-wood-brown/10 scale-110" : ""
+                            )}>
+                                <Heart size={20} className={wishlist.length > 0 ? "fill-red-500 text-red-500" : ""} />
+                                {wishlist.length > 0 && (
+                                    <span className="absolute -top-0.5 -right-0.5 bg-red-500 text-white text-[8px] font-bold w-4.5 h-4.5 rounded-full flex items-center justify-center border-2 border-white shadow-sm">
+                                        {wishlist.length}
+                                    </span>
+                                )}
+                            </div>
+                            <span className="text-[9px] font-black uppercase tracking-tighter">المفضلة</span>
+                        </Link>
+                    </motion.nav>
+                </div>
             )}
 
             {/* Mobile Menu - Premium Design */}
@@ -508,10 +599,16 @@ export default function Header() {
                                     </div>
                                 </div>
 
-                                {/* Footer */}
-                                <div className="p-6 border-t border-gray-200/50">
-                                    {isAuthenticated && (
-                                        <LogoutButton className="w-full p-4 bg-red-50 text-red-600 rounded-xl font-bold hover:bg-red-100 transition-all" />
+                                {/* Footer Options */}
+                                <div className="p-6 border-t border-gray-200/50 space-y-3">
+                                    {isAuthenticated ? (
+                                        <LogoutButton className="w-full flex items-center justify-center gap-3 p-4 bg-red-50 text-red-600 rounded-2xl font-bold hover:bg-red-100 transition-all border border-red-100 shadow-sm">
+                                            <span>تسجيل الخروج</span>
+                                        </LogoutButton>
+                                    ) : (
+                                        <div className="text-center py-2">
+                                            <p className="text-xs text-gray-500">تمتع بكافة المميزات عند تسجيل الدخول</p>
+                                        </div>
                                     )}
                                 </div>
                             </div>

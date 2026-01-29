@@ -178,47 +178,32 @@ export default function FeaturedProducts() {
           initial="hidden"
           animate={inView ? 'visible' : 'hidden'}
           variants={containerVariants}
-          className="text-center mb-20 relative px-4"
+          className="text-center mb-16 relative"
         >
-          {/* Badge with subtle glow */}
-          <motion.div
-            variants={itemVariants}
-            className="inline-flex items-center gap-3 px-5 py-2 rounded-full bg-white/50 backdrop-blur-sm border border-wood-brown/20 shadow-sm mb-8 relative group"
+          <SectionBadge variants={itemVariants} />
+
+          <motion.h2
+            id="featured-title"
+            variants={titleVariants}
+            className="text-5xl md:text-6xl font-bold mb-4 relative inline-block"
           >
-            <div className="absolute inset-0 bg-wood-brown/5 rounded-full blur-md group-hover:bg-wood-brown/10 transition-colors" />
-            <Star className="w-4 h-4 text-wood-brown fill-wood-brown animate-pulse" aria-hidden="true" />
-            <span className="text-xs font-black tracking-[0.2em] text-wood-brown uppercase">
-              مجموعة مميزة
+            <span className="bg-gradient-to-r from-gray-900 via-gray-800 to-gray-900 bg-clip-text text-transparent">
+              منتجاتنا المميزة
             </span>
-            <Star className="w-4 h-4 text-wood-brown fill-wood-brown animate-pulse" aria-hidden="true" />
-          </motion.div>
+            <motion.div
+              className="absolute -bottom-2 left-0 right-0 h-1 bg-gradient-to-r from-transparent via-wood-brown to-transparent"
+              initial={{ scaleX: 0 }}
+              animate={inView ? { scaleX: 1 } : { scaleX: 0 }}
+              transition={{ duration: 0.8, delay: 0.5 }}
+              aria-hidden="true"
+            />
+          </motion.h2>
 
-          {/* Main Title with Elegant Typography */}
-          <div className="relative mb-6">
-            <motion.h2
-              id="featured-title"
-              variants={titleVariants}
-              className="text-4xl md:text-5xl lg:text-7xl font-black tracking-tight text-gray-900"
-            >
-              منتجاتنا <span className="text-wood-brown">المميزة</span>
-            </motion.h2>
-          </div>
-
-          {/* Elegant Decorative Divider */}
-          <motion.div
-            initial={{ width: 0, opacity: 0 }}
-            animate={inView ? { width: '80px', opacity: 1 } : {}}
-            transition={{ duration: 1, delay: 0.5 }}
-            className="h-1 bg-wood-brown mx-auto mb-8 rounded-full"
-            aria-hidden="true"
-          />
-
-          {/* Refined Description */}
           <motion.p
             variants={itemVariants}
-            className="text-gray-500 text-base md:text-xl max-w-2xl mx-auto leading-relaxed font-light"
+            className="text-gray-600 text-lg max-w-2xl mx-auto leading-relaxed"
           >
-            اكتشف مجموعة مختارة بعناية من تصاميمنا الفريدة التي تجمع بين الأناقة الدقيقة والوظائف المثالية لتحويل منزلك إلى تحفة فنية
+            اكتشف مجموعة مختارة بعناية من تصاميمنا الفريدة التي تجمع بين الأناقة الدقيقة والوظائف المثالية
           </motion.p>
         </motion.div>
 

@@ -17,6 +17,7 @@ interface WhatsAppButtonProps {
     variant?: 'default' | 'minimal' | 'floating'
     showPulse?: boolean
     onClick?: (e: React.MouseEvent) => void
+    hideText?: boolean
 }
 
 export default function WhatsAppButton({
@@ -31,6 +32,7 @@ export default function WhatsAppButton({
     variant = 'default',
     showPulse = true,
     onClick,
+    hideText = false,
 }: WhatsAppButtonProps) {
     const [isHovered, setIsHovered] = useState(false)
     const [showTooltip, setShowTooltip] = useState(false)
@@ -260,16 +262,20 @@ export default function WhatsAppButton({
                         <MessageCircle className={cn(iconSizes[size], "fill-white/20")} strokeWidth={2} />
                     </motion.div>
                 )}
-                <span className="font-bold tracking-wide">
-                    {children || 'تواصل عبر واتساب'}
-                </span>
-                <motion.div
-                    initial={{ x: -5, opacity: 0 }}
-                    animate={{ x: isHovered ? 0 : -5, opacity: isHovered ? 1 : 0 }}
-                    transition={{ duration: 0.3 }}
-                >
-                    <Send className={cn(iconSizes[size])} strokeWidth={2} />
-                </motion.div>
+                {!hideText && (
+                    <>
+                        <span className="font-bold tracking-wide">
+                            {children || 'تواصل عبر واتساب'}
+                        </span>
+                        <motion.div
+                            initial={{ x: -5, opacity: 0 }}
+                            animate={{ x: isHovered ? 0 : -5, opacity: isHovered ? 1 : 0 }}
+                            transition={{ duration: 0.3 }}
+                        >
+                            <Send className={cn(iconSizes[size])} strokeWidth={2} />
+                        </motion.div>
+                    </>
+                )}
             </span>
 
             {/* Ripple Effect on Click */}

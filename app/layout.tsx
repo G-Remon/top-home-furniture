@@ -66,7 +66,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="ar" dir="rtl" className={cn(inter.variable, "antialiased scroll-smooth")} suppressHydrationWarning>
-      <body className="min-h-screen bg-background font-sans relative">
+      <body className="min-h-screen bg-background font-sans relative" suppressHydrationWarning>
         <AppProviders>
           {children}
           <Toaster />

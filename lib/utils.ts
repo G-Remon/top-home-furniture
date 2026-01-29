@@ -11,11 +11,14 @@ export function cn(...inputs: ClassValue[]) {
 /**
  * Resolves a product image URL by prepending the API base URL if the path is relative.
  * 
- * @param path - The image path from the API (e.g., /images/product/item.png or http://external.com/img.png)
+ * @param pathOrObj - The image path (string) or ProductImage object
  * @param fallback - The fallback image to return if the path is invalid
  * @returns The full resolved URL string
  */
-export function getFullImageUrl(path: string | null | undefined, fallback: string = '/images/geld.png'): string {
+export function getFullImageUrl(pathOrObj: string | any | null | undefined, fallback: string = '/images/geld.png'): string {
+  // Extract path from string or object
+  const path = typeof pathOrObj === 'object' && pathOrObj !== null ? pathOrObj.url : pathOrObj;
+
   // 1. Handle empty or invalid paths
   if (!path || typeof path !== 'string' || path.trim() === '') {
     return fallback;
@@ -32,4 +35,17 @@ export function getFullImageUrl(path: string | null | undefined, fallback: strin
   // 4. Prepend the Remote Base URL from constants
   const baseUrl = API_BASE_URL.replace(/\/$/, ''); // Remove trailing slash if exists
   return `${baseUrl}${normalizedPath}`;
+}
+
+/**
+ * Formats a number as a currency string in Arabic (Egypt) locale.
+ * @param price - The price to format
+ * @returns Formatted currency string
+ */
+export function formatPrice(price: number): string {
+  return new Intl.NumberFormat('ar-EG', {
+    style: 'currency',
+    currency: 'EGP',
+    maximumFractionDigits: 0
+  }).format(price);
 }

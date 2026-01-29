@@ -5,7 +5,7 @@ import { useState } from 'react';
 import Image from 'next/image';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Product } from '@/types/product';
-import { Star, Truck, ShieldCheck, Package, Palette, Ruler, Weight, CheckCircle2, ShoppingCart } from 'lucide-react';
+import { Star, Truck, ShieldCheck, Package, Palette, Ruler, Weight, CheckCircle2, ShoppingCart, ArrowRight } from 'lucide-react';
 import WhatsAppButton from '@/components/shared/WhatsAppButton';
 import { PHONE_NUMBER } from '@/lib/constants';
 import { getFullImageUrl, cn } from '@/lib/utils';
@@ -69,7 +69,25 @@ export default function ProductDetailClient({ product }: ProductDetailClientProp
   ];
 
   return (
-    <div className="flex flex-col gap-12 sm:gap-16">
+    <div className="flex flex-col gap-8 sm:gap-12">
+      {/* Back Button - Premium Floating Style */}
+      <motion.div
+        initial={{ opacity: 0, x: 20 }}
+        animate={{ opacity: 1, x: 0 }}
+        className="flex justify-start"
+      >
+        <button
+          onClick={() => router.back()}
+          className="group flex items-center gap-2 px-4 py-2 bg-white/80 backdrop-blur-md border border-gray-100 rounded-2xl shadow-sm hover:shadow-md hover:border-wood-brown/30 transition-all duration-300"
+          aria-label="العودة للصفحة السابقة"
+        >
+          <div className="w-8 h-8 rounded-xl bg-gray-50 flex items-center justify-center group-hover:bg-wood-brown group-hover:text-white transition-colors duration-300">
+            <ArrowRight size={18} className="transition-transform group-hover:translate-x-1" />
+          </div>
+          <span className="text-sm font-bold text-gray-600 group-hover:text-wood-brown transition-colors">عـودة</span>
+        </button>
+      </motion.div>
+
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-16">
         {/* Gallery Section */}
         <div className="space-y-4">

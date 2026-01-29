@@ -28,9 +28,9 @@ export const WishlistButton = ({ product, className }: WishlistButtonProps) => {
         toggleWishlist(product);
 
         if (!active) {
-            setToastMessage('Product added to your wishlist');
+            setToastMessage('تم إضافة المنتج إلى المفضلة');
         } else {
-            setToastMessage('Product removed from wishlist');
+            setToastMessage('تم إزالة المنتج من المفضلة');
         }
         setShowToast(true);
     };
@@ -47,7 +47,7 @@ export const WishlistButton = ({ product, className }: WishlistButtonProps) => {
                         : "bg-white/80 text-charcoal hover:bg-white shadow-sm ring-1 ring-gray-100",
                     className
                 )}
-                aria-label={active ? "Remove from wishlist" : "Add to wishlist"}
+                aria-label={active ? "إزالة من المفضلة" : "إضافة إلى المفضلة"}
             >
                 <Heart
                     size={20}

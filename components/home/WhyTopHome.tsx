@@ -49,26 +49,26 @@ export default function WhyTopHome() {
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, margin: "-50px" }}
-                transition={{ 
-                  duration: 0.5, 
+                transition={{
+                  duration: 0.5,
                   delay: index * 0.1,
                   ease: "easeOut"
                 }}
                 className="group relative"
               >
                 <div className="relative rounded-2xl bg-white p-6 md:p-8 text-center 
-                              border border-gray-100 hover:border-wood-brown/30
+                              border border-gray-100 hover:border-[#D4AF37]/30
                               shadow-sm hover:shadow-xl
                               transition-all duration-300">
-                  
+
                   {/* Icon Container */}
                   <div className="mb-5 flex justify-center">
                     <motion.div
                       whileHover={{ scale: 1.1, rotate: 5 }}
                       transition={{ type: "spring", stiffness: 300, damping: 15 }}
                       className="flex h-16 w-16 items-center justify-center rounded-xl 
-                               bg-wood-brown/10 text-wood-brown
-                               group-hover:bg-wood-brown group-hover:text-white
+                               bg-[#D4AF37]/10 text-[#D4AF37]
+                               group-hover:bg-[#D4AF37] group-hover:text-white
                                transition-all duration-300"
                     >
                       <Icon className="h-7 w-7" strokeWidth={2} />
@@ -77,7 +77,7 @@ export default function WhyTopHome() {
 
                   {/* Title */}
                   <h3 className="mb-3 text-xl font-bold text-charcoal 
-                               group-hover:text-wood-brown transition-colors duration-300">
+                               group-hover:text-[#D4AF37] transition-colors duration-300">
                     {point.title}
                   </h3>
 
@@ -88,12 +88,12 @@ export default function WhyTopHome() {
 
                   {/* Hover Border Effect */}
                   <div className="absolute inset-0 rounded-2xl border-2 border-transparent 
-                                group-hover:border-wood-brown/20 transition-all duration-300 
+                                group-hover:border-[#D4AF37]/20 transition-all duration-300 
                                 pointer-events-none" />
                 </div>
 
                 {/* Bottom Shadow */}
-                <div className="absolute -bottom-1 left-4 right-4 h-2 bg-wood-brown/5 blur-sm 
+                <div className="absolute -bottom-1 left-4 right-4 h-2 bg-[#D4AF37]/5 blur-sm 
                               rounded-b-2xl opacity-0 group-hover:opacity-100 
                               transition-opacity duration-300" />
               </motion.article>
@@ -110,8 +110,8 @@ export default function WhyTopHome() {
           className="mt-12 md:mt-16 text-center"
         >
           <div className="inline-flex items-center gap-2 px-6 py-3 bg-white rounded-full 
-                        border border-wood-brown/20 shadow-sm">
-            <Award className="w-5 h-5 text-wood-brown" />
+                        border border-[#D4AF37]/20 shadow-sm">
+            <Award className="w-5 h-5 text-[#D4AF37]" />
             <span className="text-sm font-semibold text-charcoal">
               أكثر من 5000 عميل راضٍ عن خدماتنا
             </span>

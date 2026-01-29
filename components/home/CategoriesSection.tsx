@@ -5,221 +5,159 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { motion } from 'framer-motion'
 import { ArrowLeft, Sparkles, ChevronRight, ChevronLeft } from 'lucide-react'
-import { useState } from 'react'
+import { useState, useRef } from 'react'
 
 // Import Swiper
 import { Swiper, SwiperSlide } from 'swiper/react'
-import { Navigation, Pagination, Autoplay, EffectCoverflow, Keyboard } from 'swiper/modules'
+import { Navigation, Pagination, Autoplay, FreeMode } from 'swiper/modules'
 
 // Import Swiper styles
 import 'swiper/css'
 import 'swiper/css/navigation'
 import 'swiper/css/pagination'
-import 'swiper/css/effect-coverflow'
+import 'swiper/css/free-mode'
 
 export default function CategoriesSection() {
-  const [prevEl, setPrevEl] = useState<HTMLButtonElement | null>(null)
-  const [nextEl, setNextEl] = useState<HTMLButtonElement | null>(null)
+  const prevRef = useRef<HTMLButtonElement>(null);
+  const nextRef = useRef<HTMLButtonElement>(null);
 
   return (
-    <section id="categories" className="py-16 md:py-20 lg:py-24 bg-gradient-to-b from-white to-gray-50/50">
+    <section id="categories" className="py-24 bg-white overflow-hidden">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl">
         {/* Header */}
-        <div className="mb-12 md:mb-16 text-center max-w-3xl mx-auto">
-          <motion.div
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.4 }}
-            className="inline-flex items-center gap-2 px-4 py-2 bg-wood-brown/10 text-wood-brown rounded-full text-sm font-medium mb-4"
-          >
-            <Sparkles className="w-4 h-4" />
-            <span>تصفح فئاتنا</span>
-          </motion.div>
+        <div className="flex flex-col md:flex-row justify-between items-end mb-16 gap-8 text-right">
+          <div className="max-w-3xl">
+            <motion.div
+              initial={{ opacity: 0, x: 20 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              className="inline-flex items-center gap-2 px-3 py-1 bg-[#D4AF37]/10 text-[#D4AF37] rounded-full text-xs font-bold mb-4"
+            >
+              <Sparkles className="w-3 h-3" />
+              <span>فئات مميزة</span>
+            </motion.div>
 
-          <motion.h2
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.5 }}
-            className="mb-4 text-3xl md:text-4xl lg:text-5xl font-bold text-charcoal leading-tight"
-          >
-            تسوق حسب الفئة
-          </motion.h2>
+            <motion.h2
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              className="mb-6 text-4xl md:text-5xl lg:text-6xl font-black text-gray-900 leading-tight"
+            >
+              تسوق حسب <span className="text-[#D4AF37]">الغرفة</span>
+            </motion.h2>
 
-          <motion.p
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.5, delay: 0.1 }}
-            className="text-gray-600 text-base md:text-lg leading-relaxed"
-          >
-            اختر الفئة التي تناسب احتياجات منزلك من مجموعتنا المتنوعة والمصممة بعناية
-          </motion.p>
+            <motion.p
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              className="text-gray-500 text-lg leading-relaxed"
+            >
+              اختر الفئة التي تناسب احتياجات منزلك من مجموعتنا المتنوعة والمصممة بعناية لتغطي كافة أركان منزلك
+            </motion.p>
+          </div>
+
+          {/* Navigation Arrows */}
+          <div className="flex gap-3">
+            <button
+              ref={prevRef}
+              className="w-12 h-12 rounded-full border border-gray-100 bg-white shadow-sm flex items-center justify-center hover:bg-[#D4AF37] hover:text-white transition-all"
+            >
+              <ChevronRight size={20} />
+            </button>
+            <button
+              ref={nextRef}
+              className="w-12 h-12 rounded-full border border-gray-100 bg-white shadow-sm flex items-center justify-center hover:bg-[#D4AF37] hover:text-white transition-all"
+            >
+              <ChevronLeft size={20} />
+            </button>
+          </div>
         </div>
 
         {/* Swiper Slider */}
         <div className="relative">
-          {/* Navigation Buttons */}
-          <div className="flex justify-center md:justify-end gap-4 mb-6 md:mb-8">
-            <button
-              ref={(node) => setPrevEl(node)}
-              className="w-12 h-12 rounded-full bg-white border border-gray-200 flex items-center justify-center hover:bg-wood-brown hover:text-white hover:border-wood-brown transition-all duration-300 shadow-md hover:shadow-lg"
-              aria-label="الشريحة السابقة"
-            >
-              <ChevronRight className="w-5 h-5" />
-            </button>
-            <button
-              ref={(node) => setNextEl(node)}
-              className="w-12 h-12 rounded-full bg-white border border-gray-200 flex items-center justify-center hover:bg-wood-brown hover:text-white hover:border-wood-brown transition-all duration-300 shadow-md hover:shadow-lg"
-              aria-label="الشريحة التالية"
-            >
-              <ChevronLeft className="w-5 h-5" />
-            </button>
-          </div>
-
           <Swiper
-            modules={[Navigation, Pagination, Autoplay, EffectCoverflow, Keyboard]}
+            modules={[Navigation, Pagination, Autoplay, FreeMode]}
             spaceBetween={24}
-            slidesPerView={1}
-            breakpoints={{
-              640: { slidesPerView: 2 },
-              1024: { slidesPerView: 3 },
-              1280: { slidesPerView: 4 }
-            }}
+            slidesPerView={1.2}
             navigation={{
-              prevEl,
-              nextEl,
+              prevEl: prevRef.current,
+              nextEl: nextRef.current,
+            }}
+            onBeforeInit={(swiper) => {
+              // @ts-ignore
+              swiper.params.navigation.prevEl = prevRef.current;
+              // @ts-ignore
+              swiper.params.navigation.nextEl = nextRef.current;
+            }}
+            breakpoints={{
+              640: { slidesPerView: 2.2 },
+              1024: { slidesPerView: 3.2 },
+              1280: { slidesPerView: 4 }
             }}
             pagination={{
               clickable: true,
               dynamicBullets: true,
             }}
             autoplay={{
-              delay: 4000,
+              delay: 5000,
               disableOnInteraction: false,
-              pauseOnMouseEnter: true,
             }}
-            effect="slide"
-            keyboard={{
-              enabled: true,
-            }}
+            freeMode={true}
             loop={true}
-            grabCursor={true}
-            className="!pb-12"
             dir="rtl"
+            className="!pb-16"
           >
-            {categories.slice(0, 8).map((category, index) => (
+            {categories.map((category, index) => (
               <SwiperSlide key={category.id}>
                 <motion.div
-                  initial={{ opacity: 0, scale: 0.9 }}
+                  initial={{ opacity: 0, scale: 0.95 }}
                   whileInView={{ opacity: 1, scale: 1 }}
                   viewport={{ once: true }}
-                  transition={{ duration: 0.4, delay: index * 0.1 }}
+                  transition={{ duration: 0.5, delay: index * 0.1 }}
                   className="h-full"
                 >
-                  <CategoryCard category={category} index={index} />
+                  <CategoryCard category={category} />
                 </motion.div>
               </SwiperSlide>
             ))}
           </Swiper>
         </div>
-
-        {/* View All Button */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          viewport={{ once: true }}
-          transition={{ delay: 0.4, duration: 0.5 }}
-          className="mt-12 md:mt-16 text-center"
-        >
-          <Link
-            href="/products"
-            className="inline-flex items-center gap-3 px-8 py-4 bg-wood-brown text-white rounded-lg font-semibold text-base hover:bg-wood-brown/90 transition-colors duration-300 group shadow-lg hover:shadow-xl"
-          >
-            <span>استعرض جميع الفئات</span>
-            <ArrowLeft className="w-5 h-5 transition-transform duration-300 group-hover:-translate-x-1" />
-          </Link>
-        </motion.div>
       </div>
     </section>
   )
 }
 
-interface CategoryCardProps {
-  category: {
-    id: string
-    name: string
-    description?: string
-    image?: string
-  }
-  index: number
-}
-
-function CategoryCard({ category, index }: CategoryCardProps) {
+function CategoryCard({ category }: { category: any }) {
   return (
-    <div className="group relative h-full">
-      <Link
-        href={`/products?category=${category.id}`}
-        className="block relative overflow-hidden rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-500 aspect-[3/4] h-full"
-      >
-        {/* Image Container */}
-        <div className="absolute inset-0">
-          {/* Gradient Background */}
-          <div className="absolute inset-0 bg-gradient-to-br from-gray-100 via-gray-50 to-gray-200" />
+    <Link
+      href={`/products?category=${category.id}`}
+      className="group relative block aspect-[3/4.5] overflow-hidden rounded-[2rem] bg-gray-100 shadow-lg"
+    >
+      <Image
+        src={category.image}
+        alt={category.name}
+        fill
+        className="object-cover transition-transform duration-1000 group-hover:scale-110"
+      />
 
-          {/* Image */}
-          {category.image && (
-            <Image
-              src={category.image}
-              alt={category.name}
-              fill
-              className="object-cover transition-transform duration-700 group-hover:scale-110"
-              sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, (max-width: 1280px) 33vw, 25vw"
-              priority={false}
-            />
-          )}
+      {/* Premium Overlay */}
+      <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent" />
 
-          {/* Gradient Overlay */}
-          <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent" />
+      <div className="absolute inset-0 p-8 flex flex-col justify-end text-right">
+        <h3 className="text-2xl md:text-3xl font-black text-white mb-2 transform transition-transform duration-500 group-hover:-translate-y-2">
+          {category.name}
+        </h3>
+        <p className="text-white/70 text-sm mb-6 line-clamp-2 transform translate-y-4 opacity-0 transition-all duration-500 group-hover:translate-y-0 group-hover:opacity-100">
+          {category.description || 'اكتشف مجموعتنا الكاملة'}
+        </p>
 
-          {/* Shine Effect */}
-          <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-700">
-            <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-r from-transparent via-white/10 to-transparent translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-1000" />
-          </div>
+        <div className="inline-flex items-center gap-2 text-[#D4AF37] font-bold text-sm transform translate-y-4 opacity-0 transition-all duration-500 delay-100 group-hover:translate-y-0 group-hover:opacity-100">
+          تصفح القسم <ArrowLeft size={16} />
         </div>
+      </div>
 
-        {/* Content */}
-        <div className="absolute inset-0 flex flex-col justify-end p-6 md:p-8">
-          <div className="transform transition-all duration-500 group-hover:-translate-y-2">
-            {/* Category Name */}
-            <h3 className="text-2xl md:text-3xl font-bold text-white mb-3 drop-shadow-lg">
-              {category.name}
-            </h3>
-
-            {/* Description */}
-            <p className="text-white/90 text-base md:text-lg mb-6 line-clamp-2 opacity-0 transform translate-y-4 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-500 delay-100">
-              {category.description || 'اكتشف مجموعة واسعة من المنتجات عالية الجودة'}
-            </p>
-
-            {/* CTA Button */}
-            <div className="inline-flex items-center gap-3 text-base font-medium px-6 py-3 rounded-full bg-white/15 backdrop-blur-sm border border-white/30 transition-all duration-500 group-hover:bg-white group-hover:text-gray-900 group-hover:border-white transform translate-y-4 group-hover:translate-y-0">
-              <span>تصفح المنتجات</span>
-              <ArrowLeft className="w-4 h-4 transition-transform duration-300 group-hover:-translate-x-2" />
-            </div>
-          </div>
-        </div>
-
-        {/* Badge */}
-        <div className="absolute top-4 right-4 px-4 py-2 bg-gradient-to-r from-wood-brown to-amber-700 text-white text-sm font-semibold rounded-full shadow-lg transform -rotate-3 group-hover:rotate-0 transition-transform duration-300">
-          جديد
-        </div>
-
-        {/* Hover Indicator */}
-        <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-          <div className="w-12 h-1 bg-white/50 rounded-full" />
-        </div>
-      </Link>
-    </div>
+      {/* Border Highlight */}
+      <div className="absolute inset-0 border-2 border-transparent group-hover:border-[#D4AF37]/30 transition-colors duration-500 rounded-[2rem] pointer-events-none" />
+    </Link>
   )
 }

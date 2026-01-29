@@ -4,12 +4,12 @@
 import { motion } from 'framer-motion';
 import Image from 'next/image';
 import Link from 'next/link';
-import { Star, ShoppingCart, Info, TrendingDown, Package, CheckCircle2, XCircle } from 'lucide-react';
+import { Star } from 'lucide-react';
 import { Product } from '@/types/product';
 import { getFullImageUrl } from '@/lib/utils';
-import { translateCategory, translateProductName, translateCommon, translateDescription } from '@/lib/translate';
-import { useAuthStore } from '@/store/auth.store';
+import { translateCategory, translateProductName, translateCommon } from '@/lib/translate';
 import { useRouter } from 'next/navigation';
+import WhatsAppButton from '@/components/shared/WhatsAppButton';
 
 interface ProductCardProps {
   product: Product;
@@ -26,145 +26,108 @@ export default function ProductCard({ product }: ProductCardProps) {
   };
 
   const hasDiscount = product.discountPercentage > 0;
-  const isLowStock = typeof product.stockQuantity === 'number' && product.stockQuantity > 0 && product.stockQuantity < 5;
 
-  const getImagePath = () => {
+  const getImages = () => {
+    const imgs: string[] = [];
     if (Array.isArray(product.images) && product.images.length > 0) {
-      const first = product.images[0];
-      if (typeof first === 'string') return first;
-      if (first && typeof first === 'object' && 'url' in first) return first.url;
+      product.images.forEach(img => {
+        if (typeof img === 'string') imgs.push(img);
+        else if (img && typeof img === 'object' && 'url' in img) imgs.push(img.url);
+      });
     }
-    return (product as any).image || (product as any).pictureUrl || (product as any).thumbnailUrl || '';
+    const fallback = (product as any).image || (product as any).pictureUrl || (product as any).thumbnailUrl;
+    if (fallback && imgs.length === 0) imgs.push(fallback);
+    return imgs.map(url => getFullImageUrl(url));
   };
 
-  const validImage = getFullImageUrl(getImagePath());
+  const images = getImages();
+  const mainImage = images[0] || '';
+  const hoverImage = images[1] || mainImage;
 
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
-      whileHover={{ y: -5 }}
-      className="group relative bg-white rounded-xl sm:rounded-2xl border border-gray-100 shadow-sm hover:shadow-xl transition-all duration-300 overflow-hidden flex flex-col h-full"
+      className="group relative bg-white rounded-xl sm:rounded-2xl border border-gray-100 shadow-sm hover:shadow-xl transition-all duration-500 overflow-hidden flex flex-col h-full"
     >
       {/* Image Container */}
-      <div className="relative aspect-[3/4] sm:aspect-[4/5] overflow-hidden bg-gray-50">
+      <Link href={`/products/${product.id}`} className="relative aspect-square sm:aspect-[4/5] overflow-hidden bg-gray-50 block">
         <Image
-          src={validImage}
+          src={mainImage}
           alt={translateProductName(product.name)}
           fill
-          className="object-cover transition-transform duration-500 group-hover:scale-110"
-          sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
+          className="object-cover transition-all duration-700 group-hover:scale-110 group-hover:opacity-0"
+          sizes="(max-width: 640px) 100vw, (max-width: 1024px) 33vw, 20vw"
         />
+        {hoverImage !== mainImage && (
+          <Image
+            src={hoverImage}
+            alt={translateProductName(product.name)}
+            fill
+            className="object-cover transition-all duration-700 scale-110 opacity-0 group-hover:opacity-100 group-hover:scale-100"
+            sizes="(max-width: 640px) 100vw, (max-width: 1024px) 33vw, 20vw"
+          />
+        )}
 
         {/* Badges */}
-        <div className="absolute top-4 left-4 right-4 flex justify-between items-start z-10">
-          <div className="flex flex-col gap-2">
-            {hasDiscount && (
-              <div className="bg-red-500 text-white px-3 py-1 rounded-full text-xs font-bold shadow-lg flex items-center gap-1">
-                <TrendingDown size={14} />
-                -{product.discountPercentage}%
-              </div>
-            )}
-            {product.inStock ? (
-              <div className="bg-emerald-500/90 backdrop-blur-md text-white px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider flex items-center gap-1 shadow-sm">
-                <CheckCircle2 size={12} />
-                {translateCommon('inStock')}
-              </div>
-            ) : (
-              <div className="bg-gray-500/90 backdrop-blur-md text-white px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider flex items-center gap-1 shadow-sm">
-                <XCircle size={12} />
-                {translateCommon('outOfStock')}
-              </div>
-            )}
-          </div>
+        <div className="absolute top-2 right-2 flex flex-col gap-1 z-10">
+          {hasDiscount && (
+            <div className="bg-red-500 text-white px-1.5 py-0.5 rounded text-[8px] sm:text-[10px] font-bold shadow-lg">
+              -{product.discountPercentage}%
+            </div>
+          )}
         </div>
 
-        {/* Quick Actions Overlay */}
-        <div className="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center gap-3">
-          <Link
-            href={`/products/${product.id}`}
-            className="p-3 bg-white text-charcoal rounded-full hover:bg-wood-brown hover:text-white transition-colors shadow-xl"
-            title={translateCommon('viewDetails')}
-          >
-            <Info size={20} />
-          </Link>
-          <button
-            onClick={(e) => {
-              e.preventDefault();
-              if (!useAuthStore.getState().isAuthenticated) {
-                router.push('/login');
-                return;
-              }
-              // TODO: Add to cart logic here
-              // toast({ title: "Added to cart" })
-            }}
-            className="p-3 bg-white text-charcoal rounded-full hover:bg-wood-brown hover:text-white transition-colors shadow-xl"
-            title={translateCommon('addToCart')}
-            disabled={!product.inStock}
-          >
-            <ShoppingCart size={20} />
-          </button>
-        </div>
-      </div>
+        <div className="absolute inset-0 border-2 border-transparent group-hover:border-[#D4AF37]/20 transition-colors duration-500 pointer-events-none" />
+      </Link>
 
       {/* Content */}
-      <div className="p-3 sm:p-5 flex flex-col flex-grow">
-        <div className="flex items-center justify-between mb-1 sm:mb-2">
-          <span className="text-[10px] sm:text-xs font-medium text-wood-brown bg-wood-brown/5 px-1.5 sm:px-2 py-0.5 rounded">
+      <div className="p-2 sm:p-3 flex flex-col flex-grow text-right">
+        <div className="flex items-center justify-between mb-0.5">
+          <span className="text-[6px] sm:text-[8px] font-bold text-[#D4AF37] uppercase tracking-widest">
             {translateCategory(product.category)}
           </span>
-          <div className="flex items-center gap-1 text-amber-500">
-            <Star size={10} className="sm:size-[14px] fill-current" />
-            <span className="text-[10px] sm:text-xs font-bold text-charcoal">{product.rating}</span>
+          <div className="flex items-center gap-0.5">
+            <Star size={7} className="text-[#D4AF37] fill-[#D4AF37]" />
+            <span className="text-[8px] sm:text-[10px] font-bold text-gray-700">{product.rating || 5.0}</span>
           </div>
         </div>
 
-        <h3 className="text-sm sm:text-lg font-bold text-charcoal mb-1 sm:mb-2 line-clamp-1 group-hover:text-wood-brown transition-colors text-right">
+        <h3 className="text-[10px] sm:text-sm font-bold text-gray-900 mb-0.5 line-clamp-1 group-hover:text-[#D4AF37] transition-colors leading-tight">
           <Link href={`/products/${product.id}`}>{translateProductName(product.name)}</Link>
         </h3>
 
-        <p className="text-[11px] sm:text-sm text-soft-gray line-clamp-2 mb-2 sm:mb-4 flex-grow text-right">
-          {translateDescription(product.description)}
-        </p>
-
-        {/* Price and Stock */}
-        <div className="mt-auto space-y-2 sm:space-y-3">
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-1">
-            <div className="flex flex-col">
-              {hasDiscount && (
-                <span className="text-[10px] sm:text-xs text-soft-gray line-through">
-                  {formatPrice(product.originalPrice)}
-                </span>
-              )}
-              <span className="text-base sm:text-xl font-black text-wood-brown leading-tight">
-                {formatPrice(product.currentPrice)}
+        {/* Price Section */}
+        <div className="mb-1.5 sm:mb-2">
+          <div className="flex flex-col sm:flex-row-reverse sm:items-center justify-start gap-0 sm:gap-1">
+            <span className="text-xs sm:text-base font-black text-[#D4AF37]">
+              {formatPrice(product.currentPrice)}
+            </span>
+            {hasDiscount && (
+              <span className="text-[7px] sm:text-[10px] text-gray-400 line-through">
+                {formatPrice(product.originalPrice)}
               </span>
-            </div>
-
-            {isLowStock && (
-              <div className="flex items-center gap-1 text-orange-500 animate-pulse">
-                <Package size={10} className="sm:size-[14px]" />
-                <span className="text-[8px] sm:text-[10px] font-bold uppercase truncate">
-                  {translateCommon('only', { count: product.stockQuantity })}
-                </span>
-              </div>
             )}
           </div>
+        </div>
+
+        {/* WhatsApp CTA */}
+        <div className="mt-auto pt-0.5">
+          <WhatsAppButton
+            phoneNumber="201234567890"
+            message={`مرحباً، أود الاستفسار عن ${translateProductName(product.name)}`}
+            productName={translateProductName(product.name)}
+            className="w-full py-1.5 sm:py-2 rounded-lg sm:rounded-xl font-bold text-[8px] sm:text-xs shadow-sm"
+          >
+            واتساب
+          </WhatsAppButton>
 
           <Link
             href={`/products/${product.id}`}
-            className="w-full py-2 sm:py-3 bg-charcoal text-white rounded-lg sm:rounded-xl text-center text-[11px] sm:text-sm font-bold hover:bg-wood-brown transition-all duration-300 flex items-center justify-center gap-1 sm:gap-2 group/btn"
+            className="block text-center text-[7px] sm:text-[9px] text-gray-400 mt-1 hover:text-[#D4AF37] transition-colors font-medium"
           >
-            <span className="truncate">{translateCommon('viewDetails')}</span>
-            <motion.span
-              initial={{ x: 0 }}
-              whileHover={{ x: -5 }}
-              transition={{ type: "spring", stiffness: 400 }}
-              className="hidden sm:inline"
-            >
-              ←
-            </motion.span>
+            التفاصيل
           </Link>
         </div>
       </div>

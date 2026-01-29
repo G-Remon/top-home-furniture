@@ -2,6 +2,7 @@
 'use client'
 
 import Link from 'next/link'
+import Image from 'next/image'
 import { motion } from 'framer-motion'
 import { Facebook, Instagram, Twitter, Mail, Phone, MapPin, ArrowUp } from 'lucide-react'
 import { useEffect, useState } from 'react'
@@ -49,11 +50,11 @@ export default function Footer() {
     return (
         <footer className="bg-charcoal text-white relative">
             {/* Decorative Top Border */}
-            <div className="h-1 bg-gradient-to-r from-transparent via-wood-brown to-transparent" />
+            <div className="h-1 bg-gradient-to-r from-transparent via-[#D4AF37] to-transparent" />
 
             <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl py-12 md:py-16">
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 md:gap-12">
-                    
+
                     {/* Brand Section */}
                     <motion.div
                         initial={{ opacity: 0, y: 20 }}
@@ -62,16 +63,23 @@ export default function Footer() {
                         transition={{ duration: 0.5 }}
                         className="sm:col-span-2 lg:col-span-1"
                     >
-                        <Link href="/" className="inline-block mb-4 group">
-                            <h3 className="text-2xl md:text-3xl font-bold text-wood-brown 
-                                         group-hover:scale-105 transition-transform duration-300">
+                        <Link href="/" className="flex flex-col gap-4 mb-6 group">
+                            <div className="relative h-24 w-24">
+                                <Image
+                                    src="/images/logo.png"
+                                    alt="TOP HOME Logo"
+                                    fill
+                                    className="object-contain brightness-0 invert"
+                                />
+                            </div>
+                            <h3 className="text-3xl md:text-4xl font-black text-[#D4AF37] tracking-tighter transition-transform duration-300 group-hover:scale-105">
                                 TOP HOME
                             </h3>
                         </Link>
                         <p className="text-gray-400 leading-relaxed mb-6 text-sm md:text-base">
                             علامة رائدة في صناعة الأثاث الفاخر، نقدم تصميمات أنيقة وعصرية تجمع بين الجمال والراحة
                         </p>
-                        
+
                         {/* Social Icons */}
                         <div className="flex gap-3">
                             {footerLinks.social.map((item) => {
@@ -82,9 +90,9 @@ export default function Footer() {
                                         href={item.href}
                                         whileHover={{ scale: 1.1, y: -2 }}
                                         whileTap={{ scale: 0.95 }}
-                                        className="w-10 h-10 rounded-lg bg-white/5 hover:bg-wood-brown 
+                                        className="w-10 h-10 rounded-lg bg-white/5 hover:bg-[#D4AF37] 
                                                  flex items-center justify-center transition-all duration-300
-                                                 border border-white/10 hover:border-wood-brown"
+                                                 border border-white/10 hover:border-[#D4AF37]"
                                         aria-label={item.name}
                                     >
                                         <Icon className="w-5 h-5" />
@@ -107,10 +115,10 @@ export default function Footer() {
                                 <li key={link.name}>
                                     <Link
                                         href={link.href}
-                                        className="text-gray-400 hover:text-wood-brown transition-colors 
+                                        className="text-gray-400 hover:text-[#D4AF37] transition-colors 
                                                  duration-300 text-sm md:text-base inline-flex items-center gap-2 group"
                                     >
-                                        <span className="w-0 h-0.5 bg-wood-brown group-hover:w-4 transition-all duration-300" />
+                                        <span className="w-0 h-0.5 bg-[#D4AF37] group-hover:w-4 transition-all duration-300" />
                                         {link.name}
                                     </Link>
                                 </li>
@@ -131,10 +139,10 @@ export default function Footer() {
                                 <li key={link.name}>
                                     <Link
                                         href={link.href}
-                                        className="text-gray-400 hover:text-wood-brown transition-colors 
+                                        className="text-gray-400 hover:text-[#D4AF37] transition-colors 
                                                  duration-300 text-sm md:text-base inline-flex items-center gap-2 group"
                                     >
-                                        <span className="w-0 h-0.5 bg-wood-brown group-hover:w-4 transition-all duration-300" />
+                                        <span className="w-0 h-0.5 bg-[#D4AF37] group-hover:w-4 transition-all duration-300" />
                                         {link.name}
                                     </Link>
                                 </li>
@@ -152,23 +160,23 @@ export default function Footer() {
                         <h4 className="text-lg font-bold mb-4 text-white">تواصل معنا</h4>
                         <ul className="space-y-4">
                             <li className="flex items-start gap-3 text-gray-400 text-sm md:text-base">
-                                <MapPin className="w-5 h-5 mt-0.5 flex-shrink-0 text-wood-brown" />
+                                <MapPin className="w-5 h-5 mt-0.5 flex-shrink-0 text-[#D4AF37]" />
                                 <span>القاهرة، مصر</span>
                             </li>
                             <li className="flex items-center gap-3 text-gray-400 text-sm md:text-base">
-                                <Phone className="w-5 h-5 flex-shrink-0 text-wood-brown" />
-                                <a 
-                                    href="tel:+201234567890" 
-                                    className="hover:text-wood-brown transition-colors duration-300"
+                                <Phone className="w-5 h-5 flex-shrink-0 text-[#D4AF37]" />
+                                <a
+                                    href="tel:+201234567890"
+                                    className="hover:text-[#D4AF37] transition-colors duration-300"
                                 >
                                     +20 123 456 7890
                                 </a>
                             </li>
                             <li className="flex items-center gap-3 text-gray-400 text-sm md:text-base">
-                                <Mail className="w-5 h-5 flex-shrink-0 text-wood-brown" />
-                                <a 
-                                    href="mailto:info@tophome.com" 
-                                    className="hover:text-wood-brown transition-colors duration-300"
+                                <Mail className="w-5 h-5 flex-shrink-0 text-[#D4AF37]" />
+                                <a
+                                    href="mailto:info@tophome.com"
+                                    className="hover:text-[#D4AF37] transition-colors duration-300"
                                 >
                                     info@tophome.com
                                 </a>
@@ -178,7 +186,7 @@ export default function Footer() {
                 </div>
 
                 {/* Bottom Bar */}
-                <motion.div 
+                <motion.div
                     initial={{ opacity: 0 }}
                     whileInView={{ opacity: 1 }}
                     viewport={{ once: true }}
@@ -189,7 +197,7 @@ export default function Footer() {
                         <p className="text-gray-400 text-sm text-center md:text-right">
                             © {new Date().getFullYear()} TOP HOME. جميع الحقوق محفوظة
                         </p>
-                        
+
                         <div className="flex items-center gap-4 text-lg text-gray-400">
                             <span> 💥G.Remon </span>
                         </div>
@@ -204,7 +212,7 @@ export default function Footer() {
                     animate={{ opacity: 1, y: 0 }}
                     exit={{ opacity: 0, y: 20 }}
                     onClick={scrollToTop}
-                    className="fixed bottom-6 right-6 z-40 w-12 h-12 bg-wood-brown hover:bg-wood-brown/90 
+                    className="fixed bottom-6 right-6 z-40 w-12 h-12 bg-[#D4AF37] hover:bg-[#D4AF37]/90 
                              text-white rounded-full shadow-xl hover:shadow-2xl 
                              flex items-center justify-center transition-all duration-300
                              hover:scale-110 group"

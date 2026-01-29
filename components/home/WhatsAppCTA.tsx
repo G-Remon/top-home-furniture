@@ -68,14 +68,9 @@ export default function WhatsAppCTA() {
                 phoneNumber={PHONE_NUMBER}
                 message="مرحباً، أريد الاستفسار عن أثاث TOP HOME"
                 size="lg"
-                className="bg-wood-brown hover:bg-wood-brown/90 text-white shadow-2xl shadow-wood-brown/20 px-12 py-6 text-xl font-bold rounded-2xl group"
+                className="w-full sm:w-auto min-w-[240px] shadow-2xl shadow-wood-brown/20 py-5 sm:py-6 text-xl font-bold rounded-2xl group"
               >
-                <div className="flex items-center gap-4">
-                  <span>تواصل معنا الآن</span>
-                  <div className="w-10 h-10 rounded-xl bg-white/10 flex items-center justify-center group-hover:rotate-12 transition-transform">
-                    <MessageCircle size={24} />
-                  </div>
-                </div>
+                تواصل معنا الآن
               </WhatsAppButton>
             </motion.div>
           </div>

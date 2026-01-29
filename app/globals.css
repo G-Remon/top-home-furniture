@@ -41,13 +41,13 @@ body {
 	background-color: #faf9f6;
 }
 ::-webkit-scrollbar-thumb {
-	background-color: rgba(139, 115, 85, 0.5);
+	background-color: rgba(212, 175, 55, 0.5);
 	border-radius: 9999px;
 	cursor: pointer;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-	background-color: #8b7355;
+	background-color: #D4AF37;
 }
 
 .container-custom {
@@ -97,7 +97,7 @@ body {
 }
 
 .swiper-pagination-bullet-active {
-  background: #92400e; /* لون wood-brown */
+  background: #D4AF37; /* لون ذهبي */
   width: 24px;
   border-radius: 12px;
 }

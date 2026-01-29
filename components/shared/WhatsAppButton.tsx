@@ -81,7 +81,7 @@ export default function WhatsAppButton({
                     target="_blank"
                     rel="noopener noreferrer"
                     onClick={onClick}
-                    className="relative group flex items-center justify-center w-16 h-16 bg-gradient-to-br from-[#25D366] to-[#128C7E] rounded-full shadow-2xl hover:shadow-[#25D366]/50 transition-all duration-300 overflow-hidden"
+                    className="relative group flex items-center justify-center w-16 h-16 bg-gradient-to-br from-[#D4AF37] to-[#AA8C2C] rounded-full shadow-2xl hover:shadow-[#D4AF37]/50 transition-all duration-300 overflow-hidden"
                     whileHover={{ scale: 1.1 }}
                     whileTap={{ scale: 0.95 }}
                     onHoverStart={() => setShowTooltip(true)}
@@ -111,8 +111,8 @@ export default function WhatsAppButton({
                     {/* Pulse Animation */}
                     {showPulse && (
                         <>
-                            <span className="absolute inset-0 rounded-full bg-[#25D366] animate-ping opacity-30" />
-                            <span className="absolute inset-0 rounded-full bg-[#25D366] animate-pulse opacity-40" />
+                            <span className="absolute inset-0 rounded-full bg-[#D4AF37] animate-ping opacity-30" />
+                            <span className="absolute inset-0 rounded-full bg-[#D4AF37] animate-pulse opacity-40" />
                         </>
                     )}
 
@@ -153,7 +153,7 @@ export default function WhatsAppButton({
 
                 {/* Decorative Ring */}
                 <motion.div
-                    className="absolute inset-0 rounded-full border-4 border-[#25D366]/20"
+                    className="absolute inset-0 rounded-full border-4 border-[#D4AF37]/20"
                     animate={{
                         scale: [1, 1.2, 1],
                         opacity: [0.5, 0, 0.5],
@@ -177,7 +177,7 @@ export default function WhatsAppButton({
                 rel="noopener noreferrer"
                 onClick={onClick}
                 className={cn(
-                    'inline-flex items-center gap-2 text-[#25D366] hover:text-[#128C7E] transition-colors duration-300 font-medium group',
+                    'inline-flex items-center gap-2 text-[#D4AF37] hover:text-[#AA8C2C] transition-colors duration-300 font-medium group',
                     className
                 )}
                 whileHover={{ x: -5 }}
@@ -195,7 +195,7 @@ export default function WhatsAppButton({
                 )}
                 <span className="relative">
                     {children || 'تواصل عبر واتساب'}
-                    <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-[#25D366] group-hover:w-full transition-all duration-300" />
+                    <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-[#D4AF37] group-hover:w-full transition-all duration-300" />
                 </span>
             </motion.a>
         )
@@ -210,8 +210,8 @@ export default function WhatsAppButton({
             onClick={onClick}
             className={cn(
                 'relative inline-flex items-center justify-center rounded-full font-semibold transition-all duration-300 overflow-hidden group',
-                'bg-gradient-to-r from-[#25D366] to-[#128C7E] text-white',
-                'hover:shadow-2xl hover:shadow-[#25D366]/40',
+                'bg-gradient-to-r from-[#D4AF37] to-[#AA8C2C] text-white',
+                'hover:shadow-2xl hover:shadow-[#D4AF37]/40',
                 'active:scale-95',
                 sizeClasses[size],
                 fixed && 'fixed bottom-6 left-6 z-50',
@@ -227,7 +227,7 @@ export default function WhatsAppButton({
         >
             {/* Animated Background */}
             <motion.div
-                className="absolute inset-0 bg-gradient-to-r from-[#128C7E] to-[#25D366]"
+                className="absolute inset-0 bg-gradient-to-r from-[#AA8C2C] to-[#D4AF37]"
                 initial={{ x: '-100%' }}
                 animate={{ x: isHovered ? '0%' : '-100%' }}
                 transition={{ duration: 0.4, ease: "easeOut" }}

@@ -6,7 +6,7 @@ import { useSearchParams } from 'next/navigation'
 import { Filter } from 'lucide-react'
 
 import ProductGrid from '@/components/products/ProductGrid'
-import { products } from '@/lib/constants'
+import { productsList } from '@/lib/constants'
 
 // فئات الأثاث
 const furnitureCategories = [
@@ -32,15 +32,15 @@ export default function ProductsPageClient() {
 
   const filteredProducts = useMemo(() => {
     if (selectedCategory === 'all') {
-      return products
+      return productsList
     }
-    return products.filter(product => product.category === selectedCategory)
+    return productsList.filter(product => product.category === selectedCategory)
   }, [selectedCategory])
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-white to-off-white pt-20 md:pt-24">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl">
-        
+
         {/* Header */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -90,7 +90,7 @@ export default function ProductsPageClient() {
                 <span className="text-xs md:text-sm font-semibold leading-tight">
                   {category.name}
                 </span>
-                
+
                 {/* Active Indicator */}
                 {selectedCategory === category.id && (
                   <motion.div

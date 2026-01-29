@@ -10,6 +10,7 @@ import { Menu, X, ShoppingCart, Phone, ChevronDown } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { useAuthStore } from '@/store/auth.store'
 import LogoutButton from '@/components/auth/LogoutButton'
+import WhatsAppButton from './WhatsAppButton'
 
 const navigation = [
     { name: 'الرئيسية', href: '/' },
@@ -73,15 +74,18 @@ export default function Header() {
                 className={cn(
                     "fixed top-0 left-0 right-0 z-50 transition-all duration-500",
                     isTransparent
-                        ? "bg-transparent py-4 lg:py-6"
-                        : "bg-white/90 backdrop-blur-md shadow-sm py-2 lg:py-3 border-b border-gray-100"
+                        ? "bg-transparent py-2 lg:py-4"
+                        : "bg-white/95 backdrop-blur-md shadow-sm py-1 lg:py-2 border-b border-gray-100"
                 )}
             >
                 <nav className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl">
                     <div className="flex items-center justify-between">
-                        {/* Logo - Enhanced */}
+                        {/* Logo - Enhanced & Smaller */}
                         <Link href="/" className="flex items-center gap-2 group relative z-50">
-                            <div className="relative h-8 sm:h-10 w-auto aspect-square">
+                            <motion.div
+                                whileHover={{ scale: 1.05 }}
+                                className="relative h-10 sm:h-12 w-auto aspect-square transition-transform"
+                            >
                                 <Image
                                     src="/images/logo.png"
                                     alt="TOP HOME Logo"
@@ -92,17 +96,17 @@ export default function Header() {
                                     )}
                                     priority
                                 />
-                            </div>
+                            </motion.div>
                             <div className={cn(
-                                "text-lg sm:text-xl lg:text-2xl font-bold tracking-tight transition-colors duration-500",
-                                isTransparent ? "text-white" : "text-charcoal"
+                                "text-lg sm:text-xl lg:text-2xl font-black tracking-tight transition-colors duration-500",
+                                isTransparent ? "text-white" : "text-gray-900"
                             )}>
-                                TOP <span className="text-wood-brown">HOME</span>
+                                TOP <span className="text-[#D4AF37]">HOME</span>
                             </div>
                         </Link>
 
                         {/* Desktop Navigation */}
-                        <div className="hidden lg:flex items-center gap-8">
+                        <div className="hidden lg:flex items-center gap-6">
                             {navigation.map((item) => {
                                 const isActive = pathname === item.href
                                 return (
@@ -128,13 +132,13 @@ export default function Header() {
                         </div>
 
                         {/* Desktop Actions */}
-                        <div className="hidden lg:flex items-center gap-4">
+                        <div className="hidden lg:flex items-center gap-3">
 
                             {!isAuthenticated ? (
                                 <Link
                                     href="/login"
                                     className={cn(
-                                        "text-sm font-medium px-5 py-2 rounded-full border transition-all duration-300",
+                                        "text-xs font-semibold px-4 py-1.5 rounded-full border transition-all duration-300",
                                         isTransparent
                                             ? "text-white border-white/30 hover:bg-white/10"
                                             : "text-charcoal border-gray-200 hover:border-wood-brown hover:text-wood-brown"
@@ -143,18 +147,18 @@ export default function Header() {
                                     دخول
                                 </Link>
                             ) : (
-                                <div className="flex items-center gap-4">
+                                <div className="flex items-center gap-3">
                                     <div className={cn(
-                                        "text-sm font-medium flex items-center gap-2",
+                                        "text-xs font-medium flex items-center gap-2",
                                         isTransparent ? "text-white" : "text-charcoal"
                                     )}>
-                                        <div className="w-8 h-8 rounded-full bg-wood-brown/10 flex items-center justify-center text-wood-brown">
+                                        <div className="w-7 h-7 rounded-full bg-wood-brown/10 flex items-center justify-center text-wood-brown text-[10px] font-bold">
                                             {userName?.charAt(0).toUpperCase()}
                                         </div>
                                         <span>{userName}</span>
                                     </div>
                                     <LogoutButton className={cn(
-                                        "px-4 py-2 rounded-full border transition-all duration-300",
+                                        "px-3 py-1.5 rounded-full border text-xs transition-all duration-300",
                                         isTransparent
                                             ? "text-white border-white/30 hover:bg-white/10"
                                             : "text-destructive border-destructive/20 hover:bg-destructive hover:text-white"
@@ -163,30 +167,41 @@ export default function Header() {
                                     </LogoutButton>
                                 </div>
                             )}
-                            <Link
-                                href="/products"
-                                className="text-sm font-semibold px-6 py-2 rounded-full bg-wood-brown text-white hover:bg-wood-brown/90 transition-all shadow-lg shadow-wood-brown/20"
+                            <WhatsAppButton
+                                phoneNumber="201234567890" // Replace with actual number
+                                message="مرحباً، أود الاستفسار عن منتجات توب هوم."
+                                className="shadow-md shadow-wood-brown/10 scale-90 origin-right"
                             >
-                                تسوق الآن
-                            </Link>
+                                تواصل معنا
+                            </WhatsAppButton>
                         </div>
 
 
-                        {/* Mobile Menu Button */}
-                        <button
-                            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-                            className={cn(
-                                "lg:hidden p-2 rounded-lg transition-colors z-50",
-                                isTransparent ? "text-white hover:bg-white/10" : "text-charcoal hover:bg-gray-100"
+                        {/* Mobile Menu Button - Compact */}
+                        <div className="flex items-center gap-2 lg:hidden">
+                            {/* Shopping cart icon for quick access on mobile if needed */}
+                            {!isTransparent && (
+                                <Link href="/products" className="p-2 text-charcoal hover:text-wood-brown transition-colors">
+                                    <ShoppingCart size={20} />
+                                </Link>
                             )}
-                        >
-                            {mobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
-                        </button>
+                            <button
+                                onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+                                className={cn(
+                                    "p-1.5 rounded-full transition-all duration-300 z-50",
+                                    isTransparent
+                                        ? "text-white bg-white/10 hover:bg-white/20"
+                                        : "text-charcoal bg-gray-100/50 hover:bg-gray-200"
+                                )}
+                            >
+                                {mobileMenuOpen ? <X size={20} /> : <Menu size={20} />}
+                            </button>
+                        </div>
                     </div>
                 </nav>
             </header>
 
-            {/* Mobile Menu - Premium Design */}
+            {/* Mobile Menu - Professional Vertical Drawer */}
             <AnimatePresence>
                 {mobileMenuOpen && (
                     <>
@@ -196,125 +211,114 @@ export default function Header() {
                             animate={{ opacity: 1 }}
                             exit={{ opacity: 0 }}
                             transition={{ duration: 0.3 }}
-                            className="fixed inset-0 bg-black/50 backdrop-blur-sm z-40 lg:hidden"
+                            className="fixed inset-0 bg-black/40 backdrop-blur-[2px] z-[60] lg:hidden"
                             onClick={() => setMobileMenuOpen(false)}
                         />
 
-                        {/* Menu Panel */}
+                        {/* Menu Panel - Right Side Drawer */}
                         <motion.div
                             initial={{ x: "100%" }}
                             animate={{ x: 0 }}
                             exit={{ x: "100%" }}
-                            transition={{ type: "spring", damping: 30, stiffness: 300 }}
-                            className="fixed top-0 right-0 bottom-0 w-full sm:w-96 bg-white z-50 lg:hidden shadow-2xl overflow-y-auto"
+                            transition={{ type: "spring", damping: 25, stiffness: 200 }}
+                            className="fixed top-0 right-0 bottom-0 w-[80%] max-w-sm bg-white z-[70] lg:hidden shadow-2xl flex flex-col"
                         >
-                            <div className="flex flex-col h-full">
-                                {/* Header */}
-                                <div className="flex items-center justify-between p-6 border-b border-gray-100 bg-gradient-to-br from-wood-brown to-wood-brown/80 text-white">
-                                    <div className="text-2xl font-bold">TOP HOME</div>
-                                    <button
-                                        onClick={() => setMobileMenuOpen(false)}
-                                        className="p-2 rounded-lg hover:bg-white/10 transition-colors"
-                                    >
-                                        <X className="w-6 h-6" />
-                                    </button>
+                            {/* Drawer Header */}
+                            <div className="flex items-center justify-between p-5 border-b border-gray-50">
+                                <div className="flex items-center gap-2">
+                                    <div className="relative h-6 w-6">
+                                        <Image src="/images/logo.png" alt="Logo" fill className="object-contain" />
+                                    </div>
+                                    <span className="font-black text-xl tracking-tight">TOP <span className="text-[#D4AF37]">HOME</span></span>
                                 </div>
+                                <button
+                                    onClick={() => setMobileMenuOpen(false)}
+                                    className="p-2 rounded-full bg-gray-50 text-gray-400 hover:text-charcoal transition-colors"
+                                >
+                                    <X size={20} />
+                                </button>
+                            </div>
 
-                                {/* Navigation Links */}
-                                <div className="flex-1 py-6 px-4 space-y-2">
+                            {/* User Profile Summary (If logged in) */}
+                            {isAuthenticated && (
+                                <div className="p-5 bg-gray-50/50 border-b border-gray-50">
+                                    <div className="flex items-center gap-3">
+                                        <div className="h-10 w-10 rounded-full bg-wood-brown text-white flex items-center justify-center font-bold">
+                                            {userName?.charAt(0).toUpperCase()}
+                                        </div>
+                                        <div>
+                                            <p className="font-semibold text-charcoal">{userName}</p>
+                                            <p className="text-xs text-soft-gray font-normal">أهلاً بك مرة أخرى</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            )}
+
+                            {/* Navigation Links */}
+                            <div className="flex-1 overflow-y-auto py-4 px-3">
+                                <p className="px-4 py-2 text-[10px] font-bold uppercase tracking-wider text-soft-gray/60">القائمة الرئيسية</p>
+                                <div className="space-y-1">
                                     {navigation.map((item, index) => {
                                         const isActive = pathname === item.href
                                         return (
                                             <motion.div
                                                 key={item.name}
-                                                initial={{ opacity: 0, x: 50 }}
+                                                initial={{ opacity: 0, x: 20 }}
                                                 animate={{ opacity: 1, x: 0 }}
-                                                transition={{ delay: index * 0.1 }}
+                                                transition={{ delay: index * 0.05 }}
                                             >
                                                 <Link
                                                     href={item.href}
                                                     className={cn(
-                                                        "flex items-center justify-between p-4 rounded-xl transition-all duration-300 group",
+                                                        "flex items-center justify-between px-4 py-3 rounded-xl transition-all duration-200 group",
                                                         isActive
-                                                            ? "bg-wood-brown text-white shadow-lg"
-                                                            : "hover:bg-gray-50 text-charcoal hover:text-wood-brown"
+                                                            ? "bg-wood-brown/5 text-wood-brown font-semibold"
+                                                            : "text-charcoal/80 hover:bg-gray-50 hover:text-wood-brown"
                                                     )}
                                                     onClick={() => setMobileMenuOpen(false)}
                                                 >
-                                                    <span className="text-lg font-medium">{item.name}</span>
+                                                    <span className="text-base">{item.name}</span>
                                                     <ChevronDown className={cn(
-                                                        "w-5 h-5 -rotate-90 transition-transform group-hover:translate-x-1",
-                                                        isActive && "text-white"
+                                                        "w-4 h-4 -rotate-90 transition-transform",
+                                                        isActive ? "text-wood-brown" : "text-gray-300 group-hover:translate-x-1"
                                                     )} />
                                                 </Link>
                                             </motion.div>
                                         )
                                     })}
                                 </div>
+                            </div>
 
-                                {/* CTA Section */}
-                                <div className="p-6 space-y-3 border-t border-gray-100 bg-gray-50">
-                                    <motion.a
+                            {/* Actions & CTA */}
+                            <div className="p-5 space-y-3 bg-white border-t border-gray-50">
+                                {!isAuthenticated ? (
+                                    <Link
+                                        href="/login"
+                                        className="flex items-center justify-center w-full py-3.5 bg-gray-900 text-white rounded-xl font-semibold text-sm hover:bg-gray-800 transition-colors shadow-sm"
+                                        onClick={() => setMobileMenuOpen(false)}
+                                    >
+                                        تسجيل الدخول
+                                    </Link>
+                                ) : (
+                                    <LogoutButton className="w-full py-3.5 bg-destructive/10 text-destructive rounded-xl font-semibold text-sm hover:bg-destructive hover:text-white transition-all" />
+                                )}
+
+                                <div className="grid grid-cols-2 gap-3">
+                                    <a
                                         href="tel:+201234567890"
-                                        initial={{ opacity: 0, y: 20 }}
-                                        animate={{ opacity: 1, y: 0 }}
-                                        transition={{ delay: 0.4 }}
-                                        className="flex items-center justify-center gap-3 w-full px-6 py-4 text-wood-brown bg-white border-2 border-wood-brown rounded-2xl hover:bg-wood-brown hover:text-white transition-all duration-300 shadow-sm hover:shadow-lg font-medium text-base group"
+                                        className="flex flex-col items-center justify-center py-3 px-2 bg-gray-50 rounded-xl border border-gray-100 hover:border-wood-brown/30 transition-all font-medium text-xs text-charcoal/70 group"
                                     >
-                                        <Phone className="w-5 h-5 transition-transform group-hover:rotate-12" />
-                                        <span>اتصل بنا الآن</span>
-                                    </motion.a>
-
-                                    <motion.div
-                                        initial={{ opacity: 0, y: 20 }}
-                                        animate={{ opacity: 1, y: 0 }}
-                                        transition={{ delay: 0.5 }}
+                                        <Phone size={18} className="mb-1 text-wood-brown group-hover:scale-110 transition-transform" />
+                                        <span>اتصل بنا</span>
+                                    </a>
+                                    <Link
+                                        href="/products"
+                                        className="flex flex-col items-center justify-center py-3 px-2 bg-wood-brown text-white rounded-xl hover:bg-wood-brown/90 transition-all font-medium text-xs shadow-sm hover:shadow-md group"
+                                        onClick={() => setMobileMenuOpen(false)}
                                     >
-                                        <Link
-                                            href="/products"
-                                            className="flex items-center justify-center gap-3 w-full px-6 py-4 bg-gradient-to-r from-wood-brown to-wood-brown/90 text-white rounded-2xl hover:shadow-xl transition-all duration-300 font-medium text-base group relative overflow-hidden"
-                                            onClick={() => setMobileMenuOpen(false)}
-                                        >
-                                            <span className="absolute inset-0 -translate-x-full group-hover:translate-x-full transition-transform duration-700 bg-gradient-to-r from-transparent via-white/20 to-transparent" />
-                                            <ShoppingCart className="w-5 h-5 relative z-10 transition-transform group-hover:scale-110" />
-                                            <span className="relative z-10">تسوق الآن</span>
-                                        </Link>
-                                    </motion.div>
-
-                                    {!isAuthenticated ? (
-                                        <motion.div
-                                            initial={{ opacity: 0, y: 20 }}
-                                            animate={{ opacity: 1, y: 0 }}
-                                            transition={{ delay: 0.6 }}
-                                        >
-                                            <Link
-                                                href="/login"
-                                                className="flex items-center justify-center w-full px-6 py-4 bg-white text-charcoal border border-gray-200 rounded-2xl hover:border-wood-brown hover:text-wood-brown transition-all duration-300 font-medium text-base"
-                                                onClick={() => setMobileMenuOpen(false)}
-                                            >
-                                                تسجيل الدخول
-                                            </Link>
-                                        </motion.div>
-                                    ) : (
-                                        <motion.div
-                                            initial={{ opacity: 0, y: 20 }}
-                                            animate={{ opacity: 1, y: 0 }}
-                                            transition={{ delay: 0.6 }}
-                                            className="space-y-3"
-                                        >
-                                            <div className="flex items-center gap-3 px-6 py-4 bg-white border border-gray-200 rounded-2xl">
-                                                <div className="w-10 h-10 rounded-full bg-wood-brown/10 flex items-center justify-center text-wood-brown font-bold">
-                                                    {userName?.charAt(0).toUpperCase()}
-                                                </div>
-                                                <div className="flex flex-col">
-                                                    <span className="text-sm font-semibold text-charcoal">{userName}</span>
-                                                    <span className="text-xs text-soft-gray font-normal">تسجيل دخول ناجح</span>
-                                                </div>
-                                            </div>
-                                            <LogoutButton className="w-full flex items-center justify-center px-6 py-4 bg-destructive text-white border border-destructive rounded-2xl hover:bg-destructive/90 transition-all duration-300 font-medium text-base" />
-                                        </motion.div>
-                                    )}
-
+                                        <ShoppingCart size={18} className="mb-1 group-hover:scale-110 transition-transform" />
+                                        <span>التسوق</span>
+                                    </Link>
                                 </div>
                             </div>
                         </motion.div>

@@ -2,7 +2,7 @@
 import { Product, Category } from '@/types/product'
 
 export const PHONE_NUMBER = '+201234567890'
-export const API_BASE_URL = 'https://top-home-furniture.vercel.app'
+export const API_BASE_URL = 'http://tophomedev.runasp.net'
 
 export const categories: Category[] = [
   {
@@ -49,7 +49,7 @@ export const categories: Category[] = [
   },
 ]
 
-export const products: Product[] = [
+export const productsList: Product[] = [
   {
     id: '1',
     name: 'كنبة فاخرة من الجلد الطبيعي',
@@ -117,6 +117,138 @@ export const products: Product[] = [
       'ضمان 3 سنوات',
     ],
     rating: 4.8,
+  },
+  {
+    id: '3',
+    name: 'طاولة طعام خشبية حديثة',
+    description: 'طاولة طعام أنيقة تتسع لـ 6 أشخاص، مصنوعة من خشب البلوط المتين بتصميم عصري يضيف لمسة من الرقي لغرفة الطعام.',
+    category: 'dining',
+    material: 'خشب بلوط طبيعي',
+    weight: 45,
+    weightUnit: 'كجم',
+    width: 180,
+    depth: 90,
+    height: 75,
+    dimensionUnit: 'سم',
+    deliveryDays: 10,
+    deliveryUnit: 'أيام عمل',
+    originalPrice: 15000,
+    currentPrice: 12500,
+    discountAmount: 2500,
+    discountPercentage: 16,
+    currency: 'ج.م',
+    stockQuantity: 5,
+    inStock: true,
+    color: 'بيج',
+    images: [
+      '/images/eat.png',
+      '/images/eat.png',
+    ],
+    features: [
+      'هيكل متين من خشب البلوط',
+      'سطح مقاوم للخدش',
+      'سهلة التجميع',
+    ],
+    rating: 4.5,
+  },
+  {
+    id: '4',
+    name: 'كرسي مكتب مريح',
+    description: 'كرسي مكتب هندسي مصمم لتوفير الدعم الكامل للظهر والرقبة خلال ساعات العمل الطويلة. قابل للتعديل بالكامل.',
+    category: 'office',
+    material: 'شبك هوائي - معدن',
+    weight: 15,
+    weightUnit: 'كجم',
+    width: 65,
+    depth: 60,
+    height: 120,
+    dimensionUnit: 'سم',
+    deliveryDays: 3,
+    deliveryUnit: 'أيام عمل',
+    originalPrice: 4500,
+    currentPrice: 3900,
+    discountAmount: 600,
+    discountPercentage: 13,
+    currency: 'ج.م',
+    stockQuantity: 20,
+    inStock: true,
+    color: 'رمادي',
+    images: [
+      '/images/mkatb.png',
+      '/images/mkatb.png',
+    ],
+    features: [
+      'دعم قابل للتعديل للظهر',
+      'مسند رأس مريح',
+      'عجلات صامتة وناعمة',
+    ],
+    rating: 4.9,
+  },
+  {
+    id: '5',
+    name: 'طقم جلسة حدائق فاخر',
+    description: 'طقم خارجي مقاوم للعوامل الجوية، يتكون من كنبة وطاولتين وكراسي جانبية، مثالي للمساحات المفتوحة والشرفات.',
+    category: 'outdoor',
+    material: 'راتان صناعي - ألمنيوم',
+    weight: 60,
+    weightUnit: 'كجم',
+    width: 300,
+    depth: 200,
+    height: 80,
+    dimensionUnit: 'سم',
+    deliveryDays: 14,
+    deliveryUnit: 'أيام عمل',
+    originalPrice: 18000,
+    currentPrice: 16200,
+    discountAmount: 1800,
+    discountPercentage: 10,
+    currency: 'ج.م',
+    stockQuantity: 4,
+    inStock: true,
+    color: 'أبيض',
+    images: [
+      '/images/kharegya.png',
+      '/images/kharegya.png',
+    ],
+    features: [
+      'مقاوم للشمس والرطوبة',
+      'وسائد قابلة للغسل',
+      'وزن خفيف وسهل النقل',
+    ],
+    rating: 4.7,
+  },
+  {
+    id: '6',
+    name: 'ساعة حائط كلاسيكية',
+    description: 'ساعة حائط خشبية بتصميم كلاسيكي رائع تعطي انطباعاً بالفخامة في أي ركن توضع فيه.',
+    category: 'accessories',
+    material: 'خشب - زجاج',
+    weight: 2,
+    weightUnit: 'كجم',
+    width: 40,
+    depth: 5,
+    height: 40,
+    dimensionUnit: 'سم',
+    deliveryDays: 2,
+    deliveryUnit: 'أيام عمل',
+    originalPrice: 1200,
+    currentPrice: 950,
+    discountAmount: 250,
+    discountPercentage: 20,
+    currency: 'ج.م',
+    stockQuantity: 50,
+    inStock: true,
+    color: 'ذهبي',
+    images: [
+      '/images/aksesorat.png',
+      '/images/aksesorat.png',
+    ],
+    features: [
+      'ماكينة صامتة تماماً',
+      'سهلة التعليق',
+      'بطارية تدوم طويلاً',
+    ],
+    rating: 4.6,
   }
 ]
 
@@ -146,6 +278,4 @@ export const trustPoints = [
 export const navigationLinks = [
   { name: 'الرئيسية', href: '/' },
   { name: 'المنتجات', href: '/products' },
-  { name: 'من نحن', href: '/about' },
-  { name: 'تواصل معنا', href: '/contact' },
 ]

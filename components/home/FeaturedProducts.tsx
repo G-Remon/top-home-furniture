@@ -160,7 +160,7 @@ export default function FeaturedProducts() {
   }
 
   return (
-    <section id="featured" className="relative py-24 overflow-hidden bg-gradient-to-b from-gray-50 via-white to-gray-50" aria-labelledby="featured-title">
+    <section id="featured" className="relative py-28 overflow-hidden bg-white" aria-labelledby="featured-title">
       <BackgroundDecorations />
 
       {products.length > 0 && (
@@ -178,32 +178,31 @@ export default function FeaturedProducts() {
           initial="hidden"
           animate={inView ? 'visible' : 'hidden'}
           variants={containerVariants}
-          className="text-center mb-16 relative"
+          className="text-center mb-20 relative"
         >
           <SectionBadge variants={itemVariants} />
 
           <motion.h2
             id="featured-title"
             variants={titleVariants}
-            className="text-5xl md:text-6xl font-bold mb-4 relative inline-block"
+            className="text-5xl md:text-7xl font-black mb-8 relative inline-block tracking-tight text-charcoal"
           >
-            <span className="bg-gradient-to-r from-gray-900 via-gray-800 to-gray-900 bg-clip-text text-transparent">
-              منتجاتنا المميزة
-            </span>
+            منتجاتنا <span className="text-wood-brown">المميزة</span>
+
             <motion.div
-              className="absolute -bottom-2 left-0 right-0 h-1 bg-gradient-to-r from-transparent via-wood-brown to-transparent"
-              initial={{ scaleX: 0 }}
-              animate={inView ? { scaleX: 1 } : { scaleX: 0 }}
-              transition={{ duration: 0.8, delay: 0.5 }}
+              className="absolute -bottom-4 left-1/2 -translate-x-1/2 w-24 h-1.5 bg-gradient-to-r from-transparent via-wood-brown to-transparent rounded-full"
+              initial={{ scaleX: 0, opacity: 0 }}
+              animate={inView ? { scaleX: 1, opacity: 1 } : { scaleX: 0, opacity: 0 }}
+              transition={{ duration: 1, delay: 0.6 }}
               aria-hidden="true"
             />
           </motion.h2>
 
           <motion.p
             variants={itemVariants}
-            className="text-gray-600 text-lg max-w-2xl mx-auto leading-relaxed"
+            className="text-soft-gray text-lg md:text-xl max-w-2xl mx-auto leading-relaxed font-medium"
           >
-            اكتشف مجموعة مختارة بعناية من تصاميمنا الفريدة التي تجمع بين الأناقة الدقيقة والوظائف المثالية
+            نجمع لك أرقى قطع الأثاث التي تمزج بين الفن الهندسي والراحة المطلقة، لتضفي لمسة ملكية على أركان منزلك
           </motion.p>
         </motion.div>
 
@@ -244,7 +243,7 @@ export default function FeaturedProducts() {
           ) : (
             <div className="relative group">
               {/* --- Desktop Grid View (1024px+) --- */}
-              <div className="hidden lg:grid lg:grid-cols-5 gap-6">
+              <div className="hidden lg:grid lg:grid-cols-5 gap-y-12 gap-x-6">
                 {products.slice(0, 10).map((product) => (
                   <ProductCard key={`grid-${product.id}`} product={product} />
                 ))}
@@ -331,40 +330,37 @@ export default function FeaturedProducts() {
           variants={itemVariants}
           initial="hidden"
           animate={inView ? 'visible' : 'hidden'}
-          className="mt-16 text-center"
+          className="mt-20 text-center"
         >
           <div className="relative inline-block group">
-            <div className="absolute inset-0 bg-gradient-to-r from-wood-brown to-[#D4AF37] rounded-full blur-xl opacity-0 group-hover:opacity-30 transition-opacity duration-500" />
+            <div className="absolute inset-0 bg-wood-brown/20 rounded-full blur-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
 
             <motion.a
               href="/products"
-              className="relative px-8 py-4 bg-gradient-to-r from-wood-brown to-[#D4AF37] text-white font-semibold rounded-full shadow-lg hover:shadow-2xl transition-all duration-300 hover:scale-105 flex items-center gap-3 group overflow-hidden focus:ring-4 focus:ring-wood-brown/30 outline-none"
+              className="relative px-12 py-5 bg-charcoal text-white font-bold rounded-2xl shadow-[0_20px_40px_rgba(0,0,0,0.1)] hover:shadow-[0_20px_40px_rgba(212,175,55,0.2)] transition-all duration-500 hover:-translate-y-1 flex items-center gap-4 group overflow-hidden border border-white/10"
               whileTap={{ scale: 0.98 }}
             >
-              <div className="absolute inset-0 bg-gradient-to-r from-[#D4AF37] to-wood-brown opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+              {/* Shine effect */}
+              <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent -translate-x-full group-hover:animate-shine" />
 
-              <span className="relative z-10 flex items-center gap-3">
-                استكشف جميع المنتجات
-                <ArrowLeft className="w-5 h-5 group-hover:-translate-x-1 transition-transform duration-300" aria-hidden="true" />
+              <span className="relative z-10 flex items-center gap-4 text-lg">
+                استكشف التشكيلة الكاملة
+                <div className="w-8 h-8 rounded-full bg-wood-brown flex items-center justify-center group-hover:scale-110 transition-transform duration-500">
+                  <ArrowLeft className="w-4 h-4 text-white group-hover:-translate-x-1 transition-transform duration-300" aria-hidden="true" />
+                </div>
               </span>
-
-              <motion.div
-                className="absolute bottom-0 left-0 h-0.5 bg-white"
-                initial={{ width: 0 }}
-                whileHover={{ width: '100%' }}
-                transition={{ duration: 0.3 }}
-              />
             </motion.a>
           </div>
 
-          <motion.p
+          <motion.div
             variants={itemVariants}
-            className="mt-6 text-gray-500 flex items-center justify-center gap-2"
+            className="mt-8 flex flex-col items-center gap-4"
           >
-            <span className="w-2 h-2 rounded-full bg-wood-brown animate-pulse" aria-hidden="true" />
-            أكثر من 100+ تصميم فاخر ينتظرك في مجموعتنا الكاملة
-            <span className="w-2 h-2 rounded-full bg-wood-brown animate-pulse" aria-hidden="true" />
-          </motion.p>
+            <div className="flex items-center gap-2 px-4 py-2 bg-gray-50 rounded-xl border border-gray-100">
+              <span className="w-2 h-2 rounded-full bg-wood-brown animate-pulse" aria-hidden="true" />
+              <p className="text-sm font-bold text-charcoal/60">أكثر من 100+ تصميم فاخر ينتظرك</p>
+            </div>
+          </motion.div>
         </motion.div>
       </div>
 
@@ -376,25 +372,25 @@ export default function FeaturedProducts() {
           33% { transform: translate(30px, -50px) scale(1.1); }
           66% { transform: translate(-20px, 20px) scale(0.9); }
         }
-        .animate-blob { animation: blob 7s infinite; }
+        @keyframes shine {
+          100% { transform: translateX(100%); }
+        }
+        .animate-blob { animation: blob 10s infinite; }
+        .animate-shine { animation: shine 1.5s ease-in-out infinite; }
         .animation-delay-2000 { animation-delay: 2s; }
         .animation-delay-4000 { animation-delay: 4s; }
 
         .swiper-pagination-bullet {
-          width: 10px;
-          height: 10px;
-          background: #d1d5db;
+          width: 8px;
+          height: 8px;
+          background: #e5e5e5;
           opacity: 1;
-          transition: all 0.3s ease;
+          transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
         }
         .swiper-pagination-bullet-active {
-          background: linear-gradient(135deg, #D4AF37, #A1821C);
-          width: 30px;
-          border-radius: 5px;
-        }
-        .swiper-pagination-bullet:hover {
           background: #D4AF37;
-          transform: scale(1.2);
+          width: 24px;
+          border-radius: 4px;
         }
       `}</style>
     </section>

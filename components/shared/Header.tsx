@@ -82,7 +82,7 @@ export default function Header() {
                 <div className="container mx-auto px-4 lg:px-8">
                     <div className="flex items-center justify-between">
                         {/* Logo - Enhanced with better sizing */}
-                        <Link href="/" className="flex items-center gap-3 group relative z-50">
+                        <Link href="/" className="flex items-center gap-3 group relative z-50" aria-label="الصفحة الرئيسية لـ توب هوم">
                             <motion.div
                                 whileHover={{ scale: 1.05 }}
                                 whileTap={{ scale: 0.95 }}
@@ -90,11 +90,10 @@ export default function Header() {
                             >
                                 <Image
                                     src="/images/logo.png"
-                                    alt="TOP HOME Logo"
+                                    alt=""
                                     fill
                                     className={cn(
-                                        "object-contain drop-shadow-lg transition-all duration-300",
-                                        isTransparent ? "brightness-100" : ""
+                                        "object-contain drop-shadow-lg transition-all duration-300"
                                     )}
                                     priority
                                     sizes="(max-width: 768px) 64px, 80px"
@@ -157,6 +156,7 @@ export default function Header() {
                             {/* Search Button - Styled as pill */}
                             <button
                                 onClick={() => setSearchOpen(true)}
+                                aria-label="فتح البحث"
                                 className={cn(
                                     "flex items-center gap-2 px-4 py-2.5 rounded-xl transition-all duration-300 group",
                                     isTransparent
@@ -167,7 +167,7 @@ export default function Header() {
                                 <Search size={18} className="group-hover:scale-110 transition-transform" />
                                 <span className="text-sm font-semibold">بحث</span>
                             </button>
- 
+
                             {/* Wishlist - Styled as pill */}
                             <Link
                                 href="/wishlist"
@@ -198,38 +198,43 @@ export default function Header() {
                             </Link>
 
                             {/* User/Auth */}
-                            {!isAuthenticated ? (
-                                <Link
-                                    href="/login"
-                                    className={cn(
-                                        "px-5 py-2.5 rounded-xl font-medium text-sm transition-all duration-300 flex items-center gap-2",
-                                        isTransparent
-                                            ? "bg-white/20 text-white hover:bg-white/30 backdrop-blur-sm"
-                                            : "bg-wood-brown text-white hover:bg-wood-brown/90 shadow-md"
-                                    )}
-                                >
-                                    <User size={16} />
-                                    دخول
-                                </Link>
-                            ) : (
-                                <div className="flex items-center gap-3">
-                                    <div className={cn(
-                                        "flex items-center gap-3 px-4 py-2.5 rounded-xl transition-all duration-300",
-                                        isTransparent
-                                            ? "bg-white/10 text-white"
-                                            : "bg-gray-100 text-gray-700"
-                                    )}>
-                                        <div className="w-8 h-8 rounded-full bg-wood-brown/20 flex items-center justify-center text-wood-brown font-bold">
-                                            {userName?.charAt(0).toUpperCase()}
-                                        </div>
-                                        <span className="font-medium text-sm">{userName}</span>
-                                    </div>
-                                    <LogoutButton
-                                        className="px-4 py-2.5 bg-red-50 text-red-600 rounded-xl font-medium text-sm hover:bg-red-100 transition-all duration-300 border border-red-100"
+                            {isMounted && (
+                                !isAuthenticated ? (
+                                    <Link
+                                        href="/login"
+                                        className={cn(
+                                            "px-5 py-2.5 rounded-xl font-medium text-sm transition-all duration-300 flex items-center gap-2",
+                                            isTransparent
+                                                ? "bg-white/20 text-white hover:bg-white/30 backdrop-blur-sm"
+                                                : "bg-wood-brown text-white hover:bg-wood-brown/90 shadow-md"
+                                        )}
                                     >
-                                        خروج
-                                    </LogoutButton>
-                                </div>
+                                        <User size={16} />
+                                        دخول
+                                    </Link>
+                                ) : (
+                                    <div className="flex items-center gap-3">
+                                        <div className={cn(
+                                            "flex items-center gap-3 px-4 py-2 bg-white/10 backdrop-blur-md border rounded-2xl transition-all duration-300",
+                                            isTransparent
+                                                ? "border-white/20 text-white"
+                                                : "border-gray-100 bg-gray-50 text-gray-700 shadow-sm"
+                                        )}>
+                                            <div className="w-8 h-8 rounded-full bg-wood-brown/20 flex items-center justify-center text-wood-brown font-bold border border-wood-brown/20 uppercase">
+                                                {userName?.charAt(0)}
+                                            </div>
+                                            <div className="flex flex-col">
+                                                <span className="text-[10px] opacity-60 font-bold leading-none mb-0.5">مرحباً بك</span>
+                                                <span className="font-bold text-sm leading-none">{userName}</span>
+                                            </div>
+                                        </div>
+                                        <LogoutButton
+                                            className="px-4 py-2.5 bg-red-50 text-red-600 rounded-xl font-medium text-sm hover:bg-red-100 transition-all duration-300 border border-red-100"
+                                        >
+                                            خروج
+                                        </LogoutButton>
+                                    </div>
+                                )
                             )}
 
                             {/* WhatsApp Button - Enhanced Premium Design */}
@@ -256,6 +261,7 @@ export default function Header() {
                         <div className="flex lg:hidden items-center gap-2">
                             <Link
                                 href="/wishlist"
+                                aria-label="قائمة الأمنيات"
                                 className={cn(
                                     "relative p-2.5 rounded-xl transition-all",
                                     isTransparent
@@ -275,6 +281,7 @@ export default function Header() {
                             </Link>
                             <button
                                 onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+                                aria-label={mobileMenuOpen ? "إغلاق القائمة" : "فتح القائمة"}
                                 className={cn(
                                     "p-2.5 rounded-xl transition-all duration-300",
                                     isTransparent
@@ -368,7 +375,7 @@ export default function Header() {
             {/* --- Mobile Bottom Navigation (Floating Premium Dock) --- */}
             {isMounted && (
                 <div className="lg:hidden fixed bottom-6 left-4 right-4 z-50">
-                    <motion.nav 
+                    <motion.nav
                         initial={{ y: 100, opacity: 0 }}
                         animate={{ y: 0, opacity: 1 }}
                         className="h-18 bg-white/95 backdrop-blur-xl border border-gray-100 shadow-[0_12px_40px_rgba(0,0,0,0.12)] rounded-[24px] px-2 flex items-center justify-between"
@@ -388,7 +395,7 @@ export default function Header() {
                             </div>
                             <span className="text-[9px] font-black uppercase tracking-tighter">الرئيسية</span>
                         </Link>
- 
+
                         <Link
                             href="/products"
                             className={cn(
@@ -404,7 +411,7 @@ export default function Header() {
                             </div>
                             <span className="text-[9px] font-black uppercase tracking-tighter">المنتجات</span>
                         </Link>
-                        
+
                         {/* WhatsApp Hero Floating Button */}
                         <div className="relative flex-1 flex justify-center h-full group">
                             <WhatsAppButton
@@ -418,7 +425,7 @@ export default function Header() {
                             {/* Animated Glow */}
                             <div className="absolute -top-10 w-14 h-14 bg-emerald-500/30 rounded-full blur-2xl -z-10 animate-pulse group-hover:bg-emerald-500/50" />
                         </div>
- 
+
                         <button
                             onClick={() => setSearchOpen(true)}
                             className="flex flex-col items-center justify-center gap-1.5 flex-1 h-full rounded-2xl text-gray-400 hover:text-wood-brown transition-all"
@@ -428,7 +435,7 @@ export default function Header() {
                             </div>
                             <span className="text-[9px] font-black uppercase tracking-tighter">بحث</span>
                         </button>
- 
+
                         <Link
                             href="/wishlist"
                             className={cn(
@@ -448,6 +455,30 @@ export default function Header() {
                                 )}
                             </div>
                             <span className="text-[9px] font-black uppercase tracking-tighter">المفضلة</span>
+                        </Link>
+
+                        <Link
+                            href={isAuthenticated ? "/dashboard" : "/login"}
+                            className={cn(
+                                "flex flex-col items-center justify-center gap-1.5 flex-1 h-full rounded-2xl transition-all duration-300",
+                                (pathname === '/login' || pathname.startsWith('/dashboard')) ? "text-wood-brown" : "text-gray-400"
+                            )}
+                        >
+                            <div className={cn(
+                                "p-2 rounded-xl transition-all duration-500",
+                                (pathname === '/login' || pathname.startsWith('/dashboard')) ? "bg-wood-brown/10 scale-110" : ""
+                            )}>
+                                {isAuthenticated ? (
+                                    <div className="w-6 h-6 rounded-full bg-wood-brown text-white flex items-center justify-center text-[10px] font-bold uppercase">
+                                        {userName?.charAt(0)}
+                                    </div>
+                                ) : (
+                                    <User size={20} />
+                                )}
+                            </div>
+                            <span className="text-[9px] font-black uppercase tracking-tighter">
+                                {isAuthenticated ? 'حسابي' : 'دخول'}
+                            </span>
                         </Link>
                     </motion.nav>
                 </div>

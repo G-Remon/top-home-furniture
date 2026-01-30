@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { useAuthStore } from '@/store/auth.store';
 
@@ -13,22 +13,23 @@ interface AuthGuardProps {
  */
 export const AuthGuard = ({ children }: AuthGuardProps) => {
     const router = useRouter();
-    const { isAuthenticated } = useAuthStore();
-    const [isReady, setIsReady] = useState(false);
+    const { isAuthenticated, _hasHydrated } = useAuthStore();
 
     useEffect(() => {
-        if (isAuthenticated) {
+        if (_hasHydrated && isAuthenticated) {
             router.push('/');
-        } else {
-            setIsReady(true);
         }
-    }, [isAuthenticated, router]);
+    }, [isAuthenticated, _hasHydrated, router]);
 
-    if (isAuthenticated) {
-        return null;
+    if (!_hasHydrated) {
+        return (
+            <div className="min-h-screen flex items-center justify-center bg-background">
+                <div className="w-8 h-8 border-4 border-wood-brown border-t-transparent rounded-full animate-spin" />
+            </div>
+        );
     }
 
-    if (!isReady) {
+    if (isAuthenticated) {
         return null;
     }
 

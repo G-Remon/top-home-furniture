@@ -126,20 +126,20 @@ const ProductCard = memo(({ product }: ProductCardProps) => {
       </Link>
 
       {/* Content */}
-      <div className="p-2 sm:p-3 pb-3 sm:pb-4 flex flex-col flex-grow text-right">
+      <div className="p-3 sm:p-4 pb-4 sm:pb-5 flex flex-col flex-grow text-right">
         {/* Category & Rating */}
-        <div className="flex items-center justify-between mb-0.5 sm:mb-1">
-          <span className="text-[6px] sm:text-[8px] font-bold text-wood-brown uppercase tracking-widest">
+        <div className="flex items-center justify-between mb-1 sm:mb-2">
+          <span className="text-[10px] sm:text-xs font-bold text-wood-brown uppercase tracking-widest">
             {translateCategory(product.category)}
           </span>
-          <div className="flex items-center gap-0.5" aria-label={`تقييم: ${product.rating || 5.0} من 5`}>
-            <Star size={7} className="text-[#D4AF37] fill-[#D4AF37]" aria-hidden="true" />
-            <span className="text-[8px] sm:text-[10px] font-bold text-gray-700">{product.rating || 5.0}</span>
+          <div className="flex items-center gap-1" aria-label={`تقييم: ${product.rating || 5.0} من 5`}>
+            <Star size={10} className="text-[#D4AF37] fill-[#D4AF37]" aria-hidden="true" />
+            <span className="text-[10px] sm:text-xs font-bold text-gray-700">{product.rating || 5.0}</span>
           </div>
         </div>
 
         {/* Title */}
-        <h3 className="text-[10px] sm:text-sm font-bold text-gray-900 mb-0.5 sm:mb-1 line-clamp-1 group-hover:text-wood-brown transition-colors leading-tight">
+        <h3 className="text-sm sm:text-base font-bold text-gray-900 mb-1 sm:mb-2 line-clamp-1 group-hover:text-wood-brown transition-colors leading-tight">
           <Link
             href={`/products/${product.id}`}
             className="focus:underline outline-none"
@@ -149,13 +149,13 @@ const ProductCard = memo(({ product }: ProductCardProps) => {
         </h3>
 
         {/* Price Section */}
-        <div className="mb-1.5 sm:mb-2.5">
-          <div className="flex flex-col sm:flex-row-reverse sm:items-center justify-start gap-0 sm:gap-1.5">
-            <span className="text-xs sm:text-base font-black text-wood-brown">
+        <div className="mb-2 sm:mb-3">
+          <div className="flex flex-col sm:flex-row-reverse sm:items-center justify-start gap-0.5 sm:gap-2">
+            <span className="text-sm sm:text-lg font-black text-wood-brown">
               {formatPrice(product.currentPrice)}
             </span>
             {hasDiscount && (
-              <span className="text-[7px] sm:text-[10px] text-gray-400 line-through">
+              <span className="text-[10px] sm:text-xs text-gray-400 line-through">
                 {formatPrice(product.originalPrice)}
               </span>
             )}
@@ -163,19 +163,19 @@ const ProductCard = memo(({ product }: ProductCardProps) => {
         </div>
 
         {/* Actions */}
-        <div className="mt-auto space-y-1 sm:space-y-2">
+        <div className="mt-auto space-y-2 sm:space-y-3">
           <WhatsAppButton
             phoneNumber={PHONE_NUMBER}
             message={`مرحباً، أود الاستفسار عن ${translateProductName(product.name)}`}
             productName={translateProductName(product.name)}
-            className="w-full py-1.5 sm:py-2 rounded-lg sm:rounded-xl font-bold text-[8px] sm:text-xs shadow-sm"
+            className="w-full py-2 sm:py-2.5 rounded-lg sm:rounded-xl font-bold text-[10px] sm:text-sm shadow-sm"
           >
             <span>طلب عبر واتساب</span>
           </WhatsAppButton>
 
           <Link
             href={`/products/${product.id}`}
-            className="block text-center text-[7px] sm:text-[9px] text-gray-400 hover:text-wood-brown transition-colors font-medium focus:ring-1 focus:ring-wood-brown/30 rounded"
+            className="block text-center text-[10px] sm:text-xs text-gray-400 hover:text-wood-brown transition-colors font-medium focus:ring-2 focus:ring-wood-brown/30 rounded-lg py-1"
             aria-label={`مشاهدة تفاصيل ${translateProductName(product.name)}`}
           >
             عرض التفاصيل

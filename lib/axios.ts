@@ -32,11 +32,13 @@ axiosInstance.interceptors.request.use(
 axiosInstance.interceptors.response.use(
     (response) => response,
     (error) => {
-        let message = error.response?.data?.message || 'حدث خطأ غير متوقع';
+        console.error('Axios Error Response:', error.response?.data);
+        let message = error.response?.data?.message || error.response?.data || 'حدث خطأ غير متوقع';
 
         // Translate common errors if needed
         if (message === 'An unexpected error occurred') message = 'حدث خطأ غير متوقع';
         if (message === 'Network Error') message = 'خطأ في الاتصال بالشبكة';
+        if (typeof message === 'object') message = JSON.stringify(message);
 
         return Promise.reject(new Error(message));
     }

@@ -23,18 +23,28 @@ export const WishlistProvider = ({ children }: { children: ReactNode }) => {
     const [loading, setLoading] = useState(false);
     const { isAuthenticated } = useAuthStore();
 
+    // Load initial wishlist from localStorage for guests
+    useEffect(() => {
+        const localWishlist = localStorage.getItem('guest_wishlist');
+        if (localWishlist && !isAuthenticated) {
+            try {
+                setWishlist(JSON.parse(localWishlist));
+            } catch (e) {
+                console.error('Failed to parse local wishlist', e);
+            }
+        }
+    }, []);
+
     // Fetch favorites from API if authenticated
     const refreshWishlist = async () => {
-        if (!isAuthenticated) {
-            setWishlist([]);
-            return;
-        }
+        if (!isAuthenticated) return;
 
         setLoading(true);
         try {
             const favorites = await wishlistService.getFavorites();
-            // Handle case where API might return products differently
             setWishlist(Array.isArray(favorites) ? favorites : []);
+            // Clear local wishlist once synced
+            localStorage.removeItem('guest_wishlist');
         } catch (error) {
             console.error('Failed to fetch wishlist', error);
         } finally {
@@ -45,38 +55,39 @@ export const WishlistProvider = ({ children }: { children: ReactNode }) => {
     useEffect(() => {
         if (isAuthenticated) {
             refreshWishlist();
-        } else {
-            setWishlist([]);
         }
     }, [isAuthenticated]);
 
     const addToWishlist = async (product: Product) => {
         if (!isAuthenticated) {
-            // We could show a login prompt here
+            const newWishlist = [...wishlist, product];
+            setWishlist(newWishlist);
+            localStorage.setItem('guest_wishlist', JSON.stringify(newWishlist));
             return;
         }
 
         try {
-            // Optimistic update
             setWishlist(prev => [...prev, product]);
             await wishlistService.addToWishlist(product.id);
         } catch (error) {
-            // Rollback on error
             setWishlist(prev => prev.filter(p => p.id !== product.id));
             console.error('Failed to add to wishlist', error);
         }
     };
 
     const removeFromWishlist = async (productId: string | number) => {
-        if (!isAuthenticated) return;
+        if (!isAuthenticated) {
+            const newWishlist = wishlist.filter(p => String(p.id) !== String(productId));
+            setWishlist(newWishlist);
+            localStorage.setItem('guest_wishlist', JSON.stringify(newWishlist));
+            return;
+        }
 
-        const productToRestore = wishlist.find(p => p.id === productId);
+        const productToRestore = wishlist.find(p => String(p.id) === String(productId));
         try {
-            // Optimistic update
-            setWishlist(prev => prev.filter(p => p.id !== productId));
+            setWishlist(prev => prev.filter(p => String(p.id) !== String(productId)));
             await wishlistService.removeFromWishlist(productId);
         } catch (error) {
-            // Rollback
             if (productToRestore) {
                 setWishlist(prev => [...prev, productToRestore]);
             }

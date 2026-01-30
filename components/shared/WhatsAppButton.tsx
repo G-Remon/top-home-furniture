@@ -83,6 +83,7 @@ export default function WhatsAppButton({
                     target="_blank"
                     rel="noopener noreferrer"
                     onClick={onClick}
+                    aria-label={productName ? `تواصل عبر واتساب بخصوص ${productName}` : "تواصل عبر واتساب"}
                     className="relative group flex items-center justify-center w-16 h-16 bg-gradient-to-br from-[#D4AF37] to-[#AA8C2C] rounded-full shadow-2xl hover:shadow-[#D4AF37]/50 transition-all duration-300 overflow-hidden"
                     whileHover={{ scale: 1.1 }}
                     whileTap={{ scale: 0.95 }}
@@ -210,6 +211,7 @@ export default function WhatsAppButton({
             target="_blank"
             rel="noopener noreferrer"
             onClick={onClick}
+            aria-label={productName ? `طلب ${productName} عبر واتساب` : "تواصل عبر واتساب"}
             className={cn(
                 'relative inline-flex items-center justify-center rounded-full font-semibold transition-all duration-300 overflow-hidden group',
                 'bg-gradient-to-r from-[#D4AF37] to-[#AA8C2C] text-white',

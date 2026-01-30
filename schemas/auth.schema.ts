@@ -16,8 +16,24 @@ export const registerSchema = z.object({
     path: ["confirmPassword"],
 });
 
+export const forgotPasswordSchema = z.object({
+    email: z.string().email('بريد إلكتروني غير صالح'),
+});
+
+export const resetPasswordSchema = z.object({
+    email: z.string().email('بريد إلكتروني غير صالح'),
+    token: z.string().min(1, 'الرمز مطلوب'),
+    password: z.string().min(6, 'كلمة المرور يجب أن لا تقل عن 6 أحرف'),
+    confirmPassword: z.string().min(1, 'يرجى تأكيد كلمة المرور'),
+}).refine((data) => data.password === data.confirmPassword, {
+    message: "كلمات المرور غير متطابقة",
+    path: ["confirmPassword"],
+});
+
 export type LoginFormData = z.infer<typeof loginSchema>;
 export type RegisterFormData = z.infer<typeof registerSchema>;
+export type ForgotPasswordFormData = z.infer<typeof forgotPasswordSchema>;
+export type ResetPasswordFormData = z.infer<typeof resetPasswordSchema>;
 
 export interface AuthResponse {
     userName: string;

@@ -7,9 +7,11 @@ interface AuthState {
     userName: string | null;
     email: string | null;
     isAuthenticated: boolean;
+    _hasHydrated: boolean;
     setAuth: (data: { token: string; userName: string; email: string }) => void;
     logout: () => void;
     checkTokenValidity: () => void;
+    setHasHydrated: (state: boolean) => void;
 }
 
 interface JwtPayload {
@@ -25,6 +27,7 @@ export const useAuthStore = create<AuthState>()(
             userName: null,
             email: null,
             isAuthenticated: false,
+            _hasHydrated: false,
 
             setAuth: (data) => {
                 set({
@@ -59,10 +62,17 @@ export const useAuthStore = create<AuthState>()(
                     logout();
                 }
             },
+
+            setHasHydrated: (state) => {
+                set({ _hasHydrated: state });
+            },
         }),
         {
             name: 'top-home-auth',
             storage: createJSONStorage(() => localStorage),
+            onRehydrateStorage: () => (state) => {
+                state?.setHasHydrated(true);
+            },
         }
     )
 );

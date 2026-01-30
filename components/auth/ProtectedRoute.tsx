@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { useAuthStore } from '@/store/auth.store';
 
@@ -10,32 +10,24 @@ interface ProtectedRouteProps {
 
 export const ProtectedRoute = ({ children }: ProtectedRouteProps) => {
     const router = useRouter();
-    const { isAuthenticated } = useAuthStore();
-    const [isReady, setIsReady] = useState(false);
+    const { isAuthenticated, _hasHydrated } = useAuthStore();
 
     useEffect(() => {
-        // We check isAuthenticated but also wait for the store to hydrate
-        // Zustand's persist middleware might take a moment to load from localStorage
-        const checkAuth = () => {
-            if (!isAuthenticated) {
-                router.push('/login');
-            } else {
-                setIsReady(true);
-            }
-        };
+        if (_hasHydrated && !isAuthenticated) {
+            router.push('/login');
+        }
+    }, [isAuthenticated, _hasHydrated, router]);
 
-        // Small delay to allow hydration if needed, or check store hydration state
-        // For simplicity with persist, we just check if isAuthenticated is false
-        // If it's false initially but will become true, there might be a flick
-        // But since Home MUST be accessible ONLY after login, it's safer to redirect.
-        checkAuth();
-    }, [isAuthenticated, router]);
-
-    if (!isAuthenticated) {
-        return null; // Or a loading spinner
+    // Don't show anything until we're sure about the auth state
+    if (!_hasHydrated) {
+        return (
+            <div className="min-h-screen flex items-center justify-center bg-background">
+                <div className="w-8 h-8 border-4 border-wood-brown border-t-transparent rounded-full animate-spin" />
+            </div>
+        );
     }
 
-    if (!isReady) {
+    if (!isAuthenticated) {
         return null;
     }
 

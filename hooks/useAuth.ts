@@ -3,7 +3,7 @@
 import { useRouter } from 'next/navigation';
 import { useAuthStore } from '@/store/auth.store';
 import { authService } from '@/services/auth.service';
-import { LoginFormData, RegisterFormData } from '@/schemas/auth.schema';
+import { LoginFormData, RegisterFormData, ForgotPasswordFormData, ResetPasswordFormData } from '@/schemas/auth.schema';
 import { useState, useEffect } from 'react';
 
 export const useAuth = () => {
@@ -51,6 +51,33 @@ export const useAuth = () => {
         }
     };
 
+    const forgotPassword = async (data: ForgotPasswordFormData) => {
+        setIsLoading(true);
+        setError(null);
+        try {
+            await authService.forgotPassword(data);
+        } catch (err: any) {
+            setError(err.message || 'فشل إرسال طلب إعادة تعيين كلمة المرور');
+            throw err;
+        } finally {
+            setIsLoading(false);
+        }
+    };
+
+    const resetPassword = async (data: ResetPasswordFormData) => {
+        setIsLoading(true);
+        setError(null);
+        try {
+            await authService.resetPassword(data);
+            router.push('/login');
+        } catch (err: any) {
+            setError(err.message || 'فشل إعادة تعيين كلمة المرور');
+            throw err;
+        } finally {
+            setIsLoading(false);
+        }
+    };
+
     const handleLogout = () => {
         logout();
         router.push('/login');
@@ -59,6 +86,8 @@ export const useAuth = () => {
     return {
         login,
         register,
+        forgotPassword,
+        resetPassword,
         logout: handleLogout,
         isAuthenticated,
         isLoading,

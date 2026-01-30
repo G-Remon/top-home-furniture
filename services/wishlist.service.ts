@@ -5,7 +5,7 @@ import { API_BASE_URL as BASE_URL } from '@/lib/constants';
 
 // We point to the root API and include the full path in methods to be safe with Axios joining
 const authApi = axios.create({
-    baseURL: `${BASE_URL}/api`,
+    baseURL: BASE_URL ? `${BASE_URL}/api/` : '/api/',
 });
 
 // Debug function to check storage and token
@@ -46,7 +46,7 @@ export const wishlistService = {
     async addToWishlist(productId: string | number) {
         const id = typeof productId === 'string' ? parseInt(productId, 10) : productId;
         // URL: http://tophomedev.runasp.net/api/WishList/create
-        const response = await authApi.post('/WishList/create', { productId: id });
+        const response = await authApi.post('WishList/create', { productId: id });
         return response.data;
     },
 
@@ -55,7 +55,7 @@ export const wishlistService = {
      */
     async getFavorites(): Promise<Product[]> {
         // URL: http://tophomedev.runasp.net/api/WishList/get-favorites
-        const response = await authApi.get('/WishList/get-favorites');
+        const response = await authApi.get('WishList/get-favorites');
         const data = response.data;
         // The API might return the list directly or wrapped
         return Array.isArray(data) ? data : (data?.items || []);
@@ -67,7 +67,7 @@ export const wishlistService = {
     async removeFromWishlist(productId: string | number) {
         const id = typeof productId === 'string' ? parseInt(productId, 10) : productId;
         // URL: http://tophomedev.runasp.net/api/WishList/Delete?productId=...
-        const response = await authApi.delete(`/WishList/Delete?productId=${id}`);
+        const response = await authApi.delete(`WishList/Delete?productId=${id}`);
         return response.data;
     }
 };

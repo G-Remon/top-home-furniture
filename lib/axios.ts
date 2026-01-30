@@ -3,7 +3,7 @@ import { useAuthStore } from '@/store/auth.store';
 
 import { API_BASE_URL as BASE_URL } from '@/lib/constants';
 
-const API_BASE_URL = `${BASE_URL}/api`;
+const API_BASE_URL = BASE_URL ? `${BASE_URL}/api/` : '/api/';
 
 const axiosInstance = axios.create({
     baseURL: API_BASE_URL,

@@ -457,29 +457,7 @@ export default function Header() {
                             <span className="text-[9px] font-black uppercase tracking-tighter">المفضلة</span>
                         </Link>
 
-                        <Link
-                            href={isAuthenticated ? "/dashboard" : "/login"}
-                            className={cn(
-                                "flex flex-col items-center justify-center gap-1.5 flex-1 h-full rounded-2xl transition-all duration-300",
-                                (pathname === '/login' || pathname.startsWith('/dashboard')) ? "text-wood-brown" : "text-gray-400"
-                            )}
-                        >
-                            <div className={cn(
-                                "p-2 rounded-xl transition-all duration-500",
-                                (pathname === '/login' || pathname.startsWith('/dashboard')) ? "bg-wood-brown/10 scale-110" : ""
-                            )}>
-                                {isAuthenticated ? (
-                                    <div className="w-6 h-6 rounded-full bg-wood-brown text-white flex items-center justify-center text-[10px] font-bold uppercase">
-                                        {userName?.charAt(0)}
-                                    </div>
-                                ) : (
-                                    <User size={20} />
-                                )}
-                            </div>
-                            <span className="text-[9px] font-black uppercase tracking-tighter">
-                                {isAuthenticated ? 'حسابي' : 'دخول'}
-                            </span>
-                        </Link>
+
                     </motion.nav>
                 </div>
             )}
@@ -531,27 +509,7 @@ export default function Header() {
                                         </button>
                                     </div>
 
-                                    {/* User info */}
-                                    {isAuthenticated ? (
-                                        <div className="flex items-center gap-3 p-4 bg-wood-brown/5 rounded-2xl">
-                                            <div className="w-12 h-12 rounded-full bg-wood-brown/20 flex items-center justify-center text-wood-brown font-bold text-lg">
-                                                {userName?.charAt(0).toUpperCase()}
-                                            </div>
-                                            <div className="flex-1">
-                                                <p className="font-bold text-gray-900">{userName}</p>
-                                                <p className="text-xs text-gray-500">عضو مسجل</p>
-                                            </div>
-                                        </div>
-                                    ) : (
-                                        <Link
-                                            href="/login"
-                                            className="flex items-center justify-center gap-2 p-4 bg-wood-brown text-white rounded-2xl font-bold hover:bg-wood-brown/90 transition-colors"
-                                            onClick={() => setMobileMenuOpen(false)}
-                                        >
-                                            <User size={18} />
-                                            تسجيل الدخول
-                                        </Link>
-                                    )}
+
                                 </div>
 
                                 {/* Navigation Links */}
@@ -630,18 +588,7 @@ export default function Header() {
                                     </div>
                                 </div>
 
-                                {/* Footer Options */}
-                                <div className="p-6 border-t border-gray-200/50 space-y-3">
-                                    {isAuthenticated ? (
-                                        <LogoutButton className="w-full flex items-center justify-center gap-3 p-4 bg-red-50 text-red-600 rounded-2xl font-bold hover:bg-red-100 transition-all border border-red-100 shadow-sm">
-                                            <span>تسجيل الخروج</span>
-                                        </LogoutButton>
-                                    ) : (
-                                        <div className="text-center py-2">
-                                            <p className="text-xs text-gray-500">تمتع بكافة المميزات عند تسجيل الدخول</p>
-                                        </div>
-                                    )}
-                                </div>
+
                             </div>
                         </motion.div>
                     </>

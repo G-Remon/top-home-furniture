@@ -8,6 +8,17 @@ interface ProductPageProps {
   params: Promise<{ id: string }>;
 }
 
+export async function generateStaticParams() {
+  try {
+    const products = await productService.getProducts({ pageSize: 20 });
+    return products.items.map((product) => ({
+      id: String(product.id),
+    }));
+  } catch (error) {
+    return [];
+  }
+}
+
 export async function generateMetadata({ params }: ProductPageProps): Promise<Metadata> {
   const { id } = await params;
   try {

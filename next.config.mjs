@@ -7,7 +7,6 @@ const nextConfig = {
 
   // Image optimization
   images: {
-    unoptimized: true,
     remotePatterns: [
       {
         protocol: 'https',
@@ -46,10 +45,7 @@ const nextConfig = {
   // Enable source maps in development only
   productionBrowserSourceMaps: process.env.NODE_ENV === 'development',
 
-  // Explicit Turbopack configuration
-  turbopack: {
-    root: './',
-  },
+
   async rewrites() {
     return [
       {

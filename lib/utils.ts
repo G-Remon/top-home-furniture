@@ -2,7 +2,7 @@
 import { type ClassValue, clsx } from 'clsx'
 import { twMerge } from 'tailwind-merge'
 
-import { API_BASE_URL } from './constants'
+import { API_BASE_URL, IMAGE_BASE_URL } from './constants'
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
@@ -26,7 +26,7 @@ export function getFullImageUrl(pathOrObj: string | any | null | undefined, fall
     const normalizedPath = p.startsWith('/') ? p : `/${p}`
 
     // Prepend the Remote Base URL from constants
-    const baseUrl = API_BASE_URL.replace(/\/$/, '')
+    const baseUrl = IMAGE_BASE_URL.replace(/\/$/, '')
     return `${baseUrl}${normalizedPath}`
   }
 

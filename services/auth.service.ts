@@ -9,7 +9,7 @@ import {
 
 // Helper to normalize response keys
 // Helper to normalize response keys
-const normalizeAuthResponse = (data: any): AuthResponse => {
+const normalizeAuthResponse = (data: any): AuthResponse => { // eslint-disable-line @typescript-eslint/no-explicit-any
     console.log('full_api_response_body:', JSON.stringify(data, null, 2));
 
     // Case 1: Token is directly in the root object (common)

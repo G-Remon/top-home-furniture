@@ -6,6 +6,8 @@ export const API_BASE_URL = typeof window === 'undefined'
   ? 'http://tophomedev.runasp.net'
   : '';
 
+export const IMAGE_BASE_URL = 'http://tophomedev.runasp.net';
+
 export const categories: Category[] = [
   {
     id: 'living-room',

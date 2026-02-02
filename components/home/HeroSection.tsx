@@ -69,6 +69,7 @@ export default function HeroSection() {
                   priority
                   className="object-cover"
                   quality={90}
+                  sizes="100vw"
                 />
                 {/* Premium Overlay */}
                 <div className="absolute inset-0 bg-gradient-to-b from-black/80 via-black/40 to-black/80" />

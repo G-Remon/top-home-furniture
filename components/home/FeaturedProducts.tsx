@@ -93,9 +93,13 @@ SectionBadge.displayName = 'SectionBadge'
 
 // --- Main Component ---
 
-export default function FeaturedProducts() {
-  const [products, setProducts] = useState<Product[]>([])
-  const [loading, setLoading] = useState(true)
+interface FeaturedProductsProps {
+  initialProducts?: Product[]
+}
+
+export default function FeaturedProducts({ initialProducts = [] }: FeaturedProductsProps) {
+  const [products, setProducts] = useState<Product[]>(initialProducts)
+  const [loading, setLoading] = useState(initialProducts.length === 0)
   const [error, setError] = useState<string | null>(null)
   const [activeIndex, setActiveIndex] = useState(0)
   const swiperRef = useRef<SwiperType | null>(null)
@@ -106,6 +110,8 @@ export default function FeaturedProducts() {
   })
 
   useEffect(() => {
+    if (initialProducts.length > 0) return
+
     const fetchFeatured = async () => {
       try {
         setLoading(true)
@@ -121,7 +127,7 @@ export default function FeaturedProducts() {
     }
 
     fetchFeatured()
-  }, [])
+  }, [initialProducts.length])
 
   const handlePrev = useCallback(() => {
     swiperRef.current?.slidePrev()

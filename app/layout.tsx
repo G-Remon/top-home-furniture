@@ -59,15 +59,19 @@ export const metadata: Metadata = {
   },
 }
 
-export default function RootLayout({
+import { getWishlistAction } from '@/actions/wishlist'
+
+export default async function RootLayout({
   children,
 }: {
   children: ReactNode
 }) {
+  const wishlist = await getWishlistAction()
+
   return (
     <html lang="ar" dir="rtl" className={cn(inter.variable, "antialiased scroll-smooth")} suppressHydrationWarning>
       <body className="min-h-screen bg-background font-sans relative" suppressHydrationWarning>
-        <AppProviders>
+        <AppProviders initialWishlist={wishlist}>
           {children}
           <Toaster />
         </AppProviders>

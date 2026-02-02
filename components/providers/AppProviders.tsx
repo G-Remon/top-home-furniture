@@ -2,7 +2,11 @@ import React, { ReactNode } from 'react';
 import { ThemeProvider } from './ThemeProvider';
 import { WishlistProvider } from '@/context/WishlistContext';
 
-export function AppProviders({ children }: { children: ReactNode }) {
+import { Product } from '@/types/product';
+
+import AuthSync from '@/components/auth/AuthSync';
+
+export function AppProviders({ children, initialWishlist }: { children: ReactNode, initialWishlist?: Product[] }) {
     return (
         <ThemeProvider
             attribute="class"
@@ -10,7 +14,8 @@ export function AppProviders({ children }: { children: ReactNode }) {
             enableSystem={false}
             disableTransitionOnChange
         >
-            <WishlistProvider>
+            <AuthSync />
+            <WishlistProvider initialWishlist={initialWishlist}>
                 {children}
             </WishlistProvider>
         </ThemeProvider>

@@ -5,7 +5,7 @@ import { API_BASE_URL as BASE_URL, productsList } from '@/lib/constants';
 
 const API_BASE_URL = typeof window === 'undefined' ? `${BASE_URL}/api` : '/api';
 
-const normalizeProduct = (p: any): Product => {
+const normalizeProduct = (p: any): Product => { // eslint-disable-line @typescript-eslint/no-explicit-any
     const normalized: Product = {
         ...p,
         id: p?.id ?? p?.productId ?? p?.ProductId,
@@ -98,10 +98,12 @@ export const productService = {
 
             const url1 = `${API_BASE_URL}/Product/${encodeURIComponent(id)}`;
             try {
+                // eslint-disable-next-line @typescript-eslint/no-explicit-any
                 const product1: any = await tryFetch(url1);
                 return normalizeProduct(product1);
             } catch {
                 const url2 = `${API_BASE_URL}/Product?id=${encodeURIComponent(id)}`;
+                // eslint-disable-next-line @typescript-eslint/no-explicit-any
                 const product2: any = await tryFetch(url2);
                 return normalizeProduct(product2);
             }

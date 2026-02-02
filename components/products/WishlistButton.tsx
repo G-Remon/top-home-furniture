@@ -8,6 +8,8 @@ import { Product } from '@/types/product';
 import { cn } from '@/lib/utils';
 import { motion } from 'framer-motion';
 import { Toast } from '@/components/shared/Toast';
+import { useAuthStore } from '@/store/auth.store';
+import { useRouter } from 'next/navigation';
 
 interface WishlistButtonProps {
     product: Product;
@@ -16,23 +18,38 @@ interface WishlistButtonProps {
 
 export const WishlistButton = ({ product, className }: WishlistButtonProps) => {
     const { toggleWishlist, isInWishlist } = useWishlist();
+    const { isAuthenticated, token, _hasHydrated } = useAuthStore();
+    const canUseWishlist = Boolean(isAuthenticated && token);
+    const router = useRouter();
     const [showToast, setShowToast] = useState(false);
     const [toastMessage, setToastMessage] = useState('');
 
     const active = isInWishlist(product.id);
 
-    const handleToggle = (e: React.MouseEvent) => {
+    const handleToggle = async (e: React.MouseEvent) => {
         e.preventDefault();
         e.stopPropagation();
 
-        toggleWishlist(product);
-
-        if (!active) {
-            setToastMessage('تم إضافة المنتج إلى المفضلة');
-        } else {
-            setToastMessage('تم إزالة المنتج من المفضلة');
+        if (!canUseWishlist) {
+            setToastMessage('سجل الدخول أولاً لإضافة منتجات للمفضلة');
+            setShowToast(true);
+            router.push('/login');
+            return;
         }
-        setShowToast(true);
+
+        try {
+            await toggleWishlist(product);
+
+            if (!active) {
+                setToastMessage('تم إضافة المنتج إلى المفضلة');
+            } else {
+                setToastMessage('تم إزالة المنتج من المفضلة');
+            }
+        } catch {
+            setToastMessage('تعذر تحديث المفضلة، حاول مرة أخرى');
+        } finally {
+            setShowToast(true);
+        }
     };
 
     return (

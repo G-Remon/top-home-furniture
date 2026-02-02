@@ -7,6 +7,7 @@ const nextConfig = {
 
   // Image optimization
   images: {
+    unoptimized: true,
     remotePatterns: [
       {
         protocol: 'https',
@@ -58,6 +59,10 @@ const nextConfig = {
       {
         source: '/images/:path*',
         destination: 'http://tophomedev.runasp.net/images/:path*',
+      },
+      {
+        source: '/files/:path*',
+        destination: 'http://tophomedev.runasp.net/files/:path*',
       },
     ]
   },

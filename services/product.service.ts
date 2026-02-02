@@ -3,7 +3,16 @@ import { PaginatedProducts, ProductFilters, Product } from '@/types/product';
 import { translateDescription } from '@/lib/translate';
 import { API_BASE_URL as BASE_URL, productsList } from '@/lib/constants';
 
-const API_BASE_URL = `${BASE_URL}/api`;
+const API_BASE_URL = typeof window === 'undefined' ? `${BASE_URL}/api` : '/api';
+
+const normalizeProduct = (p: any): Product => {
+    const normalized: Product = {
+        ...p,
+        id: p?.id ?? p?.productId ?? p?.ProductId,
+        description: translateDescription(p?.description || '') || 'وصف المنتج',
+    };
+    return normalized;
+};
 
 export const productService = {
     /**
@@ -27,7 +36,7 @@ export const productService = {
                     tags: ['products'],
                 },
                 // Set a timeout to avoid infinitely waiting for a dead API
-                signal: AbortSignal.timeout(5000),
+                signal: AbortSignal.timeout(15000),
             });
 
             if (!response.ok) {
@@ -38,10 +47,7 @@ export const productService = {
 
             // Post-process data
             if (Array.isArray(data.items)) {
-                data.items = data.items.map(p => ({
-                    ...p,
-                    description: translateDescription(p.description || '') || 'وصف المنتج',
-                }));
+                data.items = data.items.map(normalizeProduct);
             }
             return data;
 
@@ -80,16 +86,25 @@ export const productService = {
      */
     getProductById: async (id: string): Promise<Product> => {
         try {
-            const response = await fetch(`${API_BASE_URL}/Product/${id}`, {
-                next: { revalidate: 3600 },
-                signal: AbortSignal.timeout(5000),
-            });
+            const tryFetch = async (url: string) => {
+                const response = await fetch(url, {
+                    next: { revalidate: 3600 },
+                    signal: AbortSignal.timeout(15000),
+                });
 
-            if (!response.ok) throw new Error('Product not found in API');
+                if (!response.ok) throw new Error('Product not found in API');
+                return response.json();
+            };
 
-            const product: Product = await response.json();
-            product.description = translateDescription(product.description || '');
-            return product;
+            const url1 = `${API_BASE_URL}/Product/${encodeURIComponent(id)}`;
+            try {
+                const product1: any = await tryFetch(url1);
+                return normalizeProduct(product1);
+            } catch {
+                const url2 = `${API_BASE_URL}/Product?id=${encodeURIComponent(id)}`;
+                const product2: any = await tryFetch(url2);
+                return normalizeProduct(product2);
+            }
         } catch (error) {
             console.warn(`Product ${id} not found in API, checking local data...`);
 

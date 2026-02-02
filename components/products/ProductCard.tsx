@@ -12,6 +12,7 @@ import { translateProductName, translateCategory } from '@/lib/translate'
 import WhatsAppButton from '@/components/shared/WhatsAppButton'
 import { useWishlist } from '@/context/WishlistContext'
 import { useAuthStore } from '@/store/auth.store'
+import { useRouter } from 'next/navigation'
 
 interface ProductCardProps {
   product: Product
@@ -20,7 +21,8 @@ interface ProductCardProps {
 const ProductCard = memo(({ product }: ProductCardProps) => {
   const [isHovered, setIsHovered] = useState(false)
   const { toggleWishlist, isInWishlist } = useWishlist()
-  const { isAuthenticated } = useAuthStore()
+  const { isAuthenticated, token, _hasHydrated } = useAuthStore()
+  const router = useRouter()
 
   const isFavorite = isInWishlist(product.id)
 
@@ -71,6 +73,11 @@ const ProductCard = memo(({ product }: ProductCardProps) => {
           onClick={(e) => {
             e.preventDefault();
             e.stopPropagation();
+            const canUseWishlist = Boolean(_hasHydrated && isAuthenticated && token)
+            if (!canUseWishlist) {
+              router.push('/login')
+              return
+            }
             toggleWishlist(product);
           }}
           className={cn(

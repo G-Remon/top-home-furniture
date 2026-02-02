@@ -16,25 +16,29 @@ export function cn(...inputs: ClassValue[]) {
  * @returns The full resolved URL string
  */
 export function getFullImageUrl(pathOrObj: string | any | null | undefined, fallback: string = '/images/geld.png'): string {
+  const resolve = (p: string): string => {
+    // If it's already an absolute URL, return it as is
+    if (p.startsWith('http://') || p.startsWith('https://')) {
+      return p
+    }
+
+    // Normalize the path (ensure it starts with /)
+    const normalizedPath = p.startsWith('/') ? p : `/${p}`
+
+    // Prepend the Remote Base URL from constants
+    const baseUrl = API_BASE_URL.replace(/\/$/, '')
+    return `${baseUrl}${normalizedPath}`
+  }
+
   // Extract path from string or object
   const path = typeof pathOrObj === 'object' && pathOrObj !== null ? pathOrObj.url : pathOrObj;
 
   // 1. Handle empty or invalid paths
   if (!path || typeof path !== 'string' || path.trim() === '') {
-    return fallback;
+    return resolve(fallback);
   }
 
-  // 2. If it's already an absolute URL, return it as is
-  if (path.startsWith('http://') || path.startsWith('https://')) {
-    return path;
-  }
-
-  // 3. Normalize the path (ensure it starts with /)
-  const normalizedPath = path.startsWith('/') ? path : `/${path}`;
-
-  // 4. Prepend the Remote Base URL from constants
-  const baseUrl = API_BASE_URL.replace(/\/$/, ''); // Remove trailing slash if exists
-  return `${baseUrl}${normalizedPath}`;
+  return resolve(path);
 }
 
 /**

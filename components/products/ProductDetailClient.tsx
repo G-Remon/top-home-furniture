@@ -38,6 +38,7 @@ interface ProductDetailClientProps {
 export default function ProductDetailClient({ product }: ProductDetailClientProps) {
   const [thumbsSwiper, setThumbsSwiper] = useState<any>(null);
   const router = useRouter();
+  const { isAuthenticated } = useAuthStore();
 
   const formatPrice = (price: number) => {
     return new Intl.NumberFormat('ar-EG', {
@@ -67,7 +68,13 @@ export default function ProductDetailClient({ product }: ProductDetailClientProp
     { label: translateCommon('color'), value: translateColor(product.color), icon: Palette },
     { label: translateCommon('dimensions'), value: `${product.width || 0}×${product.height || 0}×${product.depth || 0} سم`, icon: Ruler },
     { label: 'وقت التوصيل', value: `${product.deliveryDays || 14} يوم`, icon: Truck },
-  ];
+  ].filter(spec => spec.value && spec.value !== '');
+
+  // معالجة البيانات الناقصة
+  const productName = translateProductName(product.name) || 'منتج بدون اسم';
+  const productDescription = translateDescription(product.description) || 'لا يوجد وصف متوفر للمنتج.';
+  const productFeatures = translateFeatures(product.features) || [];
+  const productCategory = translateCategory(product.category) || 'غير مصنف';
 
   return (
     <div className="flex flex-col gap-8 sm:gap-12">
@@ -93,8 +100,8 @@ export default function ProductDetailClient({ product }: ProductDetailClientProp
         <Breadcrumbs
           items={[
             { label: 'المنتجات', href: '/products' },
-            { label: translateCategory(product.category), href: `/products?category=${product.category}` },
-            { label: translateProductName(product.name) }
+            { label: productCategory, href: `/products?category=${product.category}` },
+            { label: productName }
           ]}
           className="px-2"
         />
@@ -104,55 +111,70 @@ export default function ProductDetailClient({ product }: ProductDetailClientProp
         {/* Gallery Section */}
         <div className="space-y-4">
           <div className="relative aspect-square rounded-3xl overflow-hidden bg-white border border-gray-100">
-            <Swiper
-              modules={[Navigation, Pagination, Thumbs, EffectFade]}
-              effect="fade"
-              navigation
-              pagination={{ clickable: true }}
-              thumbs={{ swiper: thumbsSwiper && !thumbsSwiper.destroyed ? thumbsSwiper : null }}
-              className="h-full w-full"
-            >
-              {displayImages.map((img, idx) => (
-                <SwiperSlide key={idx} className="h-full w-full">
-                  <div className="relative h-full w-full">
-                    <Image
-                      src={img}
-                      alt={`${translateProductName(product.name)} ${idx}`}
-                      fill
-                      className="object-cover"
-                      priority={idx === 0}
-                    />
-                  </div>
-                </SwiperSlide>
-              ))}
-            </Swiper>
+            {displayImages.length > 0 ? (
+              <Swiper
+                modules={[Navigation, Pagination, Thumbs, EffectFade]}
+                effect="fade"
+                navigation
+                pagination={{ clickable: true }}
+                thumbs={{ swiper: thumbsSwiper && !thumbsSwiper.destroyed ? thumbsSwiper : null }}
+                className="h-full w-full"
+              >
+                {displayImages.map((img, idx) => (
+                  <SwiperSlide key={idx} className="h-full w-full">
+                    <div className="relative h-full w-full">
+                      <Image
+                        src={img}
+                        alt={`${productName} ${idx + 1}`}
+                        fill
+                        className="object-cover"
+                        priority={idx === 0}
+                        sizes="(max-width: 768px) 100vw, 50vw"
+                      />
+                    </div>
+                  </SwiperSlide>
+                ))}
+              </Swiper>
+            ) : (
+              <div className="h-full w-full flex items-center justify-center bg-gray-100 text-gray-400">
+                <span>لا توجد صور متاحة</span>
+              </div>
+            )}
           </div>
 
           {/* Thumbnails */}
-          <div className="hidden sm:block">
-            <Swiper
-              onSwiper={setThumbsSwiper}
-              spaceBetween={12}
-              slidesPerView={4}
-              watchSlidesProgress
-              className="thumbs-swiper"
-            >
-              {displayImages.map((img, idx) => (
-                <SwiperSlide key={idx} className="cursor-pointer rounded-xl overflow-hidden border-2 border-transparent swiper-slide-thumb-active:border-[#D4AF37]">
-                  <div className="relative aspect-square">
-                    <Image src={img} alt="thumbnail" fill className="object-cover" />
-                  </div>
-                </SwiperSlide>
-              ))}
-            </Swiper>
-          </div>
+          {displayImages.length > 1 && (
+            <div className="hidden sm:block">
+              <Swiper
+                onSwiper={setThumbsSwiper}
+                spaceBetween={12}
+                slidesPerView={4}
+                watchSlidesProgress
+                className="thumbs-swiper"
+              >
+                {displayImages.map((img, idx) => (
+                  <SwiperSlide key={idx} className="cursor-pointer rounded-xl overflow-hidden border-2 border-transparent swiper-slide-thumb-active:border-[#D4AF37]">
+                    <div className="relative aspect-square">
+                      <Image 
+                        src={img} 
+                        alt={`صورة مصغرة ${idx + 1}`} 
+                        fill 
+                        className="object-cover" 
+                        sizes="100px"
+                      />
+                    </div>
+                  </SwiperSlide>
+                ))}
+              </Swiper>
+            </div>
+          )}
         </div>
 
         {/* Info Section */}
         <div className="flex flex-col text-right">
           <div className="flex items-center justify-between mb-4">
             <div className="flex items-center gap-1.5 px-3 py-1 bg-[#D4AF37]/10 text-[#D4AF37] rounded-full text-xs font-bold">
-              {translateCategory(product.category)}
+              {productCategory}
             </div>
             <div className="flex items-center gap-1">
               <Star className="w-4 h-4 text-[#D4AF37] fill-[#D4AF37]" />
@@ -161,7 +183,7 @@ export default function ProductDetailClient({ product }: ProductDetailClientProp
           </div>
 
           <h1 className="text-3xl sm:text-4xl lg:text-5xl font-black text-gray-900 mb-4">
-            {translateProductName(product.name)}
+            {productName}
           </h1>
 
           <div className="flex flex-row-reverse items-center justify-start gap-4 mb-6">
@@ -169,60 +191,73 @@ export default function ProductDetailClient({ product }: ProductDetailClientProp
               {formatPrice(product.currentPrice)}
             </span>
             {hasDiscount && (
-              <span className="text-xl text-gray-400 line-through">
-                {formatPrice(product.originalPrice)}
-              </span>
-            )}
-            {hasDiscount && (
-              <span className="bg-red-500 text-white px-2 py-1 rounded-lg text-xs font-bold">
-                وفر {product.discountPercentage}%
-              </span>
+              <>
+                <span className="text-xl text-gray-400 line-through">
+                  {formatPrice(product.originalPrice)}
+                </span>
+                <span className="bg-red-500 text-white px-2 py-1 rounded-lg text-xs font-bold">
+                  وفر {product.discountPercentage}%
+                </span>
+              </>
             )}
           </div>
 
-          <div className="grid grid-cols-2 gap-4 mb-8">
-            {specs.map((spec, i) => (
-              <div key={i} className="flex flex-row-reverse items-center gap-3 p-4 bg-gray-50 rounded-2xl border border-gray-100">
-                <spec.icon className="w-5 h-5 text-[#D4AF37] shrink-0" />
-                <div className="text-right">
-                  <p className="text-[10px] text-gray-500 font-bold uppercase">{spec.label}</p>
-                  <p className="text-sm font-bold text-gray-900">{spec.value}</p>
+          {specs.length > 0 && (
+            <div className="grid grid-cols-2 gap-4 mb-8">
+              {specs.map((spec, i) => (
+                <div key={i} className="flex flex-row-reverse items-center gap-3 p-4 bg-gray-50 rounded-2xl border border-gray-100">
+                  <spec.icon className="w-5 h-5 text-[#D4AF37] shrink-0" />
+                  <div className="text-right">
+                    <p className="text-[10px] text-gray-500 font-bold uppercase">{spec.label}</p>
+                    <p className="text-sm font-bold text-gray-900">{spec.value}</p>
+                  </div>
                 </div>
-              </div>
-            ))}
-          </div>
+              ))}
+            </div>
+          )}
 
           <div className="mb-8">
             <h3 className="font-bold text-gray-900 mb-3 text-lg">الوصف</h3>
-            <p className="text-gray-600 leading-relaxed text-base">
-              {translateDescription(product.description)}
+            <p className="text-gray-600 leading-relaxed text-base whitespace-pre-line">
+              {productDescription}
             </p>
           </div>
 
           {/* Features */}
-          <div className="mb-10">
-            <h3 className="font-bold text-gray-900 mb-4 text-lg">المميزات</h3>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-              {translateFeatures(product.features).map((f, i) => (
-                <div key={i} className="flex flex-row-reverse items-center gap-2 text-gray-600">
-                  <CheckCircle2 className="w-4 h-4 text-[#D4AF37]" />
-                  <span className="text-sm font-medium">{f}</span>
-                </div>
-              ))}
+          {productFeatures.length > 0 && (
+            <div className="mb-10">
+              <h3 className="font-bold text-gray-900 mb-4 text-lg">المميزات</h3>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                {productFeatures.map((f: string, i: number) => (
+                  <div key={i} className="flex flex-row-reverse items-center gap-2 text-gray-600">
+                    <CheckCircle2 className="w-4 h-4 text-[#D4AF37]" />
+                    <span className="text-sm font-medium">{f}</span>
+                  </div>
+                ))}
+              </div>
             </div>
-          </div>
+          )}
 
           {/* CTA - Fixed on Mobile (handled outside) / Standard on Desktop */}
           <div className="hidden sm:block mt-auto">
-            <WhatsAppButton
-              phoneNumber={PHONE_NUMBER}
-              message={`مرحباً، أود الاستفسار عن ${translateProductName(product.name)}`}
-              productName={translateProductName(product.name)}
-              size="lg"
-              className="w-full py-5 rounded-2xl text-lg font-bold"
-            >
-              طلب عبر واتساب الآن
-            </WhatsAppButton>
+            {isAuthenticated ? (
+              <WhatsAppButton
+                phoneNumber={PHONE_NUMBER}
+                message={`مرحباً، أود الاستفسار عن ${productName} - رمز المنتج: ${product.id}`}
+                productName={productName}
+                size="lg"
+                className="w-full py-5 rounded-2xl text-lg font-bold"
+              >
+                طلب عبر واتساب الآن
+              </WhatsAppButton>
+            ) : (
+              <button
+                onClick={() => router.push('/login')}
+                className="w-full py-5 rounded-2xl text-lg font-bold bg-wood-brown text-white hover:bg-wood-brown/90 transition-colors"
+              >
+                سجل دخول للطلب
+              </button>
+            )}
           </div>
         </div>
       </div>
@@ -254,14 +289,23 @@ export default function ProductDetailClient({ product }: ProductDetailClientProp
 
       {/* Sticky Mobile CTA */}
       <div className="sm:hidden fixed bottom-0 left-0 right-0 p-4 bg-white/80 backdrop-blur-lg border-t border-gray-100 z-50">
-        <WhatsAppButton
-          phoneNumber={PHONE_NUMBER}
-          message={`مرحباً، أود الاستفسار عن ${translateProductName(product.name)}`}
-          productName={translateProductName(product.name)}
-          className="w-full py-4 rounded-xl font-bold text-base"
-        >
-          اطلب الآن بالواتساب
-        </WhatsAppButton>
+        {isAuthenticated ? (
+          <WhatsAppButton
+            phoneNumber={PHONE_NUMBER}
+            message={`مرحباً، أود الاستفسار عن ${productName} - رمز المنتج: ${product.id}`}
+            productName={productName}
+            className="w-full py-4 rounded-xl font-bold text-base"
+          >
+            اطلب الآن بالواتساب
+          </WhatsAppButton>
+        ) : (
+          <button
+            onClick={() => router.push('/login')}
+            className="w-full py-4 rounded-xl font-bold text-base bg-wood-brown text-white hover:bg-wood-brown/90 transition-colors"
+          >
+            سجل دخول للطلب
+          </button>
+        )}
       </div>
     </div>
   );

@@ -12,6 +12,38 @@ import { useRouter } from 'next/navigation';
 
 export default function WishlistPage() {
     const { wishlist } = useWishlist();
+    const { isAuthenticated, user, _hasHydrated } = useAuthStore();
+    const router = useRouter();
+    const canUseWishlist = Boolean(isAuthenticated && user);
+
+    if (!canUseWishlist) {
+        return (
+            <main className="min-h-screen bg-gradient-to-b from-white to-gray-50 pt-24 pb-20">
+                <div className="container mx-auto px-4 max-w-7xl">
+                    <motion.div
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        className="flex flex-col items-center justify-center py-20 text-center bg-white rounded-[2.5rem] border border-gray-100 shadow-sm"
+                    >
+                        <div className="w-24 h-24 bg-gray-50 rounded-full flex items-center justify-center mb-6 text-gray-300">
+                            <Heart size={48} />
+                        </div>
+                        <h2 className="text-2xl font-bold text-charcoal mb-2">سجل الدخول لعرض المفضلة</h2>
+                        <p className="text-soft-gray mb-8 max-w-md">
+                            لا يمكنك إضافة أو عرض المنتجات المفضلة بدون تسجيل الدخول.
+                        </p>
+                        <button
+                            onClick={() => router.push('/login')}
+                            className="inline-flex items-center gap-2 px-8 py-4 bg-charcoal text-white rounded-2xl font-bold hover:bg-wood-brown transition-all group"
+                        >
+                            تسجيل الدخول
+                            <ArrowRight size={20} className="group-hover:-translate-x-1 transition-transform rotate-180" />
+                        </button>
+                    </motion.div>
+                </div>
+            </main>
+        );
+    }
 
     return (
         <main className="min-h-screen bg-gradient-to-b from-white to-gray-50 pt-24 pb-20">
